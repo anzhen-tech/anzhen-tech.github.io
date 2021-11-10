@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>SpringMVC |  anzhen.tech</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+      <meta name="baidu-site-verification" content="code-BgeZtJHZzY" />
+      <meta name="google-site-verification" content="wNOxVwDPcgD6IwrCt_pD_Xtq-E86p8USRXPN73jLu0A" />
+    <link rel="alternate" href="/atom.xml" title="anzhen.tech" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-SpringMVC"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  SpringMVC
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/11/07/SpringMVC/" class="article-date">
+  <time datetime="2021-11-07T02:53:39.000Z" itemprop="datePublished">2021-11-07</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.9k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">10 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="Spring-MVC"><a href="#Spring-MVC" class="headerlink" title="Spring-MVC"></a>Spring-MVC</h1><ol>
+<li>Spring MVC 框架有什么用？<ul>
+<li>Spring Web MVC 框架提供”模型-视图-控制器”( Model-View-Controller )架构和随时可用的组件，用于开发灵活且松散耦合的 Web 应用程序。</li>
+<li>MVC 模式有助于分离应用程序的不同方面，如输入逻辑，业务逻辑和 UI 逻辑，同时在所有这些元素之间提供松散耦合。</li>
+</ul>
+</li>
+<li>介绍下 Spring MVC 的核心组件？<ul>
+<li>Spring MVC 一共有九大核心组件，分别是：<ul>
+<li>MultipartResolver</li>
+<li>LocaleResolver</li>
+<li>ThemeResolver</li>
+<li>HandlerMapping</li>
+<li>HandlerAdapter</li>
+<li>HandlerExceptionResolver</li>
+<li>RequestToViewNameTranslator</li>
+<li>ViewResolver</li>
+<li>FlashMapManager</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>描述一下 DispatcherServlet 的工作流程？<br> <img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/15850164969118.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10" alt="-w803"><ul>
+<li><ol>
+<li>发送请求:用户向服务器发送 HTTP 请求，请求被 Spring MVC 的调度控制器 DispatcherServlet 捕获。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>映射处理器:DispatcherServlet 根据请求 URL ，调用 HandlerMapping 获得该 Handler 配置的所有相关的对象（包括 Handler 对象以及 Handler 对象对应的拦截器），最后以 HandlerExecutionChain 对象的形式返回。</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>处理器适配:</li>
+<li>DispatcherServlet 根据获得的 Handler，选择一个合适的HandlerAdapter 。（附注：如果成功获得 HandlerAdapter 后，此时将开始执行拦截器的 #preHandler(…) 方法）。</li>
+<li>提取请求 Request 中的模型数据，填充 Handler 入参，开始执行Handler（Controller)。 在填充Handler的入参过程中，根据你的配置，Spring 将帮你做一些额外的工作：<ol>
+<li>HttpMessageConverter ：会将请求消息（如 JSON、XML 等数据）转换成一个对象。</li>
+<li>数据转换：对请求消息进行数据转换。如 String 转换成 Integer、Double 等。</li>
+<li>数据格式化：对请求消息进行数据格式化。如将字符串转换成格式化数字或格式化日期等。</li>
+<li>数据验证： 验证数据的有效性（长度、格式等），验证结果存储到 BindingResult 或 Error 中。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>Handler(Controller) 执行完成后，向 DispatcherServlet 返回一个 ModelAndView 对象。</li>
+</ol>
+</li>
+<li><ol start="5">
+<li>解析视图:根据返回的 ModelAndView ，选择一个适合的 ViewResolver</li>
+</ol>
+</li>
+<li>6 7 渲染视图 + 响应请求</li>
+<li><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/15850167871281.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></li>
+</ul>
+</li>
+<li>@Controller 注解有什么用？<ul>
+<li>@Controller 注解，它将一个类标记为 Spring Web MVC 控制器 Controller 。</li>
+</ul>
+</li>
+<li>@RestController 和 @Controller 有什么区别？<ul>
+<li>@RestController 注解，在 @Controller 基础上，增加了 @ResponseBody 注解，更加适合目前前后端分离的架构下，提供 Restful API ，返回例如 JSON 数据格式。当然，返回什么样的数据格式，根据客户端的 “ACCEPT” 请求头来决定。</li>
+</ul>
+</li>
+<li>@RequestMapping 注解有什么用？<ul>
+<li>@RequestMapping 注解，用于将特定 HTTP 请求方法映射到将处理相应请求的控制器中的特定类/方法。此注释可应用于两个级别：<ul>
+<li>类级别：映射请求的 URL。</li>
+<li>方法级别：映射 URL 以及 HTTP 请求方法。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>@RequestMapping 和 @GetMapping 注解的不同之处在哪里？<ul>
+<li>@RequestMapping 可注解在类和方法上；@GetMapping 仅可注册在方法上。</li>
+<li>@RequestMapping 可进行 GET、POST、PUT、DELETE 等请求方法</li>
+<li>@GetMapping 是 @RequestMapping 的 GET 请求方法的特例，目的是为了提高清晰度。</li>
+</ul>
+</li>
+<li>返回 JSON 格式使用什么注解？<ul>
+<li>可以使用 @ResponseBody 注解，或者使用包含 @ResponseBody 注解的 @RestController 注解。</li>
+<li>当然，还是需要配合相应的支持 JSON 格式化的 HttpMessageConverter 实现类。例如，Spring MVC 默认使用 MappingJackson2HttpMessageConverter 。</li>
+</ul>
+</li>
+<li>介绍一下 WebApplicationContext ？<ul>
+<li>WebApplicationContext 是实现ApplicationContext接口的子类，专门为 WEB 应用准备的。</li>
+<li>它允许从相对于 Web 根目录的路径中加载配置文件，完成初始化 Spring MVC 组件的工作。</li>
+<li>从 WebApplicationContext 中，可以获取 ServletContext 引用，整个 Web 应用上下文对象将作为属性放置在 ServletContext 中，以便 Web 应用环境可以访问 Spring 上下文。</li>
+</ul>
+</li>
+<li>Spring MVC 的异常处理？<ul>
+<li>Spring MVC 提供了异常解析器 HandlerExceptionResolver 接口，将处理器( handler )执行时发生的异常，解析( 转换 )成对应的 ModelAndView 结果。代码如下：</li>
+<li>一般情况下，我们使用 @ExceptionHandler 注解来实现过异常的处理</li>
+</ul>
+</li>
+<li>Spring MVC 有什么优点？<ul>
+<li>使用真的真的真的非常方便，无论是添加 HTTP 请求方法映射的方法，还是不同数据格式的响应。</li>
+<li>提供拦截器机制，可以方便的对请求进行拦截处理。</li>
+<li>提供异常机制，可以方便的对异常做统一处理。</li>
+<li>可以任意使用各种视图技术，而不仅仅局限于 JSP ，例如 Freemarker、Thymeleaf 等等。</li>
+<li>不依赖于 Servlet API (目标虽是如此，但是在实现的时候确实是依赖于 Servlet 的，当然仅仅依赖 Servlet ，而不依赖 Filter、Listener )。</li>
+</ul>
+</li>
+<li>Spring MVC 怎样设定重定向和转发 ？<ul>
+<li>结果转发：在返回值的前面加 “forward:/“ 。</li>
+<li>重定向：在返回值的前面加上 “redirect:/“ 。</li>
+</ul>
+</li>
+<li>Spring MVC 的 Controller 是不是单例？<ul>
+<li>绝绝绝大多数情况下，Controller 是单例。</li>
+<li>那么，Controller 里一般不建议存在共享的变量。</li>
+</ul>
+</li>
+<li>Spring MVC 和 Struts2 的异同？<ul>
+<li>入口不同<ul>
+<li>Spring MVC 的入门是一个 Servlet 控制器。</li>
+<li>Struts2 入门是一个 Filter 过滤器。</li>
+</ul>
+</li>
+<li>配置映射不同，<ul>
+<li>Spring MVC 是基于方法开发，传递参数是通过方法形参，一般设置为单例。</li>
+<li>Struts2 是基于类开发，传递参数是通过类的属性，只能设计为多例。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>详细介绍下 Spring MVC 拦截器？<ul>
+<li><code>org.springframework.web.servlet.HandlerInterceptor</code> ，拦截器接口。代码如下：  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">        <span class="comment">// HandlerInterceptor.java</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 拦截处理器，在 &#123;<span class="doctag">@link</span> HandlerAdapter#handle(HttpServletRequest, HttpServletResponse, Object)&#125; 执行之前</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="function"><span class="keyword">default</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span></span></span><br><span class="line"><span class="function">        		<span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 拦截处理器，在 &#123;<span class="doctag">@link</span> HandlerAdapter#handle(HttpServletRequest, HttpServletResponse, Object)&#125; 执行成功之后</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">postHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler,</span></span></span><br><span class="line"><span class="params"><span class="function">        		<span class="meta">@Nullable</span> ModelAndView modelAndView)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 拦截处理器，在 &#123;<span class="doctag">@link</span> HandlerAdapter#handle(HttpServletRequest, HttpServletResponse, Object)&#125; 执行完之后，无论成功还是失败</span></span><br><span class="line"><span class="comment">         *</span></span><br><span class="line"><span class="comment">         * 并且，只有该处理器 &#123;<span class="doctag">@link</span> #preHandle(HttpServletRequest, HttpServletResponse, Object)&#125; 执行成功之后，才会被执行</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">afterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler,</span></span></span><br><span class="line"><span class="params"><span class="function">        		<span class="meta">@Nullable</span> Exception ex)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>preHandle(…) 方法，调用 Controller 方法之前执行。<ul>
+<li>preHandle(…) 方法，按拦截器定义顺序调用。若任一拦截器返回 false ，则 Controller 方法不再调用。    </li>
+</ul>
+</li>
+<li>postHandle(…) 方法，调用 Controller 方法之后执行。<ul>
+<li>postHandle(…) 和 #afterCompletion(…) 方法，按拦截器定义逆序调用。</li>
+<li>postHandler(…) 方法，在调用 Controller 方法之后执行。</li>
+</ul>
+</li>
+<li>afterCompletion(…) 方法，处理完 Controller 方法返回结果之后执行,无论调用 Controller 方法是否成功，都会执行。<ul>
+<li>afterCompletion(…) 方法，只有该拦截器在 #preHandle(…) 方法返回 true 时，才能够被调用，且一定会被调用。为什么“且一定会被调用”呢？即使 #afterCompletion(…) 方法，按拦截器定义逆序调用时，前面的拦截器发生异常，后面的拦截器还能够调用，即无视异常。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Spring MVC 的拦截器可以做哪些事情？<ul>
+<li>记录访问日志。</li>
+<li>记录异常日志。</li>
+<li>需要登陆的请求操作，拦截未登陆的用户。</li>
+<li>参数替换</li>
+</ul>
+</li>
+<li>Spring MVC 的拦截器和 Filter 过滤器有什么差别？<ul>
+<li>功能相同：拦截器和 Filter都能实现相应的功能，谁也不比谁强。</li>
+<li>容器不同：拦截器构建在 Spring MVC 体系中；Filter 构建在 Servlet 容器之上。</li>
+<li>使用便利性不同：拦截器提供了三个方法，分别在不同的时机执行；过滤器仅提供一个方法，当然也能实现拦截器的执行时机的效果，就是麻烦一些。</li>
+</ul>
+</li>
+</ol>
+<h2 id="REST"><a href="#REST" class="headerlink" title="REST"></a>REST</h2><ol>
+<li>REST 代表着什么?<ul>
+<li>REST 代表着抽象状态转移，它是根据 HTTP 协议从客户端发送数据到服务端，例如：服务端的一本书可以以 XML 或 JSON 格式传递到客户端。</li>
+</ul>
+</li>
+<li>资源是什么?<ul>
+<li>资源是指数据在 REST 架构中如何显示的。将实体作为资源公开 ，它允许客户端通过 HTTP 方法如：GET, POST,PUT, DELETE 等读，写，修改和创建资源。</li>
+</ul>
+</li>
+<li>什么是安全的 REST 操作?<ul>
+<li>REST 接口是通过 HTTP 方法完成操作。<ul>
+<li>一些HTTP操作是安全的，如 GET 和 HEAD ，它不能在服务端修改资源换句话说，PUT,POST 和 DELETE 是不安全的，因为他们能修改服务端的资源。</li>
+</ul>
+</li>
+<li>是否安全的界限，在于是否修改服务端的资源。</li>
+</ul>
+</li>
+<li>什么是幂等操作? 为什么幂等操作如此重要?<ul>
+<li>有一些HTTP方法，如：GET，不管你使用多少次它都能产生相同的结果，在没有任何一边影响的情况下，发送多个 GET 请求到相同的URI 将会产生相同的响应结果。因此，这就是所谓幂等操作。</li>
+<li>换句话说，POST方法不是幂等操作 ，因为如果发送多个 POST 请求，它将在服务端创建不同的资源。但是，假如你用PUT更新资源，它将是幂等操作。</li>
+</ul>
+</li>
+<li>REST 是可扩展的或说是协同的吗?<ul>
+<li>是的，REST 是可扩展的和可协作的。它既不托管一种特定的技术选择，也不定在客户端或者服务端。你可以用 Java, C++, Python, 或 JavaScript 来创建 RESTful Web 服务，也可以在客户端使用它们。</li>
+<li>这里的“可拓展”、“协同”对应到我们平时常说的，“跨语言”、“语言无关”。</li>
+</ul>
+</li>
+<li>REST 用哪种 HTTP 方法呢?<ul>
+<li>REST 能用任何的 HTTP 方法，但是，最受欢迎的是：<ul>
+<li>用 GET 来检索服务端资源</li>
+<li>用 POST 来创建服务端资源</li>
+<li>用 PUT 来更新服务端资源</li>
+<li>用 DELETE 来删除服务端资源。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>删除的 HTTP 状态返回码是什么 ?<ul>
+<li>在删除成功之后，您的 REST API 应该返回什么状态代码，并没有严格的规则。它可以返回 200 或 204 没有内容。<ul>
+<li>一般来说，如果删除操作成功，响应主体为空，返回 204 。</li>
+<li>如果删除请求成功且响应体不是空的，则返回 200 。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>REST API 是无状态的吗?<ul>
+<li>是的，REST API 应该是无状态的，因为它是基于 HTTP 的，它也是无状态的。</li>
+<li>REST API 中的请求应该包含处理它所需的所有细节。它不应该依赖于以前或下一个请求或服务器端维护的一些数据，例如会话。</li>
+</ul>
+</li>
+<li>REST安全吗? 你能做什么来保护它?<ul>
+<li>REST 通常不是安全的，但是您可以通过使用 Spring Security 来保护它。</li>
+<li>至少，你可以通过在 Spring Security 配置文件中使用 HTTP 来启用 HTTP Basic Auth 基本认证。</li>
+<li>类似地，如果底层服务器支持 HTTPS ，你可以使用 HTTPS 公开 REST API 。</li>
+</ul>
+</li>
+<li>RestTemplate 的优势是什么?<ul>
+<li>在 Spring Framework 中，RestTemplate 类是 模板方法模式 的实现。跟其他主流的模板类相似，如 JdbcTemplate 或 JmsTempalte ，它将在客户端简化跟 RESTful Web 服务的集成。正如在 RestTemplate 例子中显示的一样，你能非常容易地用它来调用 RESTful Web 服务。</li>
+<li>实际场景我还是更喜欢使用 OkHttp 作为 HTTP 库，因为更好的性能，使用也便捷，并且无需依赖 Spring 库。</li>
+</ul>
+</li>
+<li>HttpMessageConverter 在 Spring REST 中代表什么?<ul>
+<li>HttpMessageConverter 是一种策略接口 ，它指定了一个转换器，它可以转换 HTTP 请求和响应。Spring REST 用这个接口转换 HTTP 响应到多种格式，例如：JSON 或 XML 。</li>
+<li>每个 HttpMessageConverter 实现都有一种或几种相关联的MIME协议。Spring 使用 “Accept” 的标头来确定客户端所期待的内容类型。</li>
+<li>然后，它将尝试找到一个注册的 HTTPMessageConverter ，它能够处理特定的内容类型，并使用它将响应转换成这种格式，然后再将其发送给客户端。</li>
+</ul>
+</li>
+<li>@PathVariable 注解，在 Spring MVC 做了什么? 为什么 REST 在 Spring 中如此有用<ul>
+<li>@PathVariable 注解，是 Spring MVC 中有用的注解之一，它允许您从 URI 读取值，比如查询参数。它在使用 Spring 创建 RESTful Web 服务时特别有用，因为在 REST 中，资源标识符是 URI 的一部分。</li>
+</ul>
+</li>
+</ol>
+ 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          打赏
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://anzhen-tech.github.io/2021/11/07/SpringMVC/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/interview/" rel="tag">interview</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2021/11/07/RocketMQ/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            RocketMQ
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/11/07/MyBatis/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">MyBatis</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "XCKHv09pYxF5EmF2ezNgFfLS-gzGzoHsz",
+    app_key: "gyCHBp787fNNfXDiHGIcj7Am",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2021
+        <i class="ri-heart-fill heart_icon"></i> Anzhen
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="anzhen.tech"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/HDFS">HDFS</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Yarn">Yarn</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/MR">MR</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Hive">Hive</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86">数据采集</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/HBase">HBase</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Kafka">Kafka</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Spark">Spark</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Flink">Flink</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/MySQL">MySQL</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Java">Java</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/interview">面试宝典</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/11/07/about-me">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="52"
+        src="//music.163.com/outchain/player?type=2&id=318916815&auto=1&height=32"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+    
+
+  </div>
+</body>
+
+</html>

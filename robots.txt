@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Allow: /archives/
+Allow: /categories/
+Disallow: /vendors
+
+Sitemap: http://anzhen-tech.github.io/sitemap.xml
+Sitemap: http://anzhen-tech.github.io/baidusitemap.xml

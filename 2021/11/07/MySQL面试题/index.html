@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>MySQL面试题 |  anzhen.tech</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+      <meta name="baidu-site-verification" content="code-BgeZtJHZzY" />
+      <meta name="google-site-verification" content="wNOxVwDPcgD6IwrCt_pD_Xtq-E86p8USRXPN73jLu0A" />
+    <link rel="alternate" href="/atom.xml" title="anzhen.tech" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-MySQL面试题"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  MySQL面试题
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/11/07/MySQL%E9%9D%A2%E8%AF%95%E9%A2%98/" class="article-date">
+  <time datetime="2021-11-07T00:08:41.000Z" itemprop="datePublished">2021-11-07</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/MySQL/">MySQL</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">4.8k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">17 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h1><ol>
+<li><p>为什么互联网公司一般选择 MySQL 而不是 Oracle?</p>
+<ul>
+<li>免费、流行、够用。</li>
+</ul>
+</li>
+<li><p>数据库的三范式是什么？什么是反模式？</p>
+<ul>
+<li>第一范式，强调属性的原子性约束，要求属性具有原子性，不可再分解。</li>
+<li>第二范式，强调记录的唯一性约束，表必须有一个主键，并且没有包含在主键中的列必须完全依赖于主键，而不能只依赖于主键的一部分。</li>
+<li>第三范式，强调属性冗余性的约束，即非主键列必须直接依赖于主键。</li>
+<li>反1空间换取时间，采取数据冗余的方式避免表之间的关联查询</li>
+<li>使存储数据尽可能达到用户一致，保证系统经过一段较短的时间的自我恢复和修正，数据最终达到一致</li>
+</ul>
+</li>
+<li><p>MySQL 有哪些数据类型？</p>
+<ul>
+<li>数值、日期/时间和字符串(字符)类型</li>
+</ul>
+</li>
+<li><p>MySQL 中 varchar 与 char 的区别？varchar(50) 中的 50 代表的涵义？</p>
+<ul>
+<li>1、varchar 与 char 的区别，char 是一种固定长度的类型，varchar 则是一种可变长度的类型。</li>
+<li>varchar(50) 中 50 的涵义最多存放 50 个字符。varchar(50) 和 (200) 存储 hello 所占空间一样，但后者在排序时会消耗更多内存，因为 ORDER BY col 采用 fixed_length 计算 col 长度(memory引擎也一样)。</li>
+</ul>
+</li>
+<li><p>int(11) 中的 11 代表什么涵义？</p>
+<ul>
+<li>int(11) 中的 11 ，不影响字段存储的范围，只影响展示效果</li>
+</ul>
+</li>
+<li><p>金额(金钱)相关的数据，选择什么数据类型？</p>
+<ul>
+<li>方式一，使用 int 或者 bigint 类型。如果需要存储到分的维度，需要 *100 进行放大。</li>
+<li>方式二，使用 decimal 类型，避免精度丢失。如果使用 Java 语言时，需要使用 BigDecimal 进行对应。</li>
+</ul>
+</li>
+<li><p>一张表，里面有 ID 自增主键，当 insert 了 17 条记录之后，删除了第 15,16,17 条记录，再把 MySQL 重启，再 insert 一条记录，这条记录的 ID 是 18 还是 15？</p>
+<ul>
+<li>一般情况下，我们创建的表的类型是 InnoDB ，如果新增一条记录（不重启 MySQL 的情况下），这条记录的 ID 是18 ；但是如果重启 MySQL 的话，这条记录的 ID 是 15 。因为 InnoDB 表只把自增主键的最大 ID 记录到内存中，所以重启数据库或者对表 OPTIMIZE 操作，都会使最大 ID 丢失。</li>
+<li>但是，如果我们使用表的类型是 MyISAM ，那么这条记录的 ID 就是 18 。因为 MyISAM 表会把自增主键的最大 ID 记录到数据文件里面，重启 MYSQL 后，自增主键的最大 ID 也不会丢失。</li>
+</ul>
+</li>
+<li><p>表中有大字段 X(例如：text 类型)，且字段 X 不会经常更新，以读为为主，请问您是选择拆成子表，还是继续放一起?写出您这样选择的理由</p>
+<ul>
+<li>拆带来的问题：连接消耗 + 存储拆分空间。<ul>
+<li>如果能容忍拆分带来的空间问题，拆的话最好和经常要查询的表的主键在物理结构上放置在一起(分区) 顺序 IO ，减少连接消耗，最后这是一个文本列再加上一个全文索引来尽量抵消连接消耗。</li>
+</ul>
+</li>
+<li>不拆可能带来的问题：查询性能。<ul>
+<li>如果能容忍不拆分带来的查询性能损失的话，上面的方案在某个极致条件下肯定会出现问题，那么不拆就是最好的选择。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>MySQL 有哪些存储引擎？</p>
+<ul>
+<li>InnoDB<ul>
+<li>InnoDB是一个健壮的<strong>事务型</strong>存储引擎</li>
+<li>更新密集的表。InnoDB存储引擎特别适合处理多重并发的更新请求。</li>
+<li>事务。InnoDB存储引擎是支持事务的标准MySQL存储引擎。</li>
+<li>自动灾难恢复。与其它存储引擎不同，InnoDB表能够自动从灾难中恢复。</li>
+<li>外键约束。MySQL支持外键的存储引擎只有InnoDB。</li>
+<li>支持自动增加列AUTO_INCREMENT属性。</li>
+<li>从5.7开始innodb存储引擎成为默认的存储引擎。</li>
+</ul>
+</li>
+<li>MyISAM<ul>
+<li>MyISAM表无法处理事务，这就意味着有事务处理需求的表，不能使用MyISAM存储引擎。MyISAM存储引擎特别适合在以下几种情况下使用：</li>
+<li>选择密集型的表。MyISAM存储引擎在筛选大量数据时非常迅速，这是它最突出的优点。</li>
+<li>插入密集型的表。MyISAM的并发插入特性允许同时选择和插入数据。例如：MyISAM存储引擎很适合管理邮件或Web服务器日志数据。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>如何选择合适的存储引擎？</p>
+<ul>
+<li>是否需要支持事务。</li>
+<li>对索引和缓存的支持。</li>
+<li>是否需要使用热备。</li>
+<li>崩溃恢复，能否接受崩溃。</li>
+<li>存储的限制。</li>
+<li>MySQL 默认的存储引擎是 InnoDB ，并且也是最主流的选择。主要原因如下:<ul>
+<li>【最重要】支持事务。</li>
+<li>支持行级锁和表级锁，能支持更多的并发量。</li>
+<li>查询不加锁，完全不影响查询。</li>
+<li>支持崩溃后恢复。</li>
+</ul>
+</li>
+<li>在 MySQL5.1 以及之前的版本，默认的存储引擎是 MyISAM ，但是目前已经不再更新，且它有几个比较关键的缺点：</li>
+<li>不支持事务。</li>
+<li>使用表级锁，如果数据量大，一个插入操作锁定表后，其他请求都将阻塞。</li>
+</ul>
+</li>
+<li><p>请说明 InnoDB 和 MyISAM 的区别</p>
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>InnoDB</th>
+<th>MyISAM</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>事务</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>存储限制</td>
+<td>64TB</td>
+<td>无</td>
+</tr>
+<tr>
+<td>锁粒度</td>
+<td>行锁</td>
+<td>表锁</td>
+</tr>
+<tr>
+<td>崩溃后的恢复</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>外键</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>全文检索</td>
+<td>5.7 版本后支持</td>
+<td>支持</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>为什么 <code>SQL SELECT COUNT(*) FROM table </code> 在 InnoDB 比 MyISAM 慢？</p>
+<ul>
+<li>对于 SELECT COUNT(*) FROM table 语句，在没有 WHERE 条件的情况下，InnoDB 比 MyISAM 可能会慢很多，尤其在大表的情况下。因为，InnoDB 是去实时统计结果，会全表扫描；而 MyISAM 内部维持了一个计数器，预存了结果，所以直接返回即可。</li>
+</ul>
+</li>
+</ol>
+<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><ol start="13">
+<li><p>什么是索引？</p>
+<ul>
+<li>索引，类似于书籍的目录，想找到一本书的某个特定的主题，需要先找到书的目录，定位对应的页码。</li>
+<li>MySQL 中存储引擎使用类似的方式进行查询，先去索引中查找对应的值，然后根据匹配的索引找到对应的数据行。</li>
+</ul>
+</li>
+<li><p>索引有什么好处？</p>
+<ul>
+<li>提高数据的检索速度，降低数据库IO成本：使用索引的意义就是通过缩小表中需要查询的记录的数目从而加快搜索的速度。</li>
+<li>降低数据排序的成本，降低CPU消耗：索引之所以查的快，是因为先将数据排好序，若该字段正好需要排序，则正好降低了排序的成本。</li>
+</ul>
+</li>
+<li><p>索引有什么坏处？</p>
+<ul>
+<li>占用存储空间：索引实际上也是一张表，记录了主键与索引字段，一般以索引文件的形式存储在磁盘上。</li>
+<li>降低更新表的速度：表的数据发生了变化，对应的索引也需要一起变更，从而减低的更新速度。否则索引指向的物理数据可能不对，这也是索引失效的原因之一。 </li>
+</ul>
+</li>
+<li><p>索引的使用场景？</p>
+<ul>
+<li>对非常小的表，大部分情况下全表扫描效率更高。</li>
+<li>对中大型表，索引非常有效。</li>
+<li>特大型的表，建立和使用索引的代价随着增长，可以使用分区技术来解决。 </li>
+</ul>
+</li>
+<li><p>索引的类型？</p>
+<ul>
+<li>索引，都是实现在存储引擎层的。主要有六种类型：<ul>
+<li>普通索引：最基本的索引，没有任何约束。</li>
+<li>唯一索引：与普通索引类似，但具有唯一性约束。</li>
+<li>主键索引：特殊的唯一索引，不允许有空值。</li>
+<li>复合索引：将多个列组合在一起创建索引，可以覆盖多个列。</li>
+<li>外键索引：只有InnoDB类型的表才可以使用外键索引，保证数据的一致性、完整性和实现级联操作。</li>
+<li>全文索引：MySQL 自带的全文索引只能用于 InnoDB、MyISAM ，并且只能对英文进行全文检索，一般使用全文索引引擎。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>MySQL 索引的“创建”原则？</p>
+<ul>
+<li>最适合索引的列是出现在 WHERE 子句中的列，或连接子句中的列，而不是出现在 SELECT 关键字后的列。</li>
+<li>索引列的基数越大，索引效果越好。</li>
+<li>因为复合索引的基数会更大，根据情况创建复合索引可以提高查询效率。</li>
+<li>避免创建过多的索引，索引会额外占用磁盘空间，降低写操作效率。</li>
+<li>主键尽可能选择较短的数据类型，可以有效减少索引的磁盘占用提高查询效率。</li>
+<li>对字符串进行索引，应该定制一个前缀长度，可以节省大量的索引空间。</li>
+</ul>
+</li>
+<li><p>MySQL 索引的“使用”注意事项？</p>
+<ul>
+<li>应尽量避免在 WHERE 子句中使用 != 或 &lt;&gt; 操作符，否则将引擎放弃使用索引而进行全表扫描。优化器将无法通过索引来确定将要命中的行数,因此需要搜索该表的所有行。</li>
+<li>应尽量避免在 WHERE 子句中使用 OR 来连接条件，否则将导致引擎放弃使用索引而进行全表扫描，如：SELECT id FROM t WHERE num = 10 OR num = 20 。</li>
+<li>应尽量避免在 WHERE 子句中对字段进行表达式操作，这将导致引擎放弃使用索引而进行全表扫描。</li>
+<li>应尽量避免在 WHERE 子句中对字段进行函数操作，这将导致引擎放弃使用索引而进行全表扫描</li>
+<li>不要在 WHERE 子句中的 = 左边进行函数、算术运算或其他表达式运算，否则系统将可能无法正确使用索引。</li>
+<li>复合索引遵循前缀原则。</li>
+<li>如果 MySQL 评估使用索引比全表扫描更慢，会放弃使用索引。如果此时想要索引，可以在语句中添加强制索引。</li>
+<li>列类型是字符串类型，查询时一定要给值加引号，否则索引失效。</li>
+<li>LIKE 查询，% 不能在前，因为无法使用索引。如果需要模糊匹配，可以使用全文索引。</li>
+</ul>
+</li>
+<li><p>以下三条 SQL 如何建索引，只建一条怎么建？</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">WHERE</span> a <span class="operator">=</span> <span class="number">1</span> <span class="keyword">AND</span> b <span class="operator">=</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">WHERE</span> b <span class="operator">=</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">WHERE</span> b <span class="operator">=</span> <span class="number">1</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="type">time</span> <span class="keyword">DESC</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>以顺序 b , a, time 建立复合索引，CREATE INDEX table1_b_a_time ON index_test01(b, a, time)。</li>
+<li>对于第一条 SQL ，因为最新 MySQL 版本会优化 WHERE 子句后面的列顺序，以匹配复合索引顺序。</li>
+</ul>
+</li>
+<li><p>想知道一个查询用到了哪个索引，如何查看?</p>
+<ul>
+<li>EXPLAIN 显示了 MYSQL 如何使用索引来处理 SELECT 语句以及连接表,可以帮助选择更好的索引和写出更优化的查询语句。</li>
+<li><code>explain select * from table;</code><ul>
+<li>id: id代表执行select子句或操作表的顺序</li>
+<li>select_type: 查询的类型,用于区别普通查询,联合查询,子查询等复杂查询<ul>
+<li>simple: 简单的select查询,查询中不包含子查询或union查询</li>
+<li>primary: 查询中若包含任何复杂的子部分,最外层查询则被标记为primary</li>
+<li>subquery 在select 或where 列表中包含了子查询</li>
+<li>derived 在from列表中包含的子查询被标记为derived,mysql会递归这些子查询,把结果放在临时表里</li>
+<li>union 做第二个select出现在union之后,则被标记为union,若union包含在from子句的子查询中,外层select将被标记为derived</li>
+<li>union result 从union表获取结果的select</li>
+</ul>
+</li>
+<li>table: 显示一行的数据时关于哪张表的</li>
+<li>type: 查询类型从最好到最差依次是:system&gt;const&gt;eq_ref&gt;ref&gt;range&gt;index&gt;All,一般情况下,得至少保证达到range级别,最好能达到ref<ul>
+<li>system:表只有一行记录,这是const类型的特例,平时不会出现</li>
+<li>const:表示通过索引一次就找到了,const即常量,它用于比较primary key或unique索引,因为只匹配一行数据,所以效率很快,如将主键置于where条件中,mysql就能将该查询转换为一个常量 </li>
+<li>eq_ref:唯一性索引扫描,对于每个索引键,表中只有一条记录与之匹配,常见于主键或唯一索引扫描</li>
+<li>ref:非唯一性索引扫描,返回匹配某个单独值的行,它可能会找到多个符合条件的行,所以他应该属于查找和扫描的混合体</li>
+<li>range:只检索给定范围的行,使用一个索引来选择行,如where语句中出现了between,&lt;,&gt;,in等查询,这种范围扫描索引比全表扫描要好，因为它只需要开始于索引的某一点，而结束于另一点，不用扫描全部索引。</li>
+<li>index:index类型只遍历索引树,这通常比All快,因为索引文件通常比数据文件小,index是从索引中读取,all从硬盘中读取</li>
+<li>all:全表扫描,是最差的一种查询类型</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>MySQL 有哪些索引方法？</p>
+<ul>
+<li>B-Tree 索引。</li>
+<li>Hash 索引。</li>
+</ul>
+</li>
+<li><p>什么是 B-Tree 索引？</p>
+<ul>
+<li>B-Tree 是为磁盘等外存储设备设计的一种平衡查找树。</li>
+</ul>
+</li>
+<li><p>为什么索引结构默认使用B-Tree，而不是hash，二叉树，红黑树？</p>
+<ul>
+<li>hash：虽然可以快速定位，但是没有顺序，IO复杂度高。</li>
+<li>二叉树：树的高度不均匀，不能自平衡，查找效率跟数据有关（树的高度），并且IO代价高。</li>
+<li>红黑树：树的高度随着数据量增加而增加，IO代价高。</li>
+</ul>
+</li>
+<li><p>为什么官方建议使用自增长主键作为索引。</p>
+<ul>
+<li><p>结合B+Tree的特点，自增主键是连续的，在插入过程中尽量减少页分裂，即使要进行页分裂，也只会分裂很少一部分。并且能减少数据的移动，每次插入都是插入到最后。总之就是减少分裂和移动的频率。</p>
+</li>
+<li><p>插入连续的数据：</p>
+<ul>
+<li><ul>
+<li><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/15848449061730.gif?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>插入非连续的数据</p>
+<ul>
+<li><ul>
+<li><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/15848449240023.gif?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>简述索引定位数据的过程</p>
+<ul>
+<li><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/15852273948834.png?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></li>
+<li>根节点常驻内存</li>
+<li>根据值确定节点位置，二分查找，最终确定叶子节点</li>
+</ul>
+</li>
+<li><p>B-Tree 有哪些索引类型？</p>
+<ul>
+<li>主键索引的叶子节点存的数据是整行数据( 即具体数据 )。在 InnoDB 里，主键索引也被称为聚集索引（clustered index）。</li>
+<li>非主键索引的叶子节点存的数据是整行数据的主键，键值是索引。在 InnoDB 里，非主键索引也被称为辅助索引（secondary index）。</li>
+</ul>
+</li>
+<li><p>聚簇索引的注意点有哪些？</p>
+<ul>
+<li>聚簇索引表最大限度地提高了 I/O 密集型应用的性能，但它也有以下几个限制：<ul>
+<li>插入速度严重依赖于插入顺序，按照主键的顺序插入是最快的方式，否则将会出现页分裂，严重影响性能。因此，对于 InnoDB 表，我们一般都会定义一个自增的 ID 列为主键。</li>
+<li>更新主键的代价很高，因为将会导致被更新的行移动。因此，对于InnoDB 表，我们一般定义主键为不可更新。</li>
+<li>二级索引访问需要两次索引查找，第一次找到主键值，第二次根据主键值找到行数据。</li>
+<li>主键 ID 建议使用整型。因为，每个主键索引的 B+Tree 节点的键值可以存储更多主键 ID ，每个非主键索引的 B+Tree 节点的数据可以存储更多主键 ID 。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>什么是索引的最左匹配特性？</p>
+<ul>
+<li>当 B+Tree 的数据项是复合的数据结构，比如索引 (name, age, sex) 的时候，B+Tree 是按照从左到右的顺序来建立搜索树的。<ul>
+<li>比如当 (张三, 20, F) 这样的数据来检索的时候，B+Tree 会优先比较 name 来确定下一步的所搜方向，如果 name 相同再依次比较 age 和 sex ，最后得到检索的数据。</li>
+<li>但当 (20, F) 这样的没有 name 的数据来的时候，B+Tree 就不知道下一步该查哪个节点，因为建立搜索树的时候 name 就是第一个比较因子，必须要先根据 name 来搜索才能知道下一步去哪里查询。</li>
+<li>比如当 (张三, F) 这样的数据来检索时，B+Tree 可以用 name 来指定搜索方向，但下一个字段 age 的缺失，所以只能把名字等于张三的数据都找到，然后再匹配性别是 F 的数据了。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><ol>
+<li>事务的特性指的是？<ul>
+<li>事务就是对一系列的数据库操作（比如插入多条数据）进行统一的提交或回滚操作，如果插入成功，那么一起成功，如果中间有一条出现异常，那么回滚之前的所有操作。</li>
+<li>ACID ，如下图所示：<ul>
+<li><ul>
+<li><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/15848457672689.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></li>
+</ul>
+</li>
+<li>原子性 Atomicity ：一个事务（transaction）中的所有操作，或者全部完成，或者全部不完成，不会结束在中间某个环节。事务在执行过程中发生错误，会被恢复（Rollback）到事务开始前的状态，就像这个事务从来没有执行过一样。即，事务不可分割、不可约简。</li>
+<li>一致性 Consistency ：在事务开始之前和事务结束以后，数据库的完整性没有被破坏。这表示写入的资料必须完全符合所有的预设约束、触发器)、级联回滚等。</li>
+<li>隔离性 Isolation ：数据库允许多个并发事务同时对其数据进行读写和修改的能力，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致。事务隔离分为不同级别，包括读未提交（Read uncommitted）、读提交（read committed）、可重复读（repeatable read）和串行化（Serializable）。</li>
+<li>持久性 Durability ：事务处理结束后，对数据的修改就是永久的，即便系统故障也不会丢失。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>事务的并发问题？<ul>
+<li>脏读：事务 A 读取了事务 B 更新的数据，然后 B 回滚操作，那么 A 读取到的数据是脏数据。</li>
+<li>不可重复读：事务 A 多次读取同一数据，事务 B 在事务 A 多次读取的过程中，对数据作了更新并提交，导致事务 A 多次读取同一数据时，结果不一致。</li>
+<li>幻读：系统管理员 A 将数据库中所有学生的成绩从具体分数改为 ABCDE 等级，但是系统管理员 B 就在这个时候插入了一条具体分数的记录，当系统管理员 A 改结束后发现还有一条记录没有改过来，就好像发生了幻觉一样，这就叫幻读。</li>
+</ul>
+</li>
+<li>MySQL 事务隔离级别会产生的并发问题？<ul>
+<li>不同的隔离级别有不同的现象，并有不同的锁定/并发机制，隔离级别越高，数据库的并发性就越差。</li>
+<li></li>
+</ul>
+</li>
+</ol>
+ 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          打赏
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://anzhen-tech.github.io/2021/11/07/MySQL%E9%9D%A2%E8%AF%95%E9%A2%98/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8/" rel="tag">面试宝典</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2021/11/07/MySQL/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Mysql安装
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/11/07/MapReduce/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">MapReduce</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "XCKHv09pYxF5EmF2ezNgFfLS-gzGzoHsz",
+    app_key: "gyCHBp787fNNfXDiHGIcj7Am",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2021
+        <i class="ri-heart-fill heart_icon"></i> Anzhen
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="anzhen.tech"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/HDFS">HDFS</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Yarn">Yarn</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/MR">MR</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Hive">Hive</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86">数据采集</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/HBase">HBase</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Kafka">Kafka</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Spark">Spark</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Flink">Flink</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/MySQL">MySQL</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Java">Java</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/interview">面试宝典</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/11/07/about-me">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="52"
+        src="//music.163.com/outchain/player?type=2&id=318916815&auto=1&height=32"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+    
+
+  </div>
+</body>
+
+</html>

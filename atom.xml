@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>anzhen.tech</title>
+  
+  
+  <link href="https://anzhen-tech.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://anzhen-tech.github.io/"/>
+  <updated>2021-11-07T03:03:33.474Z</updated>
+  <id>https://anzhen-tech.github.io/</id>
+  
+  <author>
+    <name>Anzhen</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Java并发与多线程</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/Java%E5%B9%B6%E5%8F%91%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/Java%E5%B9%B6%E5%8F%91%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/</id>
+    <published>2021-11-07T02:56:22.000Z</published>
+    <updated>2021-11-07T03:03:33.474Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Java" scheme="https://anzhen-tech.github.io/categories/Java/"/>
+    
+    
+    <category term="Java" scheme="https://anzhen-tech.github.io/tags/Java/"/>
+    
+    <category term="interview" scheme="https://anzhen-tech.github.io/tags/interview/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>RocketMQ</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/RocketMQ/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/RocketMQ/</id>
+    <published>2021-11-07T02:54:34.000Z</published>
+    <updated>2021-11-07T03:03:33.474Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Java" scheme="https://anzhen-tech.github.io/categories/Java/"/>
+    
+    
+    <category term="Java" scheme="https://anzhen-tech.github.io/tags/Java/"/>
+    
+    <category term="interview" scheme="https://anzhen-tech.github.io/tags/interview/"/>
+    
+    <category term="消息队列" scheme="https://anzhen-tech.github.io/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SpringMVC</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/SpringMVC/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/SpringMVC/</id>
+    <published>2021-11-07T02:53:39.000Z</published>
+    <updated>2021-11-07T03:03:33.474Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Java" scheme="https://anzhen-tech.github.io/categories/Java/"/>
+    
+    
+    <category term="Java" scheme="https://anzhen-tech.github.io/tags/Java/"/>
+    
+    <category term="interview" scheme="https://anzhen-tech.github.io/tags/interview/"/>
+    
+    <category term="Spring" scheme="https://anzhen-tech.github.io/tags/Spring/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MyBatis</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/MyBatis/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/MyBatis/</id>
+    <published>2021-11-07T02:52:28.000Z</published>
+    <updated>2021-11-07T03:03:33.474Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Java" scheme="https://anzhen-tech.github.io/categories/Java/"/>
+    
+    
+    <category term="Java" scheme="https://anzhen-tech.github.io/tags/Java/"/>
+    
+    <category term="interview" scheme="https://anzhen-tech.github.io/tags/interview/"/>
+    
+    <category term="ORM" scheme="https://anzhen-tech.github.io/tags/ORM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Nginx</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/Nginx/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/Nginx/</id>
+    <published>2021-11-07T02:51:33.000Z</published>
+    <updated>2021-11-07T03:03:33.474Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Linux" scheme="https://anzhen-tech.github.io/categories/Linux/"/>
+    
+    
+    <category term="interview" scheme="https://anzhen-tech.github.io/tags/interview/"/>
+    
+    <category term="Linux" scheme="https://anzhen-tech.github.io/tags/Linux/"/>
+    
+    <category term="负载均衡" scheme="https://anzhen-tech.github.io/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java基础</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/Java%E5%9F%BA%E7%A1%80/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/Java%E5%9F%BA%E7%A1%80/</id>
+    <published>2021-11-07T02:50:47.000Z</published>
+    <updated>2021-11-07T03:03:33.474Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Java" scheme="https://anzhen-tech.github.io/categories/Java/"/>
+    
+    
+    <category term="Java" scheme="https://anzhen-tech.github.io/tags/Java/"/>
+    
+    <category term="interview" scheme="https://anzhen-tech.github.io/tags/interview/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/Spring/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/Spring/</id>
+    <published>2021-11-07T02:49:27.000Z</published>
+    <updated>2021-11-07T03:03:33.474Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Java" scheme="https://anzhen-tech.github.io/categories/Java/"/>
+    
+    
+    <category term="Java" scheme="https://anzhen-tech.github.io/tags/Java/"/>
+    
+    <category term="interview" scheme="https://anzhen-tech.github.io/tags/interview/"/>
+    
+    <category term="Spring" scheme="https://anzhen-tech.github.io/tags/Spring/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JVM</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/JVM/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/JVM/</id>
+    <published>2021-11-07T02:47:01.000Z</published>
+    <updated>2021-11-07T03:03:33.474Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Java" scheme="https://anzhen-tech.github.io/categories/Java/"/>
+    
+    
+    <category term="Java" scheme="https://anzhen-tech.github.io/tags/Java/"/>
+    
+    <category term="interview" scheme="https://anzhen-tech.github.io/tags/interview/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>设计模式</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</id>
+    <published>2021-11-07T02:45:29.000Z</published>
+    <updated>2021-11-07T03:03:33.474Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Java" scheme="https://anzhen-tech.github.io/categories/Java/"/>
+    
+    
+    <category term="Java" scheme="https://anzhen-tech.github.io/tags/Java/"/>
+    
+    <category term="interview" scheme="https://anzhen-tech.github.io/tags/interview/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Redis面试题</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/Redis%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/Redis%E9%9D%A2%E8%AF%95%E9%A2%98/</id>
+    <published>2021-11-07T02:44:00.000Z</published>
+    <updated>2021-11-07T03:03:33.474Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Redis" scheme="https://anzhen-tech.github.io/categories/Redis/"/>
+    
+    
+    <category term="interview" scheme="https://anzhen-tech.github.io/tags/interview/"/>
+    
+    <category term="Redis" scheme="https://anzhen-tech.github.io/tags/Redis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Dubbo面试题</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/Dubbo%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/Dubbo%E9%9D%A2%E8%AF%95%E9%A2%98/</id>
+    <published>2021-11-07T02:41:33.000Z</published>
+    <updated>2021-11-07T02:55:54.495Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Dubbo" scheme="https://anzhen-tech.github.io/categories/Dubbo/"/>
+    
+    
+    <category term="Dubbo" scheme="https://anzhen-tech.github.io/tags/Dubbo/"/>
+    
+    <category term="RPC" scheme="https://anzhen-tech.github.io/tags/RPC/"/>
+    
+    <category term="面试宝典" scheme="https://anzhen-tech.github.io/tags/%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hive进阶</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/Hive%E8%BF%9B%E9%98%B6/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/Hive%E8%BF%9B%E9%98%B6/</id>
+    <published>2021-11-07T00:11:52.000Z</published>
+    <updated>2021-11-07T00:18:29.970Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Hive" scheme="https://anzhen-tech.github.io/categories/Hive/"/>
+    
+    
+    <category term="Hive" scheme="https://anzhen-tech.github.io/tags/Hive/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hadoop压缩、优化、高可用</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/Hadoop%E5%8E%8B%E7%BC%A9%E3%80%81%E4%BC%98%E5%8C%96%E3%80%81%E9%AB%98%E5%8F%AF%E7%94%A8/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/Hadoop%E5%8E%8B%E7%BC%A9%E3%80%81%E4%BC%98%E5%8C%96%E3%80%81%E9%AB%98%E5%8F%AF%E7%94%A8/</id>
+    <published>2021-11-07T00:10:55.000Z</published>
+    <updated>2021-11-07T02:10:16.681Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Hadoop" scheme="https://anzhen-tech.github.io/categories/Hadoop/"/>
+    
+    
+    <category term="Hadoop" scheme="https://anzhen-tech.github.io/tags/Hadoop/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Zookeeper</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/Zookeeper/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/Zookeeper/</id>
+    <published>2021-11-07T00:08:46.000Z</published>
+    <updated>2021-11-07T02:10:00.233Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Zookeeper" scheme="https://anzhen-tech.github.io/categories/Zookeeper/"/>
+    
+    
+    <category term="Zookeeper" scheme="https://anzhen-tech.github.io/tags/Zookeeper/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Yarn</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/Yarn/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/Yarn/</id>
+    <published>2021-11-07T00:08:44.000Z</published>
+    <updated>2021-11-07T14:20:50.828Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Yarn" scheme="https://anzhen-tech.github.io/categories/Yarn/"/>
+    
+    
+    <category term="Yarn" scheme="https://anzhen-tech.github.io/tags/Yarn/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Shell</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/Shell/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/Shell/</id>
+    <published>2021-11-07T00:08:42.000Z</published>
+    <updated>2021-11-07T00:18:18.794Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Linux" scheme="https://anzhen-tech.github.io/categories/Linux/"/>
+    
+    
+    <category term="Linux" scheme="https://anzhen-tech.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Mysql安装</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/MySQL/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/MySQL/</id>
+    <published>2021-11-07T00:08:41.000Z</published>
+    <updated>2021-11-07T02:55:47.124Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="MySQL" scheme="https://anzhen-tech.github.io/categories/MySQL/"/>
+    
+    
+    <category term="MySQL" scheme="https://anzhen-tech.github.io/tags/MySQL/"/>
+    
+    <category term="数据库" scheme="https://anzhen-tech.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL面试题</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/MySQL%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/MySQL%E9%9D%A2%E8%AF%95%E9%A2%98/</id>
+    <published>2021-11-07T00:08:41.000Z</published>
+    <updated>2021-11-07T02:50:09.838Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="MySQL" scheme="https://anzhen-tech.github.io/categories/MySQL/"/>
+    
+    
+    <category term="MySQL" scheme="https://anzhen-tech.github.io/tags/MySQL/"/>
+    
+    <category term="面试宝典" scheme="https://anzhen-tech.github.io/tags/%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MapReduce</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/MapReduce/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/MapReduce/</id>
+    <published>2021-11-07T00:08:39.000Z</published>
+    <updated>2021-11-07T14:20:52.444Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="MR" scheme="https://anzhen-tech.github.io/categories/MR/"/>
+    
+    
+    <category term="MR" scheme="https://anzhen-tech.github.io/tags/MR/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux</title>
+    <link href="https://anzhen-tech.github.io/2021/11/07/Linux/"/>
+    <id>https://anzhen-tech.github.io/2021/11/07/Linux/</id>
+    <published>2021-11-07T00:08:37.000Z</published>
+    <updated>2021-11-07T02:14:42.642Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Linux" scheme="https://anzhen-tech.github.io/categories/Linux/"/>
+    
+    
+    <category term="Linux" scheme="https://anzhen-tech.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+</feed>

@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>MapReduce |  anzhen.tech</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+      <meta name="baidu-site-verification" content="code-BgeZtJHZzY" />
+      <meta name="google-site-verification" content="wNOxVwDPcgD6IwrCt_pD_Xtq-E86p8USRXPN73jLu0A" />
+    <link rel="alternate" href="/atom.xml" title="anzhen.tech" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-MapReduce"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  MapReduce
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/11/07/MapReduce/" class="article-date">
+  <time datetime="2021-11-07T00:08:39.000Z" itemprop="datePublished">2021-11-07</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/MR/">MR</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">13.4k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">54 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h1><h1 id="一、MapReduce概述"><a href="#一、MapReduce概述" class="headerlink" title="一、MapReduce概述"></a>一、MapReduce概述</h1><h2 id="1-1-MapReduce定义"><a href="#1-1-MapReduce定义" class="headerlink" title="1.1 MapReduce定义"></a>1.1 MapReduce定义</h2><ul>
+<li>MapReduce是一个<font color ='red' >分布式运算程序的编程框架</font>，是开发“基于Hadoop的数据分析应用”的核心框架。</li>
+<li>MapReduce核心功能是将<font color ='red' >用户编写的业务逻辑代码和自带默认组件</font>整合成一个完整的<font color ='red' >分布式运算程序</font>，并<font color ='red' >运行在一个Hadoop集群上</font>。</li>
+</ul>
+<hr>
+<h2 id="1-2-MapReduce优缺点"><a href="#1-2-MapReduce优缺点" class="headerlink" title="1.2 MapReduce优缺点"></a>1.2 MapReduce优缺点</h2><h3 id="1-2-1-优点"><a href="#1-2-1-优点" class="headerlink" title="1.2.1 优点"></a>1.2.1 优点</h3><ol>
+<li>MapReduce 易于编程<br> 它简单的<font color ='red' >实现一些接口，就可以完成一个分布式程序</font>，这个分布式程序可以分布到大量廉价的PC机器上运行。也就是说你写一个分布式程序，跟写一个简单的串行程序是一模一样的。就是因为这个特点使得MapReduce编程变得非常流行。</li>
+<li>良好的扩展性<br> 当你的计算资源不能得到满足的时候，你可以<font color ='red' >通过简单的增加机器来扩展它的计算能力</font>。</li>
+<li>高容错性<br> MapReduce设计的初衷就是使程序能够部署在廉价的PC机器上，这就要求它具有很高的容错性。比如<font color ='red' >其中一台机器挂了，它可以把上面的计算任务转移到另外一个节点上运行，不至于这个任务运行失败</font>，而且这个过程不需要人工参与，而完全是由Hadoop内部完成的。</li>
+<li>适合PB级以上海量数据的离线处理<br> 可以实现上千台服务器集群并发工作，提供数据处理能力。</li>
+</ol>
+<h3 id="1-2-2-缺点"><a href="#1-2-2-缺点" class="headerlink" title="1.2.2 缺点"></a>1.2.2 缺点</h3><ol>
+<li>不擅长实时计算<br> MapReduce无法像MySQL一样，在毫秒或者秒级内返回结果。</li>
+<li>不擅长流式计算<br> 流式计算的输入数据是动态的，而MapReduce的输入数据集是静态的，不能动态变化。这是因为MapReduce自身的设计特点决定了数据源必须是静态的。</li>
+<li>不擅长DAG（有向无环图）计算<br> 多个应用程序存在依赖关系，后一个应用程序的输入为前一个的输出。在这种情况下，MapReduce并不是不能做，而是使用后，每个MapReduce作业的输出结果都会写入到磁盘，会造成大量的磁盘IO，导致性能非常的低下。</li>
+</ol>
+<hr>
+<h2 id="1-3-MapReduce核心思想"><a href="#1-3-MapReduce核心思想" class="headerlink" title="1.3 MapReduce核心思想"></a>1.3 MapReduce核心思想</h2><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16340999252814.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ul>
+<li>数据输入：分片， Map阶段根据逻辑分片的理念对要计算的文件进行分片读取（128M）</li>
+<li>Map阶段： 将文件进行逻辑划分后，进行分割处理 </li>
+<li>Reduce阶段：将Map阶段处理好的数据进行汇总</li>
+<li>数据输出：将Reduce阶段的输出结果保存至结果文件</li>
+</ul>
+<hr>
+<h2 id="1-4-MapReduce进程"><a href="#1-4-MapReduce进程" class="headerlink" title="1.4 MapReduce进程"></a>1.4 MapReduce进程</h2><p>一个完整的MapReduce程序在分布式运行时有三类实例进程：</p>
+<ol>
+<li>MrAppMaster：负责整个程序的过程调度及状态协调。</li>
+<li>MapTask：负责Map阶段的整个数据处理流程。</li>
+<li>ReduceTask：负责Reduce阶段的整个数据处理流程。</li>
+</ol>
+<hr>
+<h2 id="1-5-MR程序的编程规范"><a href="#1-5-MR程序的编程规范" class="headerlink" title="1.5 MR程序的编程规范"></a>1.5 MR程序的编程规范</h2><ul>
+<li>驱动类（负责程序的job提交）</li>
+<li>自定义 Mapper类型，并且继承Hadoop提供的Mapper<ul>
+<li>重写map方法，在该方法中实现业务逻辑的编写</li>
+</ul>
+</li>
+<li>自定义 Reducer类型，并且继承Hadoop提供的Reducer<ul>
+<li>重写reduce方法，在该方法中实现业务逻辑的编写</li>
+</ul>
+</li>
+</ul>
+<h1 id="二、Hadoop序列化"><a href="#二、Hadoop序列化" class="headerlink" title="二、Hadoop序列化"></a>二、Hadoop序列化</h1><h2 id="2-1-序列化概述"><a href="#2-1-序列化概述" class="headerlink" title="2.1 序列化概述"></a>2.1 序列化概述</h2><h3 id="2-1-1-什么是序列化"><a href="#2-1-1-什么是序列化" class="headerlink" title="2.1.1 什么是序列化"></a>2.1.1 什么是序列化</h3><ul>
+<li>序列化就是把内存中的对象，转换成字节序列（或其他数据传输协议）以便于存储到磁盘（持久化）和网络传输。 </li>
+<li>反序列化就是将收到字节序列（或其他数据传输协议）或者是磁盘的持久化数据，转换成内存中的对象。</li>
+</ul>
+<h3 id="2-1-2-为什么要序列化"><a href="#2-1-2-为什么要序列化" class="headerlink" title="2.1.2 为什么要序列化"></a>2.1.2 为什么要序列化</h3><ul>
+<li>一般来说，“活的”对象只生存在内存里，关机断电就没有了。而且“活的”对象只能由本地的进程使用，不能被发送到网络上的另外一台计算机。 然而序列化可以存储“活的”对象，可以将“活的”对象发送到远程计算机。</li>
+</ul>
+<h3 id="2-1-3-为什么不用Java的序列化"><a href="#2-1-3-为什么不用Java的序列化" class="headerlink" title="2.1.3 为什么不用Java的序列化"></a>2.1.3 为什么不用Java的序列化</h3><ul>
+<li>Java的序列化是一个重量级序列化框架（Serializable），一个对象被序列化后，会附带很多额外的信息（各种校验信息，Header，继承体系等），不便于在网络中高效传输。所以，Hadoop自己开发了一套序列化机制（Writable）。</li>
+<li>Hadoop序列化特点：<ul>
+<li>紧凑 ：高效使用存储空间。</li>
+<li>快速：读写数据的额外开销小。</li>
+<li>可扩展：随着通信协议的升级而可升级</li>
+<li>互操作：支持多语言的交互</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="2-2-自定义bean对象实现序列化接口（Writable）"><a href="#2-2-自定义bean对象实现序列化接口（Writable）" class="headerlink" title="2.2 自定义bean对象实现序列化接口（Writable）"></a>2.2 自定义bean对象实现序列化接口（Writable）</h2><ul>
+<li>在企业开发中往往常用的基本序列化类型不能满足所有需求，比如在Hadoop框架内部传递一个bean对象，那么该对象就需要实现序列化接口。</li>
+<li>具体实现bean对象序列化步骤如下7步。</li>
+</ul>
+<ol>
+<li>必须实现Writable接口</li>
+<li>反序列化时，需要反射调用空参构造函数，所以必须有空参构造 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">FlowBean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">super</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>重写序列化方法 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(DataOutput out)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">	out.writeLong(upFlow);</span><br><span class="line">	out.writeLong(downFlow);</span><br><span class="line">	out.writeLong(sumFlow);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>重写反序列化方法 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">readFields</span><span class="params">(DataInput in)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">	upFlow = in.readLong();</span><br><span class="line">	downFlow = in.readLong();</span><br><span class="line">	sumFlow = in.readLong();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>注意反序列化的顺序和序列化的顺序完全一致</li>
+<li>要想把结果显示在文件中，需要重写toString()，可用”\t”分开，方便后续用。</li>
+<li>如果需要将自定义的bean放在key中传输，则还需要实现Comparable接口，因为MapReduce框中的Shuffle过程要求对key必须能排序。详见后面排序案例。 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(FlowBean o)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 倒序排列，从大到小</span></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.sumFlow &gt; o.getSumFlow() ? -<span class="number">1</span> : <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<hr>
+<h1 id="三、MapReduce框架原理"><a href="#三、MapReduce框架原理" class="headerlink" title="三、MapReduce框架原理"></a>三、MapReduce框架原理</h1><h2 id="3-1-MapReduce的工作流程"><a href="#3-1-MapReduce的工作流程" class="headerlink" title="3.1 MapReduce的工作流程"></a>3.1 MapReduce的工作流程</h2><h3 id="3-1-1-MapReduce的数据流"><a href="#3-1-1-MapReduce的数据流" class="headerlink" title="3.1.1 MapReduce的数据流"></a>3.1.1 MapReduce的数据流</h3><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16341977072186.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<hr>
+<h3 id="3-1-2-MapReduce的执行流程"><a href="#3-1-2-MapReduce的执行流程" class="headerlink" title="3.1.2 MapReduce的执行流程"></a>3.1.2 MapReduce的执行流程</h3><ul>
+<li>简易版：InputFormat –&gt; Mapper –&gt; Reduce –&gt; OutputFormat</li>
+<li>详细版：InputFormat –&gt; map sort –&gt; copy sort group reduce –&gt; OutputFormat</li>
+<li>MR执行的整体大致分为两个阶段<ul>
+<li>提交Job<ul>
+<li>对当前MR进行初始化工作以及对MT和RT进行规划</li>
+</ul>
+</li>
+<li>执行Job<ul>
+<li>执行的就是每一个MT和RT</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="3-2-InputFormat数据输入"><a href="#3-2-InputFormat数据输入" class="headerlink" title="3.2 InputFormat数据输入"></a>3.2 InputFormat数据输入</h2><h3 id="3-3-1-数据切片与MapTask并行度决定机制"><a href="#3-3-1-数据切片与MapTask并行度决定机制" class="headerlink" title="3.3.1 数据切片与MapTask并行度决定机制"></a>3.3.1 数据切片与MapTask并行度决定机制</h3><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16341008360509.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ol>
+<li>切片的概念：切片是计算数据是从逻辑上文件的进行划分，切块存储数据时从物理上将文件进行切分</li>
+<li>一个切片对应一个MapTask来处理</li>
+<li>切片大小默认情况等于切块大小128M（这样做的目的是为了计算时读取读取数据效率更高，避免了跨机器读取）</li>
+<li>切片的时候不考虑数据整体集，默认情况下对单个文件的进行切片</li>
+</ol>
+<h3 id="3-3-2-InputFormat类的体系结构"><a href="#3-3-2-InputFormat类的体系结构" class="headerlink" title="3.3.2 InputFormat类的体系结构"></a>3.3.2 InputFormat类的体系结构</h3><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16341011423965.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ul>
+<li>InputFormat 抽象类的子实现类是 FileInputFormat </li>
+<li>FileInputFormat 类的子实现类是 TextInputFormat </li>
+<li>InputFormat抽象类中有两个抽象方法 <ul>
+<li>getSplits() –&gt; 在 FileInputFormat 做了具体实现<br> 具体的切片的逻辑！！！</li>
+<li>createRecordReader() –&gt; TextInputFormat 做了具体实现<br>  创建RecordReader对象， RecordReader最终帮助我们读取待处理的文件的数据，<br>  读取规则就是按行读取由LineRecordReader实现！！！</li>
+</ul>
+</li>
+<li>遇到小文件计算的场景：<br> CombineTextInputFormat –&gt; FileInputFormat的子实现类（用于处理小文件场景）<h4 id="3-3-2-1-分析MapReduce中InputFormat的默认实现"><a href="#3-3-2-1-分析MapReduce中InputFormat的默认实现" class="headerlink" title="3.3.2.1 分析MapReduce中InputFormat的默认实现"></a>3.3.2.1 分析MapReduce中InputFormat的默认实现</h4>InputFormat-&gt;FileInputFormat-&gt;TextInputFormat</li>
+<li>定位 驱动类的中的<code>job.waitForCompletion(true);</code></li>
+<li>跟进 <code>org.apache.hadoop.mapreduce.Job#waitForCompletion</code></li>
+<li>跟进 <code>org.apache.hadoop.mapreduce.Job#submit</code></li>
+<li>定位 <code>return submitter.submitJobInternal(Job.this, cluster);</code></li>
+<li>跟进 <code>org.apache.hadoop.mapreduce.JobSubmitter#submitJobInternal</code></li>
+<li>关注 <code>JobSubmitter.java:200 int maps = writeSplits(job, submitJobDir);</code></li>
+<li>跟进 <code>org.apache.hadoop.mapreduce.JobSubmitter#writeSplits</code></li>
+<li>跟进 <code>org.apache.hadoop.mapreduce.JobSubmitter#writeNewSplits</code></li>
+<li>关注 根据Job中设置的InputFormatClass，然后通过反射的手段获取 InputFormat 的实例  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">InputFormat&lt;?, ?&gt; input = ReflectionUtils.newInstance(job.getInputFormatClass(), conf);</span><br></pre></td></tr></table></figure></li>
+<li>跟进 <code>job.getInputFormatClass()</code>  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Class&lt;? extends InputFormat&lt;?,?&gt;&gt; getInputFormatClass() </span><br><span class="line">    <span class="keyword">throws</span> ClassNotFoundException;</span><br></pre></td></tr></table></figure></li>
+<li>定位到 JobContextImpl 实现类  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Class&lt;? extends InputFormat&lt;?,?&gt;&gt; getInputFormatClass() <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">    <span class="comment">// 先根据 Job中配置信息中的 mapreduce.job.inputformat.class 获取配置，如果获取不到</span></span><br><span class="line">    <span class="comment">// 走默认的 TextInputFormat.class</span></span><br><span class="line">    <span class="keyword">return</span> (Class&lt;? extends InputFormat&lt;?,?&gt;&gt;) </span><br><span class="line">    conf.getClass(INPUT_FORMAT_CLASS_ATTR, TextInputFormat.class);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>核对无默认配置<code>mapreduce.job.inputformat.class</code><a href="media/16340187305977/core-default.xml">hadoop-common-3.1.3.jar!/core-default.xml</a></li>
+</ul>
+<h4 id="3-3-2-2-分析Hadoop默认的切片规则"><a href="#3-3-2-2-分析Hadoop默认的切片规则" class="headerlink" title="3.3.2.2 分析Hadoop默认的切片规则"></a>3.3.2.2 分析Hadoop默认的切片规则</h4><ul>
+<li>定位 <code>org.apache.hadoop.mapreduce.InputFormat#getSplits</code>抽象方法</li>
+<li>定位 <code>org.apache.hadoop.mapreduce.lib.input.FileInputFormat#getSplits</code>实现  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Generate the list of files and make them into FileSplits.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> job the job context</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;InputSplit&gt; <span class="title">getSplits</span><span class="params">(JobContext job)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">  <span class="comment">// 计时器，负责记录当前切片的所花费的时间 最后记录日志中</span></span><br><span class="line">  StopWatch sw = <span class="keyword">new</span> StopWatch().start();</span><br><span class="line">  <span class="comment">// minSize默认情况为1  但是可以通过配置 mapreduce.input.fileinputformat.split.minsize 改变它的值</span></span><br><span class="line">  <span class="keyword">long</span> minSize = Math.max(getFormatMinSplitSize(), getMinSplitSize(job));</span><br><span class="line">  <span class="comment">// maxSize默认情况为Long.MAX_VALUE   但是可以通过配置 mapreduce.input.fileinputformat.split.maxsize 改变它的值</span></span><br><span class="line">  <span class="keyword">long</span> maxSize = getMaxSplitSize(job);</span><br><span class="line">    </span><br><span class="line">  <span class="comment">// generate splits</span></span><br><span class="line">  List&lt;InputSplit&gt; splits = <span class="keyword">new</span> ArrayList&lt;InputSplit&gt;();</span><br><span class="line">  List&lt;FileStatus&gt; files = listStatus(job);</span><br><span class="line">    </span><br><span class="line">  <span class="comment">// ignoreDirs 默认是false</span></span><br><span class="line">  <span class="keyword">boolean</span> ignoreDirs = !getInputDirRecursive(job)</span><br><span class="line">          &amp;&amp; job.getConfiguration().getBoolean(INPUT_DIR_NONRECURSIVE_IGNORE_SUBDIRS, <span class="keyword">false</span>);</span><br><span class="line">  <span class="keyword">for</span> (FileStatus file : files) &#123;</span><br><span class="line">    <span class="comment">// 默认情况下，对Job中设置的输入路径中的文件以及子目录中的文件全都处理</span></span><br><span class="line">    <span class="comment">// 如果考虑只处理当前设置的路径的子文件，而不管子目录中的文件需要自行定义</span></span><br><span class="line">    <span class="comment">// INPUT_DIR_NONRECURSIVE_IGNORE_SUBDIRS 为 true</span></span><br><span class="line">    <span class="keyword">if</span> (ignoreDirs &amp;&amp; file.isDirectory()) &#123;</span><br><span class="line">      <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取当前文件的大小</span></span><br><span class="line">    Path path = file.getPath();</span><br><span class="line">    <span class="comment">// 对当前文件进行非空判断</span></span><br><span class="line">    <span class="keyword">long</span> length = file.getLen();</span><br><span class="line">    <span class="keyword">if</span> (length != <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="comment">// 获取当前文件的对应数据块</span></span><br><span class="line">      BlockLocation[] blkLocations;</span><br><span class="line">      <span class="keyword">if</span> (file <span class="keyword">instanceof</span> LocatedFileStatus) &#123;</span><br><span class="line">        blkLocations = ((LocatedFileStatus) file).getBlockLocations();</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        FileSystem fs = path.getFileSystem(job.getConfiguration());</span><br><span class="line">        blkLocations = fs.getFileBlockLocations(file, <span class="number">0</span>, length);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// 判断当前文件是否可以进行切片</span></span><br><span class="line">      <span class="comment">// 主要考虑的是压缩文件这种情况</span></span><br><span class="line">      <span class="keyword">if</span> (isSplitable(job, path)) &#123;</span><br><span class="line">        <span class="comment">// 获取当前文件的块大小</span></span><br><span class="line">        <span class="keyword">long</span> blockSize = file.getBlockSize();</span><br><span class="line">        <span class="comment">// 计算切片大小计算切片逻辑如下</span></span><br><span class="line">        <span class="comment">// 切片大小是否可变？ 可变</span></span><br><span class="line">        <span class="comment">// 如果想调大：改变minSize</span></span><br><span class="line">        <span class="comment">// 如果想调小：改变maxSize</span></span><br><span class="line">        <span class="keyword">long</span> splitSize = computeSplitSize(blockSize, minSize, maxSize);</span><br><span class="line">        <span class="comment">// 当前文件的剩余大小</span></span><br><span class="line">        <span class="keyword">long</span> bytesRemaining = length;</span><br><span class="line">        <span class="comment">// 判断剩余文件是否要继续切分  剩余大小 / 切片大小 是否大于 1.1</span></span><br><span class="line">        <span class="comment">// 目的：就是为了更合理的使用资源计算数据</span></span><br><span class="line">        <span class="keyword">while</span> (((<span class="keyword">double</span>) bytesRemaining) / splitSize &gt; SPLIT_SLOP) &#123;</span><br><span class="line">          <span class="keyword">int</span> blkIndex = getBlockIndex(blkLocations, length - bytesRemaining);</span><br><span class="line">          splits.add(makeSplit(path, length - bytesRemaining, splitSize,</span><br><span class="line">                  blkLocations[blkIndex].getHosts(),</span><br><span class="line">                  blkLocations[blkIndex].getCachedHosts()));</span><br><span class="line">          bytesRemaining -= splitSize;</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">if</span> (bytesRemaining != <span class="number">0</span>) &#123;</span><br><span class="line">          <span class="keyword">int</span> blkIndex = getBlockIndex(blkLocations, length - bytesRemaining);</span><br><span class="line">          splits.add(makeSplit(path, length - bytesRemaining, bytesRemaining,</span><br><span class="line">                  blkLocations[blkIndex].getHosts(),</span><br><span class="line">                  blkLocations[blkIndex].getCachedHosts()));</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123; <span class="comment">// not splitable</span></span><br><span class="line">        <span class="keyword">if</span> (LOG.isDebugEnabled()) &#123;</span><br><span class="line">          <span class="comment">// Log only if the file is big enough to be splitted</span></span><br><span class="line">          <span class="keyword">if</span> (length &gt; Math.min(file.getBlockSize(), minSize)) &#123;</span><br><span class="line">            LOG.debug(<span class="string">&quot;File is not splittable so no parallelization &quot;</span></span><br><span class="line">                    + <span class="string">&quot;is possible: &quot;</span> + file.getPath());</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        splits.add(makeSplit(path, <span class="number">0</span>, length, blkLocations[<span class="number">0</span>].getHosts(),</span><br><span class="line">                blkLocations[<span class="number">0</span>].getCachedHosts()));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">//Create empty hosts array for zero length files</span></span><br><span class="line">      splits.add(makeSplit(path, <span class="number">0</span>, length, <span class="keyword">new</span> String[<span class="number">0</span>]));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Save the number of input files for metrics/loadgen</span></span><br><span class="line">  job.getConfiguration().setLong(NUM_INPUT_FILES, files.size());</span><br><span class="line">  sw.stop();</span><br><span class="line">  <span class="keyword">if</span> (LOG.isDebugEnabled()) &#123;</span><br><span class="line">    LOG.debug(<span class="string">&quot;Total # of splits generated by getSplits: &quot;</span> + splits.size()</span><br><span class="line">            + <span class="string">&quot;, TimeTaken: &quot;</span> + sw.now(TimeUnit.MILLISECONDS));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> splits;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>总结</li>
+</ul>
+<h4 id="3-3-2-3-CombineTextInputFormat切片机制"><a href="#3-3-2-3-CombineTextInputFormat切片机制" class="headerlink" title="3.3.2.3 CombineTextInputFormat切片机制"></a>3.3.2.3 CombineTextInputFormat切片机制</h4><ol>
+<li>框架默认的TextInputFormat切片机制是对任务按文件规划切片，不管文件多小，都会是一个单独的切片，都会交给一个MapTask，这样如果有大量小文件，就会产生大量的MapTask，处理效率极其低下。</li>
+<li>应用场景：CombineTextInputFormat用于小文件过多的场景，它可以将多个小文件从逻辑上规划到一个切片中，这样，多个小文件就可以交给一个MapTask处理。</li>
+<li>虚拟存储切片最大值设置CombineTextInputFormat.setMaxInputSplitSize(job, 4194304);// 4m<br> 注意：虚拟存储切片最大值设置最好根据实际的小文件大小情况来设置具体的值。</li>
+<li>CombineTextInputFormat切片机制<ol>
+<li>用户设置切片大小</li>
+<li>虚拟过程：根据和切片大小进行比较 <ul>
+<li>如果当前文件 &gt; 设置的大小 且 小于2倍的设置的大小就一分为2</li>
+<li>如果当前文件大于2倍的设置的大小就先切分出设置大小的块，然后重复步骤2虚拟切分</li>
+</ul>
+</li>
+<li>切片过程：根据虚拟后的结果 把每个虚拟文件和 设置的大小比较<ul>
+<li>如果大于等于设置的大小就单独形成一个切片</li>
+<li>如果小于设置大小就和下一个虚拟文件进行合并，重复执行</li>
+<li>如果合并后大于设置大小就单独形成一个切片</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="3-3-Shuffle机制"><a href="#3-3-Shuffle机制" class="headerlink" title="3.3 Shuffle机制"></a>3.3 Shuffle机制</h2><p>Shuffle：Map方法之后，Reduce方法之前的数据处理过程<br><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16341965884201.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<h3 id="3-3-1-Shuffle机制"><a href="#3-3-1-Shuffle机制" class="headerlink" title="3.3.1 Shuffle机制"></a>3.3.1 Shuffle机制</h3><h4 id="3-3-1-1-Shuffle过程实现的作用"><a href="#3-3-1-1-Shuffle过程实现的作用" class="headerlink" title="3.3.1.1 Shuffle过程实现的作用"></a>3.3.1.1 Shuffle过程实现的作用</h4><ol>
+<li>分区：由业务决定<ol>
+<li>决定当前的Key交给那个Reduce进行处理</li>
+<li>相同的key必须由同一个Reduce进行处理</li>
+<li>默认根据Key的Hash值，对Reduce的个数取模</li>
+</ol>
+</li>
+<li>分组：<ol>
+<li>将相同Key的value进行合并</li>
+<li>相同Key的value分到同一个组</li>
+</ol>
+</li>
+<li>排序<ol>
+<li>对key的index进行排序</li>
+<li>排序算法为快排，顺序为字典顺序</li>
+</ol>
+</li>
+<li>合并<ol>
+<li>相同key溢写的文件合并成一个文件</li>
+<li>保证1个MapTask结果输出一个文件</li>
+</ol>
+</li>
+</ol>
+<h4 id="3-3-1-2-map端Shuffle"><a href="#3-3-1-2-map端Shuffle" class="headerlink" title="3.3.1.2 map端Shuffle"></a>3.3.1.2 map端Shuffle</h4><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16341966144406.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ol>
+<li>Partition：将map的结果发送到相应的reduce端，总的partition的数目等于reducer的数量。<ol>
+<li>map输出的key-value结果由Partitioner#getPartition方法决定交由那个reducer处理</li>
+<li>默认由HashPartitioner实现，对key取hash值后进行取模运算 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HashPartitioner</span>&lt;<span class="title">K</span>, <span class="title">V</span>&gt; <span class="keyword">extends</span> <span class="title">Partitioner</span>&lt;<span class="title">K</span>, <span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">  <span class="comment">/** Use &#123;<span class="doctag">@link</span> Object#hashCode()&#125; to partition. */</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPartition</span><span class="params">(K key, V value,<span class="keyword">int</span> numReduceTasks)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (key.hashCode() &amp; Integer.MAX_VALUE) % numReduceTasks;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>将数据写入到内存缓冲区，缓冲区的作用是批量收集map结果，减少磁盘IO的影响。key-value对以及Partition的结果都会被写入缓冲区。在写入之前，key与value值都会被序列化成字节数组</li>
+</ol>
+</li>
+<li>spill: 溢写，sort &amp; combiner<ol>
+<li>把内存缓冲区中的数据写入到本地磁盘，在写入本地磁盘时先按照partition、再按照key进行排序（quick sort）</li>
+<li>spill是由另外单独的线程来完成，不影响往缓冲区写map结果的线程；</li>
+<li>内存缓冲区默认大小限制为100MB，它有个溢写比例（spill.percent），默认为0.8，当缓冲区的数据达到阈值时，溢写线程就会启动，先锁定这80MB的内存，执行溢写过程，maptask的输出结果还可以往剩下的20MB内存中写，互不影响。然后再重新利用这块缓冲区，因此Map的内存缓冲区又叫做环形缓冲区</li>
+<li>sort：在将数据写入磁盘之前，先要对要写入磁盘的数据进行一次排序操作，先按&lt;key,value,partition&gt;中的partition分区号排序，然后再按key排序，最后溢出的小文件是分区的，且同一个分区内是保证key有序的；</li>
+<li>combine：执行combine操作要求程序中通过job.setCombinerClass(myCombine.class)自定义combine操作<ul>
+<li>程序中有两个阶段可能会执行combine操作：<ol>
+<li>map输出数据根据分区排序完成后，在写入文件之前会执行一次combine操作（前提是作业中设置了这个操作）；</li>
+<li>如果map输出比较大，溢出文件个数大于3（此值可以通过属性min.num.spills.for.combine配置）时，在merge的过程（多个spill文件合并为一个大文件）中还会执行combine操作；</li>
+</ol>
+</li>
+<li>combine主要是把形如&lt;aa,1&gt;,&lt;aa,2&gt;这样的key值相同的数据进行计算，计算规则与reduce一致，比如：当前计算是求key对应的值求和，则combine操作后得到&lt;aa,3&gt;这样的结果。</li>
+<li>注意事项：不是每种作业都可以做combine操作的，只有满足以下条件才可以：<ul>
+<li>reduce的输入输出类型都一样，因为combine本质上就是reduce操作；</li>
+<li>计算逻辑上，combine操作后不会影响计算结果，像求和就不会影响；</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>merge: 当map很大时，每次溢写会产生一个spill_file，这样会有多个spill_file，而最终的一个map task输出只有一个文件，因此，最终的结果输出之前会对多个中间过程进行多次溢写文件（spill_file）的合并，此过程就是merge过程。也即是，待Map Task任务的所有数据都处理完后，会对任务产生的所有中间数据文件做一次合并操作，以确保一个Map Task最终只生成一个中间数据文件。<ol>
+<li>如果生成的文件太多，可能会执行多次合并，每次最多能合并的文件数默认为10，可以通过属性min.num.spills.for.combine配置；</li>
+<li>多个溢写文件合并时，会进行一次排序，排序算法是<font color ='red' >多路归并排序</font>；</li>
+<li>是否还需要做combine操作，一是看是否设置了combine，二是看溢出的文件数是否大于等于3；</li>
+<li>最终生成的文件格式与单个溢出文件一致，也是按分区顺序存储，并且输出文件会有一个对应的索引文件，记录每个分区数据的起始位置，长度以及压缩长度，这个索引文件名叫做file.out.index。</li>
+</ol>
+</li>
+<li>内存缓冲区<ol>
+<li>在MapTask任务的业务处理方法map()中，最后一步通过<code>OutputCollector.collect(key,value)</code>或<code>context.write(key,value)</code>输出Map Task的中间处理结果，在<code>collect(key,value)</code>方法中，会调用<code>Partitioner.getPartition(K2 key, V2 value, int numPartitions)</code>方法获得输出的key-value对应的分区号(分区号可以认为对应着一个要执行Reduce Task的节点)，然后将&lt;key,value,partition&gt;暂时保存在内存中的MapOutputBuffe内部的环形数据缓冲区，该缓冲区的默认大小是100MB，可以通过参数io.sort.mb来调整其大小</li>
+<li>当缓冲区中的数据使用率达到一定阀值后，触发一次Spill操作，将环形缓冲区中的部分数据写到磁盘上，生成一个临时的本地数据的spill文件；然后在缓冲区的使用率再次达到阀值后，再次生成一个spill文件。直到数据处理完毕，在磁盘上会生成很多的临时文件</li>
+<li>触发spill操作时，map输出还会接着往剩下的20%的内存空间写入，但是写满的80%的内存空间会被锁定，数据溢出写入磁盘。当这部分溢出的数据写完后，空出的内存空间可以接着被使用，形成像环一样的被循环使用的效果，所以又叫做环形内存缓冲区</li>
+<li>MapOutputBuffe内部存数的数据采用了两个索引结构，涉及三个环形内存缓冲区。两级索引结构如下：<br> <img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16341959070345.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"><ol>
+<li>写入到缓冲区的数据会进行压缩，由CompressionCodec提供实现</li>
+<li>kvoffsets缓冲区：也叫偏移量索引数组，用于保存key-value信息在位置索引 kvindices 中的偏移量。当 kvoffsets 的使用率超过io.sort.spill.percent (默认为80%)后，便会触发一次 SpillThread 线程的“溢写”操作，也就是开始一次 Spill 阶段的操作。</li>
+<li>kvindices缓冲区：也叫位置索引数组，用于保存 key-value 在数据缓冲区 kvbuffer 中的起始位置。</li>
+<li>kvbuffer数据缓冲区：用于保存实际的 key-value 的值。默认情况下该缓冲区最多可以使用io.sort.mb的95%，当kvbuffer使用率超过io.sort.spill.percent(默认为80%)后，便会出发一次 SpillThread 线程的“溢写”操作，也就是开始一次 Spill 阶段的操作。</li>
+<li>写入到本地磁盘时，对数据进行排序，实际上是对kvoffsets这个偏移量索引数组进行排序。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>MapTask结束，通知appmaster,appmaster通过Reduce拉取数据</li>
+</ol>
+<h4 id="3-3-1-3-reduce端Shuffle"><a href="#3-3-1-3-reduce端Shuffle" class="headerlink" title="3.3.1.3 reduce端Shuffle"></a>3.3.1.3 reduce端Shuffle</h4><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16341965290492.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ol>
+<li>copy过程<ul>
+<li>作用：拉取MapTask处理完成的数据</li>
+<li>过程：Reduce进程启动一些数据copy线程(Fetcher)，通过HTTP方式请求MapTask所在的TaskTracker获取MapTask的输出文件。因为这时MapTask已经结束，这些文件就由TaskTracker管理在本地磁盘中。</li>
+<li>默认情况下，当整个MapReduce作业的所有已执行完成的MapTask任务数超过MapTask总数的5%后，JobTracker便会开始调度执行ReduceTask任务。然后ReduceTask任务默认启动mapred.reduce.parallel.copies(默认为5）个MapOutputCopier线程到已完成的MapTask任务节点上分别copy一份属于自己的数据。 这些copy的数据会首先保存的内存缓冲区中，当内冲缓冲区的使用率达到一定阀值后，触发溢写写到磁盘上。</li>
+<li>内存缓冲区<ol>
+<li>内存缓冲区大小通过mapred.job.shuffle.input.buffer.percent（default 0.7）参数来设置，控制shuffle在reduce内存中的数据最多使用内存量为：0.7 × maxHeap of ReduceTask。</li>
+<li>ReduceTask使用最大heap的一定比例用来缓存数据（最大heap通常通过mapred.child.java.opts来设置，比如设置为-Xmx1024m）。默认情况下，reduce会使用其heapsize的70%来在内存中缓存数据。如果reduce的heap由于业务原因调整的比较大，相应的缓存大小也会变大，这也是为什么reduce用来做缓存的参数是一个百分比，而不是一个固定的值了。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>merge过程<ul>
+<li>merge 有三种形式：1)内存到内存 2)内存到磁盘 3)磁盘到磁盘。默认情况下第一种形式是不启用的。</li>
+<li>当内存中的数据量到达一定阈值，就启动内存到磁盘的 merge（图中的第一个merge，之所以进行merge是因为reduce端在从多个map端copy数据的时候，并没有进行sort，只是把它们加载到内存，当达到阈值写入磁盘时，需要进行merge） 。这和map端的很类似，这实际上就是溢写的过程，在这个过程中如果你设置有Combiner，它也是会启用的，然后在磁盘中生成了众多的溢写文件，这种merge方式一直在运行，直到没有 map 端的数据时才结束，然后才会启动第三种磁盘到磁盘的 merge （图中的第二个merge）方式生成最终的那个文件。</li>
+<li>在远程copy数据的同时，ReduceTask在后台启动了两个后台线程对内存和磁盘上的数据文件做合并操作，以防止内存使用过多或磁盘生的文件过多。</li>
+</ul>
+</li>
+<li>reducer的输入文件<ul>
+<li>merge的最后会生成一个文件，大多数情况下存在于磁盘中，但是需要将其放入内存中。当reducer 输入文件已定，整个 Shuffle 阶段才算结束。然后就是 Reducer 执行，把结果放到 HDFS 上。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="3-3-2-Partition分区"><a href="#3-3-2-Partition分区" class="headerlink" title="3.3.2 Partition分区"></a>3.3.2 Partition分区</h3><h4 id="3-3-2-1-分区使用场景"><a href="#3-3-2-1-分区使用场景" class="headerlink" title="3.3.2.1 分区使用场景"></a>3.3.2.1 分区使用场景</h4><ul>
+<li>要求将统计结果按照条件输出到不同文件中（分区）。比如：将统计结果按照手机归属地不同省份输出到不同文件中（分区）</li>
+<li>分区是由需求决定的，而分区编号的产生是由ReducerTask的数量控制的。<h4 id="3-3-2-2-Hadoop默认的分区规则"><a href="#3-3-2-2-Hadoop默认的分区规则" class="headerlink" title="3.3.2.2 Hadoop默认的分区规则"></a>3.3.2.2 Hadoop默认的分区规则</h4></li>
+<li>根据key的hashCode对ReduceTasks个数取模得到的。无法控制哪个key存储到哪个分区。</li>
+<li>默认分区规则源码分析<ul>
+<li>定位Mapper逻辑中的 context.write(outk, outv);</li>
+<li>跟进 write(outk, outv);  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(KEYOUT key, VALUEOUT value)</span> <span class="keyword">throws</span> IOException, InterruptedException</span>;</span><br></pre></td></tr></table></figure></li>
+<li>具体实现 TaskInputOutputContextImpl#write  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(KEYOUT key, VALUEOUT value</span></span></span><br><span class="line"><span class="params"><span class="function">                )</span> <span class="keyword">throws</span> IOException, InterruptedException </span>&#123;</span><br><span class="line">    output.write(key, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>跟进 output.write(key, value)  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(K key, V value)</span> <span class="keyword">throws</span> IOException, </span></span><br><span class="line"><span class="function">    InterruptedException</span>;</span><br></pre></td></tr></table></figure></li>
+<li>具体实现实现类RecordWriterWithCounter#write  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(Object key, Object value)</span> </span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> IOException, InterruptedException </span>&#123;</span><br><span class="line">    context.getCounter(COUNTERS_GROUP, counterName).increment(<span class="number">1</span>);</span><br><span class="line">    writer.write(key, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>跟进 writer.write(key, value);具体实现 NewOutputCollector#write<ul>
+<li>collector-&gt;MapOutputCollector ： 此对象就是环形缓冲区对象<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(K key, V value)</span> <span class="keyword">throws</span> IOException,InterruptedException </span>&#123;</span><br><span class="line">    collector.collect(key, value,</span><br><span class="line">        partitioner.getPartition(key, value, partitions));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>跟进 partitioner.getPartition(key, value, partitions)<br>  注意：跟进后发现来到了一个 叫做 Partitioner的抽象类中，如果想知道<br>  Hadoop默认的分区规则，必须得知道 当前Partitioner的默认实现类！<ul>
+<li>查找Partitioner的默认实现类<ul>
+<li>关注：partitioner赋值发生在NewOutputCollector构造方法中   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">NewOutputCollector(org.apache.hadoop.mapreduce.JobContext jobContext,</span><br><span class="line">                JobConf job,</span><br><span class="line">                TaskUmbilicalProtocol umbilical,</span><br><span class="line">                TaskReporter reporter</span><br><span class="line">                ) <span class="keyword">throws</span> IOException, ClassNotFoundException &#123;</span><br><span class="line">    <span class="comment">//获取环形缓冲区对象</span></span><br><span class="line">    collector = createSortingCollector(job, reporter);</span><br><span class="line">    <span class="comment">//获取ReduceTask数量作为分区数量</span></span><br><span class="line">    partitions = jobContext.getNumReduceTasks();</span><br><span class="line">    <span class="comment">//分区大于1个</span></span><br><span class="line">    <span class="keyword">if</span> (partitions &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="comment">//根据 jobContext.getPartitionerClass() 获取Partitioner实现类</span></span><br><span class="line">        partitioner = (org.apache.hadoop.mapreduce.Partitioner&lt;K,V&gt;)</span><br><span class="line">            ReflectionUtils.newInstance(jobContext.getPartitionerClass(), job);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        partitioner = <span class="keyword">new</span> org.apache.hadoop.mapreduce.Partitioner&lt;K,V&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPartition</span><span class="params">(K key, V value, <span class="keyword">int</span> numPartitions)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> partitions - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>跟进 JobContext#getPartitionerClass 实现类 JobContextImpl#getPartitionerClass  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">            <span class="comment">// 根据PARTITIONER_CLASS_ATTR枚举值对一个mapreduce.job.partitioner.class配置项</span></span><br><span class="line"><span class="comment">// 获取 Partitioner 的实现类，发现默认没有配置，那就使用后面默认的HashPartitioner.class</span></span><br><span class="line">            <span class="keyword">public</span> Class&lt;? extends Partitioner&lt;?,?&gt;&gt; getPartitionerClass() </span><br><span class="line">                    <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">                <span class="keyword">return</span> (Class&lt;? extends Partitioner&lt;?,?&gt;&gt;) </span><br><span class="line">                    conf.getClass(PARTITIONER_CLASS_ATTR, HashPartitioner.class);</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure></li>
+<li>跟进 HashPartitioner<ul>
+<li>根据以上分析 Partitioner 的实现类是 HashPartitioner.class，以下就是Hadoop的默认分区规则  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HashPartitioner</span>&lt;<span class="title">K</span>, <span class="title">V</span>&gt; <span class="keyword">extends</span> <span class="title">Partitioner</span>&lt;<span class="title">K</span>, <span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">/** Use &#123;<span class="doctag">@link</span> Object#hashCode()&#125; to partition. */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPartition</span><span class="params">(K key, V value,</span></span></span><br><span class="line"><span class="params"><span class="function">                            <span class="keyword">int</span> numReduceTasks)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (key.hashCode() &amp; Integer.MAX_VALUE) % numReduceTasks;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>结束：根据当前的key的hashcode值和 ReduceTask的数量取模操作得到当前key的所属分区编号</li>
+<li>在MR中使用分区，通常要结合业务去做自定义分区规则！</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-3-2-3-自定义Partitioner步骤"><a href="#3-3-2-3-自定义Partitioner步骤" class="headerlink" title="3.3.2.3 自定义Partitioner步骤"></a>3.3.2.3 自定义Partitioner步骤</h4><ol>
+<li>自定义类继承Partitioner，重写getPartition()方法 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MobileModPartitioner</span> <span class="keyword">extends</span> <span class="title">Partitioner</span>&lt;<span class="title">Text</span>, <span class="title">FlowDTO</span>&gt;</span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPartition</span><span class="params">(Text text, FlowDTO flowDTO, <span class="keyword">int</span> numPartitions)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> mobileNum = Long.parseLong(flowDTO.getMobile());</span><br><span class="line">        <span class="keyword">int</span> partitionNum = (<span class="keyword">int</span>) (mobileNum % numPartitions);</span><br><span class="line">        log.info(<span class="string">&quot;执行分区操作 key:&#123;&#125; partition;&#123;&#125;&quot;</span>, mobileNum, partitionNum);</span><br><span class="line">        <span class="keyword">return</span> partitionNum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>在Job驱动中，设置自定义Partitioner <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">job.setPartitionerClass(CustomPartitioner.class);</span><br></pre></td></tr></table></figure></li>
+<li>自定义Partition后，要根据自定义Partitioner的逻辑设置相应数量的ReduceTask <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">job.setNumReduceTasks(<span class="number">5</span>);</span><br></pre></td></tr></table></figure></li>
+<li>分区器使用时注意事项<ul>
+<li>当ReduceTask的数量设置 &gt; 实际用到的分区数 此时会生成空的分区文件</li>
+<li>当ReduceTask的数量设置 &lt; 实际用到的分区数 此时会报错</li>
+<li>当ReduceTask的数量设置 = 1 结果文件会输出到一个文件中，由以下源码可以论证：<ul>
+<li>位置 NewOutputCollector#NewOutputCollector <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">NewOutputCollector(org.apache.hadoop.mapreduce.JobContext jobContext,</span><br><span class="line">                    JobConf job,</span><br><span class="line">                    TaskUmbilicalProtocol umbilical,</span><br><span class="line">                    TaskReporter reporter</span><br><span class="line">                    ) <span class="keyword">throws</span> IOException, ClassNotFoundException &#123;</span><br><span class="line">    collector = createSortingCollector(job, reporter);</span><br><span class="line">    <span class="comment">// 获取当前ReduceTask的数量</span></span><br><span class="line">    partitions = jobContext.getNumReduceTasks();</span><br><span class="line">    <span class="comment">// 判断ReduceTask的数量 是否大于1，找指定分区器对象</span></span><br><span class="line">    <span class="keyword">if</span> (partitions &gt; <span class="number">1</span>) &#123;</span><br><span class="line">    partitioner = (org.apache.hadoop.mapreduce.Partitioner&lt;K,V&gt;)</span><br><span class="line">        ReflectionUtils.newInstance(jobContext.getPartitionerClass(), job);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 执行默认的分区规则，最终返回一个唯一的0号分区</span></span><br><span class="line">        partitioner = <span class="keyword">new</span> org.apache.hadoop.mapreduce.Partitioner&lt;K,V&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPartition</span><span class="params">(K key, V value, <span class="keyword">int</span> numPartitions)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> partitions - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>分区编号生成的规则：根据指定的ReduceTask的数量 从0开始，依次累加。</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-3-3-WritableComparable排序"><a href="#3-3-3-WritableComparable排序" class="headerlink" title="3.3.3 WritableComparable排序"></a>3.3.3 WritableComparable排序</h3><h4 id="3-3-3-1-排序概述"><a href="#3-3-3-1-排序概述" class="headerlink" title="3.3.3.1 排序概述"></a>3.3.3.1 排序概述</h4><ul>
+<li>MapTask和ReduceTask均会对数据<font color ='red' >按照key进行排序</font>。该操作属于Hadoop的默认行为。任何应用程序中的数据均会被排序，而不管逻辑上是否需要。</li>
+<li><font color ='red' >默认排序是按照字典顺序升序排序，且实现该排序的方法是快速排序</font>。</li>
+<li>对于MapTask，它会将处理的结果暂时放到环形缓冲区中，当环形缓冲区使用率达到一定阈值后，再对缓冲区中的数据进行一次快速排序，并将这些有序数据溢写到磁盘上，而当数据处理完毕后，它会对磁盘上所有文件进行归并排序</li>
+<li>对于ReduceTask，它从每个MapTask上远程拷贝相应的数据文件，如果文件大小超过一定阈值，则溢写磁盘上，否则存储在内存中。如果磁盘上文件数目达到一定阈值，则进行一次归并排序以生成一个更大文件；如果内存中文件大小或者数目超过一定阈值，则进行一次合并后将数据溢写到磁盘上。当所有数据拷贝完毕后，ReduceTask统一对内存和磁盘上的所有数据进行一次归并排序</li>
+</ul>
+<h4 id="3-3-3-2-排序分类"><a href="#3-3-3-2-排序分类" class="headerlink" title="3.3.3.2 排序分类"></a>3.3.3.2 排序分类</h4><ol>
+<li>部分排序：分区内排序<ul>
+<li>MapReduce根据输入记录的键对数据集排序。保证输出的每个文件内部有序</li>
+</ul>
+</li>
+<li>全排序<ul>
+<li>最终输出结果只有一个文件，且文件内部有序。实现方式是只设置一个ReduceTask。但该方法在处理大型文件时效率极低，因为一台机器处理所有文件，完全丧失了MapReduce所提供的并行架构</li>
+</ul>
+</li>
+<li>辅助排序：GroupingComparator分组<ul>
+<li>在Reduce端对key进行分组。应用于：在接收的key为bean对象时，想让一个或几个字段相同（全部字段比较不相同）的key进入到同一个reduce方法时，可以采用分组排序。</li>
+</ul>
+</li>
+<li>二次排序<ul>
+<li>在自定义排序过程中，如果compareTo中的判断条件为两个即为二次排序</li>
+</ul>
+</li>
+</ol>
+<h4 id="3-3-3-3-实现排序比较的方式"><a href="#3-3-3-3-实现排序比较的方式" class="headerlink" title="3.3.3.3 实现排序比较的方式"></a>3.3.3.3 实现排序比较的方式</h4><ol>
+<li>直接让参与比较的对象实现WritableComparable 接口，并在该类中实现compareTo，在compareTo中定义自己的比较规则。这种情况 当运行的的时候Hadoop会自动生成比较器对象WritableComparator <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CompareFlowDTO</span> <span class="keyword">implements</span> <span class="title">WritableComparable</span>&lt;<span class="title">CompareFlowDTO</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String mobile;</span><br><span class="line">    <span class="keyword">private</span> Long upFlow;</span><br><span class="line">    <span class="keyword">private</span> Long downFlow;</span><br><span class="line">    <span class="keyword">private</span> Long sumFlow;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(DataOutput out)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        out.writeUTF(mobile);</span><br><span class="line">        out.writeLong(upFlow);</span><br><span class="line">        out.writeLong(downFlow);</span><br><span class="line">        out.writeLong(sumFlow);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">readFields</span><span class="params">(DataInput in)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        mobile = in.readUTF();</span><br><span class="line">        upFlow = in.readLong();</span><br><span class="line">        downFlow = in.readLong();</span><br><span class="line">        sumFlow = in.readLong();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(CompareFlowDTO o)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> o.getSumFlow().compareTo(getSumFlow());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> upFlow + <span class="string">&quot;\t&quot;</span> + downFlow + <span class="string">&quot;\t&quot;</span> + sumFlow;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>继承Hadoop提供的WritableComparator类，重写该类compare() 方法，在该方法中定义比较规则，注意在自定义的比较器对象中通过调用父类的super方法将自定义的比较器对象和要参与比较的对象进行关联。最后再Driver类中指定自定义的比较器对象。 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CompareFlowDTOComparator</span> <span class="keyword">extends</span> <span class="title">WritableComparator</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CompareFlowDTOComparator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(CompareFlowDTO.class, <span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(WritableComparable a, WritableComparable b)</span> </span>&#123;</span><br><span class="line">        CompareFlowDTO aCompareFlowDTO = (CompareFlowDTO) a;</span><br><span class="line">        CompareFlowDTO bCompareFlowDTO = (CompareFlowDTO) b;</span><br><span class="line">        <span class="keyword">return</span> aCompareFlowDTO.getSumFlow().compareTo(bCompareFlowDTO.getSumFlow());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>继承Hadoop提供的WritableComparator类，重写该类compare() 方法，在该方法中定义比较规则，注意在自定义的比较器对象中通过调用父类的super方法将自定义的比较器对象和要参与比较的对象进行关联。在比较对象的类定义中添加静态代码块，主动注册比较器 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//主动注册</span></span><br><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">    WritableComparator.define(CompareFlowDTO.class, <span class="keyword">new</span> CompareFlowDTOComparator());</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="3-3-3-4-Hadoop中获取比较器对象的规则源码分析"><a href="#3-3-3-4-Hadoop中获取比较器对象的规则源码分析" class="headerlink" title="3.3.3.4 Hadoop中获取比较器对象的规则源码分析"></a>3.3.3.4 Hadoop中获取比较器对象的规则源码分析</h4><ul>
+<li>入口 <code>org.apache.hadoop.mapred.MapTask.MapOutputBuffer#init</code></li>
+<li>定位MapTask.java:1018  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">comparator = job.getOutputKeyComparator();</span><br></pre></td></tr></table></figure></li>
+<li>跟进 org.apache.hadoop.mapred.JobConf#getOutputKeyComparator  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> RawComparator <span class="title">getOutputKeyComparator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 配置文件查找对应配置JobContext.KEY_COMPARATOR-&gt;mapreduce.job.output.key.comparator.class </span></span><br><span class="line">  <span class="comment">// 如果配置存在且实现了Comparator接口，返回配置的比较器</span></span><br><span class="line">  <span class="comment">// 配置存在但是没有实现Comparator接口，抛出异常</span></span><br><span class="line">  <span class="comment">// 配置不存在，取默认值null</span></span><br><span class="line">  Class&lt;? extends RawComparator&gt; theClass = getClass(</span><br><span class="line">    JobContext.KEY_COMPARATOR, <span class="keyword">null</span>, RawComparator.class);</span><br><span class="line">  <span class="keyword">if</span> (theClass != <span class="keyword">null</span>)</span><br><span class="line">      <span class="comment">// 如果通过JobContext.KEY_COMPARATOR 获取到了 直接通过反射的形式实例化对象</span></span><br><span class="line">      <span class="keyword">return</span> ReflectionUtils.newInstance(theClass, <span class="keyword">this</span>);</span><br><span class="line">  <span class="comment">// 如果 JobContext.KEY_COMPARATOR 没获取到，就走一下流程获取参与排序的对象的比较器对象</span></span><br><span class="line">  <span class="comment">// 首先会检验 当前Map端输出的key是否实现WritableComparable接口</span></span><br><span class="line">  <span class="keyword">return</span> WritableComparator.get(getMapOutputKeyClass().asSubclass(WritableComparable.class), <span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>跟进WritableComparator#get  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> WritableComparator <span class="title">get</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">      Class&lt;? extends WritableComparable&gt; c, Configuration conf)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 通过当前比较的对象的class类对象到comparators这个Map容器中获取比较器对象</span></span><br><span class="line">    <span class="comment">// 凡是在comparators能获取到的比较器对象，那当前参与比较的对象一定Hadoop自身的数据类型。</span></span><br><span class="line">    WritableComparator comparator = comparators.get(c);</span><br><span class="line">    <span class="keyword">if</span> (comparator == <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="comment">// 考虑到加载的类可能遇到内存的一些错误，导致GC,所以再强制加载一次 已过时</span></span><br><span class="line">      forceInit(c);</span><br><span class="line">      <span class="comment">// 强制加载后再获取</span></span><br><span class="line">      comparator = comparators.get(c);</span><br><span class="line">      <span class="comment">// 如果还没有获取到，那当前参与比较的对象就不是Hadoop自身的数据类型</span></span><br><span class="line">      <span class="keyword">if</span> (comparator == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">//如果到这还没获取到，那就是我们自定义的数据类型，此时Hadoop创建一个比较器</span></span><br><span class="line">        comparator = <span class="keyword">new</span> WritableComparator(c, conf, <span class="keyword">true</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Newly passed Configuration objects should be used.</span></span><br><span class="line">    ReflectionUtils.setConf(comparator, conf);</span><br><span class="line">    <span class="keyword">return</span> comparator;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-3-3-5-Hadoop中获取自身数据类型的比较器对象源码分析"><a href="#3-3-3-5-Hadoop中获取自身数据类型的比较器对象源码分析" class="headerlink" title="3.3.3.5 Hadoop中获取自身数据类型的比较器对象源码分析"></a>3.3.3.5 Hadoop中获取自身数据类型的比较器对象源码分析</h4></li>
+<li>以org.apache.hadoop.io.Text为例</li>
+<li>实现了org.apache.hadoop.io.WritableComparable接口</li>
+<li>在Text本类中已经声明了比较器对象 并且做了关联  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Comparator</span> <span class="keyword">extends</span> <span class="title">WritableComparator</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Comparator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    #关联比较器和比较对象</span><br><span class="line">    <span class="keyword">super</span>(Text.class);</span><br><span class="line">  &#125;</span><br><span class="line">  #具体比较实现</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(<span class="keyword">byte</span>[] b1, <span class="keyword">int</span> s1, <span class="keyword">int</span> l1,</span></span></span><br><span class="line"><span class="params"><span class="function">                     <span class="keyword">byte</span>[] b2, <span class="keyword">int</span> s2, <span class="keyword">int</span> l2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n1 = WritableUtils.decodeVIntSize(b1[s1]);</span><br><span class="line">    <span class="keyword">int</span> n2 = WritableUtils.decodeVIntSize(b2[s2]);</span><br><span class="line">    <span class="keyword">return</span> compareBytes(b1, s1+n1, l1-n1, b2, s2+n2, l2-n2);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>注册Comparator  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">  <span class="comment">// register this comparator</span></span><br><span class="line">  WritableComparator.define(Text.class, <span class="keyword">new</span> Comparator());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>跟进 define()方法   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">define</span><span class="params">(Class c, WritableComparator comparator)</span> </span>&#123;</span><br><span class="line">  comparators.put(c, comparator);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>破案：当Text类加载的时候，会将当前Text.class 做为key  它的比较器对象作为value会放入comparators Map容器中。</li>
+</ul>
+<hr>
+<h3 id="3-3-4-Combiner流程"><a href="#3-3-4-Combiner流程" class="headerlink" title="3.3.4 Combiner流程"></a>3.3.4 Combiner流程</h3><ol>
+<li>Combiner组件的父类就是Reducer。</li>
+<li>Combiner和Reducer的区别在于运行的位置<ol>
+<li>Combiner是在每一个MapTask所在的节点运行</li>
+<li>Reducer是接收全局所有Mapper的输出结果</li>
+</ol>
+</li>
+<li>Combiner的使用场景：总的来说，为了提升MR程序的运行效率，为了减轻ReduceTask的压力，另外减少IO的开销。</li>
+<li>使用Combiner<ol>
+<li>自定一个Combiner类 继承Hadoop提供的Reducer</li>
+<li>在Job中指定自定义的Combiner类</li>
+<li>Combiner的输出kv应该跟Reducer的输入kv类型要对应起来 </li>
+</ol>
+</li>
+<li>Combiner能够应用的前提是不能影响最终的业务逻辑</li>
+<li>Combiner不适用的场景：Reduce端处理的数据考虑到多个MapTask的数据的整体集时就不能提前合并了。</li>
+<li>示例 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">WordCountCombiner</span> <span class="keyword">extends</span> <span class="title">Reducer</span>&lt;<span class="title">Text</span>, <span class="title">IntWritable</span>, <span class="title">Text</span>, <span class="title">IntWritable</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> IntWritable valueOut = <span class="keyword">new</span> IntWritable();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">reduce</span><span class="params">(Text key, Iterable&lt;IntWritable&gt; values, Reducer&lt;Text, IntWritable, Text, IntWritable&gt;.Context context)</span> <span class="keyword">throws</span> IOException, InterruptedException </span>&#123;</span><br><span class="line">        String word = key.toString();</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (values.iterator().hasNext()) &#123;</span><br><span class="line">            sum += values.iterator().next().get();</span><br><span class="line">        &#125;</span><br><span class="line">        valueOut.set(sum);</span><br><span class="line">        log.info(<span class="string">&quot;combine-word: &#123;&#125; 累计出现次数:&#123;&#125;&quot;</span>, word, sum);</span><br><span class="line">        context.write(key, valueOut);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<h2 id="3-5-OutputFormat"><a href="#3-5-OutputFormat" class="headerlink" title="3.5 OutputFormat"></a>3.5 OutputFormat</h2><p>OutputFormat主要负责最终数据的写出</p>
+<h3 id="3-5-1-OutputFormat实现类"><a href="#3-5-1-OutputFormat实现类" class="headerlink" title="3.5.1 OutputFormat实现类"></a>3.5.1 OutputFormat实现类</h3><ol>
+<li>探索OutputFormat的默认实现<ul>
+<li>OutputFormat的实现的功能中有一个检验输出路径的方法org.apache.hadoop.mapreduce.OutputFormat#checkOutputSpecs</li>
+<li>考虑到检验输出路径应该在Job提交流程中完成(不设置会报错)  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">   org.apache.hadoop.mapred.InvalidJobConfException: Output directory not set.</span><br><span class="line">at org.apache.hadoop.mapreduce.lib.output.FileOutputFormat.checkOutputSpecs(FileOutputFormat.java:<span class="number">156</span>) ~[hadoop-mapreduce-client-core-<span class="number">3.1</span><span class="number">.3</span>.jar:?]</span><br><span class="line">at org.apache.hadoop.mapreduce.JobSubmitter.checkSpecs(JobSubmitter.java:<span class="number">277</span>) ~[hadoop-mapreduce-client-core-<span class="number">3.1</span><span class="number">.3</span>.jar:?]</span><br><span class="line">at org.apache.hadoop.mapreduce.JobSubmitter.submitJobInternal(JobSubmitter.java:<span class="number">143</span>) ~[hadoop-mapreduce-client-core-<span class="number">3.1</span><span class="number">.3</span>.jar:?]</span><br><span class="line">at org.apache.hadoop.mapreduce.Job$<span class="number">11.</span>run(Job.java:<span class="number">1570</span>) ~[hadoop-mapreduce-client-core-<span class="number">3.1</span><span class="number">.3</span>.jar:?]</span><br><span class="line">at org.apache.hadoop.mapreduce.Job$<span class="number">11.</span>run(Job.java:<span class="number">1567</span>) ~[hadoop-mapreduce-client-core-<span class="number">3.1</span><span class="number">.3</span>.jar:?]</span><br><span class="line">at java.security.AccessController.doPrivileged(Native Method) ~[?:<span class="number">1.8</span><span class="number">.0_291</span>]</span><br><span class="line">at javax.security.auth.Subject.doAs(Subject.java:<span class="number">422</span>) ~[?:<span class="number">1.8</span><span class="number">.0_291</span>]</span><br><span class="line">at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:<span class="number">1729</span>) ~[hadoop-common-<span class="number">3.1</span><span class="number">.3</span>.jar:?]</span><br><span class="line">at org.apache.hadoop.mapreduce.Job.submit(Job.java:<span class="number">1567</span>) ~[hadoop-mapreduce-client-core-<span class="number">3.1</span><span class="number">.3</span>.jar:?]</span><br><span class="line">at org.apache.hadoop.mapreduce.Job.waitForCompletion(Job.java:<span class="number">1588</span>) ~[hadoop-mapreduce-client-core-<span class="number">3.1</span><span class="number">.3</span>.jar:?]</span><br><span class="line">at sgg.hadoop.mapreduce.combiner.WordCountCombinerDriver.main(WordCountCombinerDriver.java:<span class="number">53</span>) [classes/:?]</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>跟进Job提交流程org.apache.hadoop.mapreduce.Job#waitForCompletion</li>
+<li>跟进org.apache.hadoop.mapreduce.Job#submit</li>
+<li>跟进org.apache.hadoop.mapreduce.JobSubmitter#submitJobInternal</li>
+<li>跟进org.apache.hadoop.mapreduce.JobSubmitter#checkSpecs  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">checkSpecs</span><span class="params">(Job job)</span> <span class="keyword">throws</span> ClassNotFoundException, </span></span><br><span class="line"><span class="function">    InterruptedException, IOException </span>&#123;</span><br><span class="line">      JobConf jConf = (JobConf)job.getConfiguration();</span><br><span class="line">      <span class="comment">// Check the output specification</span></span><br><span class="line">      <span class="keyword">if</span> (jConf.getNumReduceTasks() == <span class="number">0</span> ? </span><br><span class="line">          jConf.getUseNewMapper() : jConf.getUseNewReducer()) &#123;</span><br><span class="line">          <span class="comment">//获取OutputFormat</span></span><br><span class="line">        org.apache.hadoop.mapreduce.OutputFormat&lt;?, ?&gt; output =</span><br><span class="line">          ReflectionUtils.newInstance(job.getOutputFormatClass(),</span><br><span class="line">            job.getConfiguration());</span><br><span class="line">        output.checkOutputSpecs(job);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        jConf.getOutputFormat().checkOutputSpecs(jtFs, jConf);</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>跟进org.apache.hadoop.mapreduce.task.JobContextImpl#getOutputFormatClass  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Class&lt;? extends OutputFormat&lt;?,?&gt;&gt; getOutputFormatClass() </span><br><span class="line">     <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">    <span class="keyword">return</span> (Class&lt;? extends OutputFormat&lt;?,?&gt;&gt;) </span><br><span class="line">      conf.getClass(OUTPUT_FORMAT_CLASS_ATTR, TextOutputFormat.class);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>破案：OutputFormat默认实现就是TextOutputFormat</li>
+</ul>
+</li>
+<li>OutputFormat 类的体系结构<br> <img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16342996424249.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"><ul>
+<li>FileOutputFormat 是 OutputFormat的子类（实现类）<ul>
+<li>对 checkOutputSpecs() 做了具体的实现</li>
+</ul>
+</li>
+<li>TextOutputFormat 是 FileOutputFormat的子类<ul>
+<li>对 getRecordWriter 做了具体实现</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-5-2-OutputFormat的使用场景"><a href="#3-5-2-OutputFormat的使用场景" class="headerlink" title="3.5.2 OutputFormat的使用场景"></a>3.5.2 OutputFormat的使用场景</h3><ul>
+<li>当我们对MR最终的结果有个性化制定的需求，就可以通过自定义OutputFormat来实现</li>
+</ul>
+<h3 id="3-5-3-自定义OutputFormat"><a href="#3-5-3-自定义OutputFormat" class="headerlink" title="3.5.3 自定义OutputFormat"></a>3.5.3 自定义OutputFormat</h3><ul>
+<li>自定一个 OutputFormat 类，继承Hadoop提供的OutputFormat，在该类中实现getRecordWriter() ,返回一个RecordWriter</li>
+<li>自定义一个 RecordWriter 并且继承Hadoop提供的RecordWriter类，在该类中重写 write()  和 close()  在这些方法中完成自定义输出。</li>
+<li>示例  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">WordCountOutputFormat</span> <span class="keyword">extends</span> <span class="title">FileOutputFormat</span>&lt;<span class="title">Text</span>, <span class="title">IntWritable</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RecordWriter&lt;Text, IntWritable&gt; <span class="title">getRecordWriter</span><span class="params">(TaskAttemptContext job)</span> <span class="keyword">throws</span> IOException, InterruptedException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> WordCountRecordWriter(job);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">WordCountRecordWriter</span> <span class="keyword">extends</span> <span class="title">RecordWriter</span>&lt;<span class="title">Text</span>, <span class="title">IntWritable</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> FileSystem fileSystem;</span><br><span class="line">    HashMap&lt;Integer, FSDataOutputStream&gt; fsDataOutputStreamHashMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WordCountRecordWriter</span><span class="params">(TaskAttemptContext job)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            fileSystem = FileSystem.get(job.getConfiguration());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            log.error(<span class="string">&quot;WordCountRecordWriter创建失败&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(Text key, IntWritable value)</span> <span class="keyword">throws</span> IOException, InterruptedException </span>&#123;</span><br><span class="line">        String word = key.toString();</span><br><span class="line">        Integer first = word.length();</span><br><span class="line">        FSDataOutputStream fsDataOutputStream = fsDataOutputStreamHashMap.get(first);</span><br><span class="line">        <span class="keyword">if</span> (fsDataOutputStream == <span class="keyword">null</span>) &#123;</span><br><span class="line">            fsDataOutputStream = fileSystem.create(<span class="keyword">new</span> Path(<span class="string">&quot;/Users/zhenan/atguigu/project/sgg-big-data/sgg-hadoop/sgg-hadoop-mapreduce/src/main/resources/outputformat/&quot;</span> + first + <span class="string">&quot;.txt&quot;</span>));</span><br><span class="line">            fsDataOutputStreamHashMap.put(first, fsDataOutputStream);</span><br><span class="line">        &#125;</span><br><span class="line">        fsDataOutputStream.write((word + <span class="string">&quot;\t&quot;</span> + value.get()+<span class="string">&quot;\n&quot;</span>).getBytes());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">(TaskAttemptContext context)</span> <span class="keyword">throws</span> IOException, InterruptedException </span>&#123;</span><br><span class="line">        IOUtils.closeStream(fileSystem);</span><br><span class="line">        <span class="keyword">for</span> (Map.Entry&lt;Integer, FSDataOutputStream&gt; entry : fsDataOutputStreamHashMap.entrySet()) &#123;</span><br><span class="line">            IOUtils.closeStream(entry.getValue());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="3-6-Join多种应用"><a href="#3-6-Join多种应用" class="headerlink" title="3.6 Join多种应用"></a>3.6 Join多种应用</h2><h3 id="3-6-1-Reduce-Join"><a href="#3-6-1-Reduce-Join" class="headerlink" title="3.6.1 Reduce Join"></a>3.6.1 Reduce Join</h3><ol>
+<li>概念：在MR程序中计算数据的时候，出现输入文件是多个且文件之间存在关联性，需要在计算过程中通过两个文件之间相互关联才能获取最终的计算结果。</li>
+<li>ReduceJoin的思想：<ol>
+<li>分析文件之间的关系，然后定位关联字段</li>
+<li>在Map阶段对多个文件进行数据整合，并且让关联字段作为输出数据的key </li>
+<li>当一组相同key的values进入Reduce阶段的reduce方法中第一步：先把两个文件数据分离出来，分别放到各自的对象中维护。</li>
+<li>把当前一组维护好的数据进行关联操作，得到想要的数据结果。</li>
+</ol>
+</li>
+</ol>
+<h3 id="3-6-2-Map-Join"><a href="#3-6-2-Map-Join" class="headerlink" title="3.6.2 Map Join"></a>3.6.2 Map Join</h3><ol>
+<li>概念：考虑MR整体的执行效率，且业务场景是一个大文件和一个小文件进行关联操作，可以使用MapJoin来实现。另外MapJoin也是解决ReduceJoin数据倾斜问题很有效的办法。</li>
+<li>MapJoin的思想：<ol>
+<li>分析文件之间的关系，然后定位关联字段</li>
+<li>将小文件的数据映射到内存中的一个容器维护起来。 </li>
+<li>当MapTask处理大文件的数据时，每读取一行数据，就根据当前行中的关联字段到内存的容器里获取对象的信息。</li>
+<li>封装结果将其输出</li>
+</ol>
+</li>
+<li>具体办法：采用DistributedCache<ol>
+<li>在Mapper的setup阶段，将文件读取到缓存集合中。</li>
+<li>在Driver驱动类中加载缓存 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//缓存普通文件到Task运行节点。</span></span><br><span class="line">job.addCacheFile(<span class="keyword">new</span> URI(<span class="string">&quot;file:///e:/cache/pd.txt&quot;</span>));</span><br><span class="line"><span class="comment">//如果是集群运行,需要设置HDFS路径</span></span><br><span class="line">job.addCacheFile(<span class="keyword">new</span> URI(<span class="string">&quot;hdfs://hadoop102:9820/cache/pd.txt&quot;</span>));</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="3-7-计数器"><a href="#3-7-计数器" class="headerlink" title="3.7 计数器"></a>3.7 计数器</h2><ul>
+<li>Hadoop为每个作业维护若干内置计数器，以描述多项指标。例如，某些计数器记录已处理的字节数和记录数，使用户可监控已处理的输入数据量和已产生的输出数据量</li>
+<li>计数器API<ol>
+<li>采用枚举的方式统计计数</li>
+<li>采用计数器组、计数器名称的方式统计</li>
+<li>计数结果在程序运行后的控制台上查看</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h2 id="3-8-数据清洗（ETL）"><a href="#3-8-数据清洗（ETL）" class="headerlink" title="3.8 数据清洗（ETL）"></a>3.8 数据清洗（ETL）</h2><ul>
+<li>在运行核心业务MapReduce程序之前，往往要先对数据进行清洗，清理掉不符合用户要求的数据。清理的过程往往只需要运行Mapper程序，不需要运行Reduce程序。</li>
+<li>Mapper程序不符合规则直接return</li>
+</ul>
+<hr>
+<h2 id="3-9-MapReduce工作流程梳理"><a href="#3-9-MapReduce工作流程梳理" class="headerlink" title="3.9 MapReduce工作流程梳理"></a>3.9 MapReduce工作流程梳理</h2><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16344606281489.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"><br><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16344606667460.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ol>
+<li>MapTask收集map()方法输出的kv对，放到内存缓冲区中</li>
+<li>从内存缓冲区不断溢写本地磁盘文件，可能会溢写多个文件</li>
+<li>多个溢出文件会被合并成大的溢写文件</li>
+<li>在溢写过程及合并的过程中，都要调用Partitioner进行分区和针对key进行排序</li>
+<li>ReduceTask根据自己的分区号，去各个MapTask机器上取相应的结果分区数据</li>
+<li>ReduceTask会抓取到同一个分区的来自不同MapTask的结果文件，ReduceTask会将这些文件再进行合并（归并排序）</li>
+<li>合并成大文件后，Shuffle的过程也就结束了，后面进入ReduceTask的逻辑运算过程（从文件中取出一个一个的键值对Group，调用用户自定义的reduce()方法）</li>
+<li>注意：<ol>
+<li>Shuffle中的缓冲区大小会影响到MapReduce程序的执行效率，原则上说，缓冲区越大，磁盘io的次数越少，执行速度就越快。</li>
+<li>缓冲区的大小可以通过参数调整，参数：mapreduce.task.io.sort.mb默认100M。</li>
+</ol>
+</li>
+<li>MapTask源码分析<ul>
+<li>定位 map方法输出结果的位置，TaskInputOutputContext#write<ul>
+<li>实现类TaskInputOutputContextImpl#write</li>
+</ul>
+</li>
+<li>跟进org.apache.hadoop.mapred.MapTask.NewOutputCollector#write<ul>
+<li>获取分区编号org.apache.hadoop.mapreduce.Partitioner#getPartition</li>
+<li>k-v放入环形缓冲区org.apache.hadoop.mapred.MapOutputCollector#collect</li>
+<li>map端所有的kv全部写出后会执行org.apache.hadoop.mapred.MapTask.NewOutputCollector#close<ul>
+<li>执行溢写org.apache.hadoop.mapred.MapTask.MapOutputBuffer#flush </li>
+<li>排序溢写org.apache.hadoop.mapred.MapTask.MapOutputBuffer#sortAndSpill<ul>
+<li>执行combiner org.apache.hadoop.mapred.Task.CombinerRunner#combine</li>
+<li>初始化combiner org.apache.hadoop.mapred.Task.CombinerRunner#create </li>
+</ul>
+</li>
+<li>合并文件org.apache.hadoop.mapred.MapTask.MapOutputBuffer#mergeParts</li>
+<li>结束</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ReduceTask源码分析<ul>
+<li>ReduceTask执行入口org.apache.hadoop.mapred.ReduceTask#run<ul>
+<li>初始化ReduceTask org.apache.hadoop.mapred.Task#initialize<ul>
+<li>获取OutputFormat org.apache.hadoop.mapred.Task:605</li>
+<li>获取Shuffer Consumer  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">  Class&lt;? extends ShuffleConsumerPlugin&gt; clazz =</span><br><span class="line">job.getClass(MRConfig.SHUFFLE_CONSUMER_PLUGIN, Shuffle.class, ShuffleConsumerPlugin.class);</span><br></pre></td></tr></table></figure></li>
+<li>初始化shuffle consumer org.apache.hadoop.mapred.ShuffleConsumerPlugin#init<ul>
+<li>创建shuffle实现类org.apache.hadoop.mapreduce.task.reduce.ShuffleSchedulerImpl<ul>
+<li>获取MapTask数量 <code>totalMaps = job.getNumMapTasks();</code></li>
+</ul>
+</li>
+<li>创建合并管理器org.apache.hadoop.mapreduce.task.reduce.Shuffle#createMergeManager<ul>
+<li>实现类 org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl#MergeManagerImpl<ul>
+<li>ReduceTask内存最大值  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">// Allow unit tests to fix Runtime memory</span></span><br><span class="line"><span class="keyword">this</span>.memoryLimit = (<span class="keyword">long</span>)(jobConf.getLong(</span><br><span class="line">    MRJobConfig.REDUCE_MEMORY_TOTAL_BYTES,</span><br><span class="line">    Runtime.getRuntime().maxMemory()) * maxInMemCopyUse);</span><br></pre></td></tr></table></figure></li>
+<li>创建内存合并器 org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl#createInMemoryMerger<ul>
+<li>实现类 org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl.InMemoryMerger</li>
+<li>合并方法org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl.InMemoryMerger#merge</li>
+<li>Combiner + 溢写org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl#combineAndSpill</li>
+</ul>
+</li>
+<li>创建磁盘合并器 org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl.OnDiskMerger</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>开始抓取数据org.apache.hadoop.mapreduce.task.reduce.Shuffle:107  <code>eventFetcher.start();</code></li>
+<li>抓取数据结束org.apache.hadoop.mapreduce.task.reduce.Shuffle:141 <code>eventFetcher.shutDown();</code></li>
+<li>copy阶段完成，启动下一个阶段sort org.apache.hadoop.mapreduce.task.reduce.Shuffle:151 <code>// copyPhase.complete();</code></li>
+<li>标记进入sort阶段 org.apache.hadoop.mapreduce.task.reduce.Shuffle:152 <code>taskStatus.setPhase(TaskStatus.Phase.SORT);</code></li>
+</ul>
+</li>
+<li>sort阶段完成 开启下一阶段reduce org.apache.hadoop.mapred.ReduceTask:382 <code>sortPhase.complete();</code></li>
+</ul>
+</li>
+<li>reduce();  //reduce阶段调用的就是我们自定义的reduce方法，会被调用多次</li>
+<li>cleanup(context); //reduce完成之前，会最后调用一次Reducer里面的cleanup方法</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-9-1分析Job提交流程的源码"><a href="#3-9-1分析Job提交流程的源码" class="headerlink" title="3.9.1分析Job提交流程的源码"></a>3.9.1分析Job提交流程的源码</h3><ul>
+<li>定位提交入口 org.apache.hadoop.mapreduce.Job#waitForCompletion</li>
+<li>跟进 <code>org.apache.hadoop.mapreduce.Job#waitForCompletion</code>  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">waitForCompletion</span><span class="params">(<span class="keyword">boolean</span> verbose</span></span></span><br><span class="line"><span class="params"><span class="function">                              )</span> <span class="keyword">throws</span> IOException, InterruptedException, ClassNotFoundException </span>&#123;</span><br><span class="line">  <span class="comment">// 判断当前Job的状态是否为定义阶段</span></span><br><span class="line">  <span class="keyword">if</span> (state == JobState.DEFINE) &#123;</span><br><span class="line">    <span class="comment">//提交方法</span></span><br><span class="line">    submit();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (verbose) &#123;</span><br><span class="line">    monitorAndPrintJob();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// get the completion poll interval from the client.</span></span><br><span class="line">    <span class="keyword">int</span> completionPollIntervalMillis = </span><br><span class="line">      Job.getCompletionPollInterval(cluster.getConf());</span><br><span class="line">    <span class="keyword">while</span> (!isComplete()) &#123;</span><br><span class="line">          <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(completionPollIntervalMillis);</span><br><span class="line">          &#125; <span class="keyword">catch</span> (InterruptedException ie) &#123;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> isSuccessful();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>跟进<code>org.apache.hadoop.mapreduce.Job#submit</code>  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">submit</span><span class="params">()</span> </span></span><br><span class="line"><span class="function">       <span class="keyword">throws</span> IOException, InterruptedException, ClassNotFoundException </span>&#123;</span><br><span class="line">  <span class="comment">//判断当前为定义阶段</span></span><br><span class="line">  ensureState(JobState.DEFINE);</span><br><span class="line">  <span class="comment">//兼容老版本API</span></span><br><span class="line">  setUseNewAPI();</span><br><span class="line">  <span class="comment">//连接集群（如果是本地模式结果就是LocalRunner, 如果Yarn集群结果就是YARNRuuner）</span></span><br><span class="line">  connect();</span><br><span class="line">  <span class="comment">// 开始提交Job</span></span><br><span class="line">  <span class="keyword">final</span> JobSubmitter submitter = </span><br><span class="line">      getJobSubmitter(cluster.getFileSystem(), cluster.getClient());</span><br><span class="line">  status = ugi.doAs(<span class="keyword">new</span> PrivilegedExceptionAction&lt;JobStatus&gt;() &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> JobStatus <span class="title">run</span><span class="params">()</span> <span class="keyword">throws</span> IOException, InterruptedException, </span></span><br><span class="line"><span class="function">    ClassNotFoundException </span>&#123;</span><br><span class="line">      <span class="comment">//执行提交动作</span></span><br><span class="line">      <span class="keyword">return</span> submitter.submitJobInternal(Job.<span class="keyword">this</span>, cluster);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  state = JobState.RUNNING;</span><br><span class="line">  LOG.info(<span class="string">&quot;The url to track the job: &quot;</span> + getTrackingURL());</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></li>
+<li>跟进<code>org.apache.hadoop.mapreduce.JobSubmitter#submitJobInternal</code>  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Internal method for submitting jobs to the system.</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * &lt;p&gt;The job submission process involves:</span></span><br><span class="line"><span class="comment"> * &lt;ol&gt;</span></span><br><span class="line"><span class="comment"> *   &lt;li&gt;</span></span><br><span class="line"><span class="comment"> *   检测输入输出路径的合法性</span></span><br><span class="line"><span class="comment"> *   Checking the input and output specifications of the job.</span></span><br><span class="line"><span class="comment"> *   &lt;/li&gt;</span></span><br><span class="line"><span class="comment"> *   &lt;li&gt;</span></span><br><span class="line"><span class="comment"> *   给当前Job计算切片信息</span></span><br><span class="line"><span class="comment"> *   Computing the &#123;<span class="doctag">@link</span> InputSplit&#125;s for the job.</span></span><br><span class="line"><span class="comment"> *   &lt;/li&gt;</span></span><br><span class="line"><span class="comment"> *   &lt;li&gt;</span></span><br><span class="line"><span class="comment"> *   添加分布式缓存文件</span></span><br><span class="line"><span class="comment"> *   Setup the requisite accounting information for the </span></span><br><span class="line"><span class="comment"> *   &#123;<span class="doctag">@link</span> DistributedCache&#125; of the job, if necessary.</span></span><br><span class="line"><span class="comment"> *   &lt;/li&gt;</span></span><br><span class="line"><span class="comment"> *   &lt;li&gt;</span></span><br><span class="line"><span class="comment"> *   将必要的内容都拷贝到 job执行的临时目录（jar包、切片信息、配置文件）</span></span><br><span class="line"><span class="comment"> *   Copying the job&#x27;s jar and configuration to the map-reduce system</span></span><br><span class="line"><span class="comment"> *   directory on the distributed file-system. </span></span><br><span class="line"><span class="comment"> *   &lt;/li&gt;</span></span><br><span class="line"><span class="comment"> *   &lt;li&gt;</span></span><br><span class="line"><span class="comment"> *   提交Job</span></span><br><span class="line"><span class="comment"> *   Submitting the job to the &lt;code&gt;JobTracker&lt;/code&gt; and optionally</span></span><br><span class="line"><span class="comment"> *   monitoring it&#x27;s status.</span></span><br><span class="line"><span class="comment"> *   &lt;/li&gt;</span></span><br><span class="line"><span class="comment"> * &lt;/ol&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> job the configuration to submit</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> cluster the handle to the Cluster</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> ClassNotFoundException</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> InterruptedException</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">JobStatus <span class="title">submitJobInternal</span><span class="params">(Job job, Cluster cluster)</span> </span></span><br><span class="line"><span class="function"><span class="keyword">throws</span> ClassNotFoundException, InterruptedException, IOException </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="3-8-MapReduce开发总结"><a href="#3-8-MapReduce开发总结" class="headerlink" title="3.8 MapReduce开发总结"></a>3.8 MapReduce开发总结</h2><ol>
+<li>输入数据接口：InputFormat<ul>
+<li>默认使用的实现类是：TextInputFormat</li>
+<li>TextInputFormat 的功能逻辑是：一次读一行文本，然后将该行的起始偏移量作为key，行内容作为 value 返回。</li>
+<li>CombineTextInputFormat 可以把多个小文件合并成一个切片处理，提高处理效率。</li>
+</ul>
+</li>
+<li>map逻辑处理接口：Mapper <ul>
+<li>用户根据业务需求实现其中三个方法：map() setup() cleanup () </li>
+</ul>
+</li>
+<li>Partitioner 分区<ul>
+<li>有默认实现 HashPartitioner，逻辑是根据 key 的哈希值和 numReduces 来返回一个分区号；key.hashCode()&amp;Integer.MAXVALUE % numReduces</li>
+<li>如果业务上有特别的需求，可以自定义分区。</li>
+</ul>
+</li>
+<li>Comparable 排序<ul>
+<li>当我们用自定义的对象作为 key 来输出时，就必须要实现 WritableComparable 接口，重写其中的 compareTo()方法。</li>
+<li>部分排序：对最终输出的每一个文件进行内部排序。</li>
+<li>全排序：对所有数据进行排序，通常只有一个 Reduce。 （4）二次排序：排序的条件有两个。</li>
+</ul>
+</li>
+<li>Combiner 合并<ul>
+<li>Combiner 合并可以提高程序执行效率，减少 IO 传输。但是使用时必须不能影响原有的业务处理结果。</li>
+</ul>
+</li>
+<li>reduce逻辑处理接口：Reducer<ul>
+<li>用户根据业务需求实现其中三个方法：reduce() setup() cleanup () </li>
+</ul>
+</li>
+<li>输出数据接口：OutputFormat<ul>
+<li>默认实现类是 TextOutputFormat，功能逻辑是：将每一个 KV 对，向目标文本文件输出一行。</li>
+<li>用户还可以自定义 OutputFormat。</li>
+</ul>
+</li>
+</ol>
+<h2 id="问答"><a href="#问答" class="headerlink" title="问答"></a>问答</h2><h4 id="一、描述一下手写MR的大概流程和规范"><a href="#一、描述一下手写MR的大概流程和规范" class="headerlink" title="一、描述一下手写MR的大概流程和规范"></a>一、描述一下手写MR的大概流程和规范</h4><ol>
+<li>继承Mapper重写map方法</li>
+<li>继承Reducer重写reduce方法 </li>
+<li>编写Driver配置Job参数</li>
+<li>提交Job</li>
+</ol>
+<h4 id="二、如何实现Hadoop中的序列化，以及Hadoop的序列化和Java的序列化有什么区别？"><a href="#二、如何实现Hadoop中的序列化，以及Hadoop的序列化和Java的序列化有什么区别？" class="headerlink" title="二、如何实现Hadoop中的序列化，以及Hadoop的序列化和Java的序列化有什么区别？"></a>二、如何实现Hadoop中的序列化，以及Hadoop的序列化和Java的序列化有什么区别？</h4><ol>
+<li>实现Writeable接口</li>
+<li>无参构造</li>
+<li>重写序列化方法write</li>
+<li>重写反序列化方法readFields</li>
+<li>write 方法和readFields方法保持一致</li>
+</ol>
+<h4 id="三、概述一下MR程序的执行流程"><a href="#三、概述一下MR程序的执行流程" class="headerlink" title="三、概述一下MR程序的执行流程"></a>三、概述一下MR程序的执行流程</h4><ol>
+<li>数据读取阶段：InputFormat进行切片读取</li>
+<li>map阶段：执行map方法业务逻辑，输出处理后的kv数据</li>
+<li>shuffle阶段：对map阶段输出的kv进行分区，排序，分组，通知reduce取数据</li>
+<li>reduce阶段：执行reduce方法业务逻辑，输出数据</li>
+<li>输出阶段：OutputFormat处理输出数据，写入文件</li>
+</ol>
+<h4 id="四、InputFormat负责数据写的时候要进行切片，为什么切片大小默认是128M"><a href="#四、InputFormat负责数据写的时候要进行切片，为什么切片大小默认是128M" class="headerlink" title="四、InputFormat负责数据写的时候要进行切片，为什么切片大小默认是128M"></a>四、InputFormat负责数据写的时候要进行切片，为什么切片大小默认是128M</h4><ol>
+<li>HDFS默认的Block大小为128M</li>
+<li>默认128M切片可以从单个数据块读取到全部数据</li>
+<li>避免了跨机器读取导致大量IO</li>
+</ol>
+<h4 id="五、描述一下切片的逻辑（从源码角度描述）"><a href="#五、描述一下切片的逻辑（从源码角度描述）" class="headerlink" title="五、描述一下切片的逻辑（从源码角度描述）"></a>五、描述一下切片的逻辑（从源码角度描述）</h4><ol>
+<li>定位入口InputFormat#getSplits</li>
+<li>由FileInputFormat#getSplits具体实现</li>
+<li>确定最小切片大小默认1，最大切片大小默认Long.MAX_VALUE</li>
+<li>获取是否对输入路径递归执行的参数默认false，递归处理输入路径下的所有文件</li>
+<li>判断是否能够切分，压缩文件不进行切分</li>
+<li>获取文件大小和块大小</li>
+<li>计算切片大小max(最小切块大小，min(块大小，最大切块大小))</li>
+<li>判断剩余文件大小是否可以继续切分，大于1.1倍的切片大小则继续切分</li>
+</ol>
+<h4 id="六、CombineTextInputFormat机制是怎么实现的"><a href="#六、CombineTextInputFormat机制是怎么实现的" class="headerlink" title="六、CombineTextInputFormat机制是怎么实现的"></a>六、CombineTextInputFormat机制是怎么实现的</h4><ol>
+<li>CombineTextInputFormat默认切片大小为4m</li>
+<li>虚拟切片过程：文件和切片大小进行比较<ol>
+<li>当前文件&gt;切片大小 且 小于2倍的切片大小，就切成2片</li>
+<li>当前文件&gt;大于2倍的切片大小，直接切出切片大小的文件，重复执行虚拟切片过程</li>
+</ol>
+</li>
+<li>实际切片过程：比较虚拟切片的结果文件大小和设置切片大小<ol>
+<li>如果大于等于切片大小就单独行程一个切片</li>
+<li>如果小于设置切片大小就和下一个虚拟文件进行合并，重复执行至大于切片大小</li>
+<li>合并后大于设置切片大小单独就形成一个切片</li>
+</ol>
+</li>
+</ol>
+<h4 id="七、阐述一下-Shuffle机制-流程？"><a href="#七、阐述一下-Shuffle机制-流程？" class="headerlink" title="七、阐述一下 Shuffle机制 流程？"></a>七、阐述一下 Shuffle机制 流程？</h4><ol>
+<li>Shuffle机制处于Map过程和Reduce过程的中间阶段</li>
+<li>具体实现的功能包括，分区，分组，排序，合并</li>
+<li>map端的Shuffle<ol>
+<li>partition: 获取分区编号保存到元数据中，数据写入环形缓冲区</li>
+<li>spill: 环形缓冲区默认100M，到达80%时触发spill溢写，剩余20%继续执行写入</li>
+<li>sort: spill溢写过程根据分区编号，Key比较规则进行排序（升序，快排），溢写文件保证分区内有序</li>
+<li>combine: 触发spill进行sort之后，写入文件之前会进行combine操作；溢写文件大于3个时merge的过程中也会执行combine</li>
+<li>merge: 对多个溢写文件进行合并，算法为多路归并排序，最终生成一个文件作为map阶段的输出</li>
+<li>通知reduce拉取数据</li>
+</ol>
+</li>
+<li>reduce端的Shuffle<ol>
+<li>copy过程：拉取MapTask处理完的数据，使用0.7 × maxHeap大小的堆内存空间作为内存缓冲区</li>
+<li>merge过程：内存中数据到达阈值会触发内存到磁盘的合并；map端数据读取完成后触发磁盘到磁盘的合并，算法为归并排序</li>
+<li>reduce输入：merge阶段合并为一个大文件作Reduce数据文件执行Reduce逻辑，Shuffle阶段结束</li>
+</ol>
+</li>
+</ol>
+<h4 id="八、在MR程序中由谁来决定分区的数量，哪个阶段环节会开始往分区中写数据？"><a href="#八、在MR程序中由谁来决定分区的数量，哪个阶段环节会开始往分区中写数据？" class="headerlink" title="八、在MR程序中由谁来决定分区的数量，哪个阶段环节会开始往分区中写数据？"></a>八、在MR程序中由谁来决定分区的数量，哪个阶段环节会开始往分区中写数据？</h4><ol>
+<li>分区由业务逻辑决定</li>
+<li>分区规则有ReduceTask数量控制</li>
+<li>Shuffle阶段确定分区编号</li>
+<li>溢写阶段进行分区</li>
+<li>Reduce执行结束，写入分区文件</li>
+</ol>
+<h4 id="九、阐述MR中实现分区的思路（从源码角度分析）"><a href="#九、阐述MR中实现分区的思路（从源码角度分析）" class="headerlink" title="九、阐述MR中实现分区的思路（从源码角度分析）"></a>九、阐述MR中实现分区的思路（从源码角度分析）</h4><ol>
+<li>Shuffle阶段确定分区编号</li>
+<li>溢写阶段根据分区编号生成不同的溢写文件</li>
+<li>Reduce从多个map输出的文件中取自己分区的数据，处理后生成该分区的结果文件</li>
+<li>默认分区规则为根据Key.hashcode 取模，作为分区编号</li>
+</ol>
+<h4 id="十、描述一下Hadoop中实现排序比较的规则"><a href="#十、描述一下Hadoop中实现排序比较的规则" class="headerlink" title="十、描述一下Hadoop中实现排序比较的规则"></a>十、描述一下Hadoop中实现排序比较的规则</h4><ol>
+<li>Hadoop中实现排序依赖Comparator#compare方法</li>
+<li>Comparator获取逻辑如下<ol>
+<li>首先从jobContext中获取配置比较器的类名</li>
+<li>如果获取到直接通过反射创建比较器，流程结束</li>
+<li>如果未配置比较器类名，先从比较器缓存Map中根据输出key类对象获取比较器，如果获取到，直接返回比较器，流程结束</li>
+<li>如果比较器缓存中未获取到比较器，强制加载后重新获取</li>
+<li>如果还获取不到，Hadoop会使用输出key的class对象向创建一个比较器（要求必须实现了WritableComparable）</li>
+</ol>
+</li>
+</ol>
+<h4 id="十一、Hadoop中实现排序的两种方案分别是什么？"><a href="#十一、Hadoop中实现排序的两种方案分别是什么？" class="headerlink" title="十一、Hadoop中实现排序的两种方案分别是什么？"></a>十一、Hadoop中实现排序的两种方案分别是什么？</h4><ol>
+<li>比较对象实现WritableComparable接口，重写compareTo方法</li>
+<li>自定义Comparator，继承WritableComparator，重写compare方法，在Driver中指定</li>
+<li>自定义Comparator，继承WritableComparator，重写compare方法，静态代码注册比较器</li>
+</ol>
+<h4 id="十二、编写MR的时候什么情况下使用Combiner-具体实现流程是什么？"><a href="#十二、编写MR的时候什么情况下使用Combiner-具体实现流程是什么？" class="headerlink" title="十二、编写MR的时候什么情况下使用Combiner 具体实现流程是什么？"></a>十二、编写MR的时候什么情况下使用Combiner 具体实现流程是什么？</h4><ol>
+<li>为了提高MR运行效率，减轻ReduceTask压力，减少copy环节IO开销</li>
+<li>Combiner执行不影响最终的业务逻辑</li>
+<li>Reduce端对MaoTask数据的整体性没有要求</li>
+<li>Combiner实现流程<ol>
+<li>自定义Combiner类，继承Reducer，重写reduce方法</li>
+<li>Job中指定Combiner</li>
+<li>输入k-v为map的输出，输出k-v为reduce的输入</li>
+</ol>
+</li>
+</ol>
+<h4 id="十三、OutputFormat自定义实现流程描述一下"><a href="#十三、OutputFormat自定义实现流程描述一下" class="headerlink" title="十三、OutputFormat自定义实现流程描述一下"></a>十三、OutputFormat自定义实现流程描述一下</h4><ol>
+<li>自定义OutputFormat类，继承OutputFormat，实现getRecordWriter抽象方法，返回自定义RecordWriter</li>
+<li>自定义RecordWriter类，继承RecordWriter，重写write实现数据写出的逻辑，重写close方法对资源进行关闭</li>
+<li>Job中指定OutputFormat处理类</li>
+</ol>
+<h4 id="十四、MR实现-ReduceJoin-的思路，以及ReduceJoin方案有哪些不足？"><a href="#十四、MR实现-ReduceJoin-的思路，以及ReduceJoin方案有哪些不足？" class="headerlink" title="十四、MR实现 ReduceJoin 的思路，以及ReduceJoin方案有哪些不足？"></a>十四、MR实现 ReduceJoin 的思路，以及ReduceJoin方案有哪些不足？</h4><ul>
+<li>思路<ol>
+<li>分析文件关联，确定关联字段</li>
+<li>定义统一对象，包含关联字段和数据来源</li>
+<li>map端参与文件输出统一对象，key为关联字段</li>
+<li>reduce端以关联字段为key，统一对象为value，从统一对象中根据数据来源拆分对象</li>
+<li>根据拆分对象进行关联</li>
+</ol>
+</li>
+<li>不足<ol>
+<li>耗费性能，需要参与数据全部遍历才能进行join</li>
+<li>无法解决数据倾斜问题</li>
+<li>海量数据容易造成reduce崩溃，任务失败</li>
+</ol>
+</li>
+</ul>
+<h4 id="十五、MR实现-MapJoin-的思路，以及MapJoin的局限性是什么？"><a href="#十五、MR实现-MapJoin-的思路，以及MapJoin的局限性是什么？" class="headerlink" title="十五、MR实现 MapJoin 的思路，以及MapJoin的局限性是什么？"></a>十五、MR实现 MapJoin 的思路，以及MapJoin的局限性是什么？</h4><ul>
+<li>思路：<ol>
+<li>分析文件关联，确定关联字段</li>
+<li>小文件使用DistributedCache加载到缓存中</li>
+<li>map端每读取一行数据，都根据关联字段，在缓存中获取对应关联数据</li>
+<li>输出包换关联信息的完整数据给reduce</li>
+</ol>
+</li>
+<li>局限<ol>
+<li>适用数据量差异比较大的两个数据集</li>
+</ol>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          打赏
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://anzhen-tech.github.io/2021/11/07/MapReduce/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MR/" rel="tag">MR</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2021/11/07/MySQL%E9%9D%A2%E8%AF%95%E9%A2%98/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            MySQL面试题
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/11/07/Linux/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Linux</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "XCKHv09pYxF5EmF2ezNgFfLS-gzGzoHsz",
+    app_key: "gyCHBp787fNNfXDiHGIcj7Am",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2021
+        <i class="ri-heart-fill heart_icon"></i> Anzhen
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="anzhen.tech"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/HDFS">HDFS</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Yarn">Yarn</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/MR">MR</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Hive">Hive</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86">数据采集</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/HBase">HBase</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Kafka">Kafka</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Spark">Spark</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Flink">Flink</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/MySQL">MySQL</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Java">Java</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/interview">面试宝典</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/11/07/about-me">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="52"
+        src="//music.163.com/outchain/player?type=2&id=318916815&auto=1&height=32"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+    
+
+  </div>
+</body>
+
+</html>

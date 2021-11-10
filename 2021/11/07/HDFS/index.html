@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>HDFS |  anzhen.tech</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+      <meta name="baidu-site-verification" content="code-BgeZtJHZzY" />
+      <meta name="google-site-verification" content="wNOxVwDPcgD6IwrCt_pD_Xtq-E86p8USRXPN73jLu0A" />
+    <link rel="alternate" href="/atom.xml" title="anzhen.tech" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-HDFS"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  HDFS
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/11/07/HDFS/" class="article-date">
+  <time datetime="2021-11-07T00:08:32.000Z" itemprop="datePublished">2021-11-07</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/HDFS/">HDFS</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">10.3k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">47 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="HDFS"><a href="#HDFS" class="headerlink" title="HDFS"></a>HDFS</h1><h1 id="一、HDFS概述"><a href="#一、HDFS概述" class="headerlink" title="一、HDFS概述"></a>一、HDFS概述</h1><h2 id="1-1-背景及定义"><a href="#1-1-背景及定义" class="headerlink" title="1.1 背景及定义"></a>1.1 背景及定义</h2><h3 id="1-1-1-背景"><a href="#1-1-1-背景" class="headerlink" title="1.1.1 背景"></a>1.1.1 背景</h3><ol>
+<li>海量数据无法单台服务器存储</li>
+<li>需要管理多台机器上的文件</li>
+</ol>
+<h3 id="1-1-2-定义"><a href="#1-1-2-定义" class="headerlink" title="1.1.2 定义"></a>1.1.2 定义</h3><ol>
+<li>HDFS: Hadoop Distributed File System 分布式文件系统，多台服务器联合实现功能，集群中各自承担不同角色</li>
+<li>适合一次写入，多次读出的场景，<font color ='red' >支持文件追加，不支持文件修改</font>。适合做数据分析，不适合做网盘应用</li>
+</ol>
+<hr>
+<h2 id="1-2-优缺点"><a href="#1-2-优缺点" class="headerlink" title="1.2 优缺点"></a>1.2 优缺点</h2><ul>
+<li><p>优点</p>
+<ol>
+<li><p>高容错性</p>
+<ul>
+<li><p>数据自动保存多个副本，通过增加副本提高容错性<br>  <img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16338313699180.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+</li>
+<li><p>某个副本丢失以后，可以自动回复<br>  <img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16338314377557.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+</li>
+</ul>
+</li>
+<li><p>适合处理大数据</p>
+<ul>
+<li>数据规模：能处理GB,TB,PB级别的数据</li>
+<li>文件规模：能处理百万千万规模以上的文件数量</li>
+</ul>
+</li>
+<li><p>可构建在廉价机器上，通过多副本机制提高可靠性</p>
+</li>
+</ol>
+</li>
+<li><p>缺点</p>
+<ol>
+<li>不适合低延迟数据访问，比如毫秒级的数据存储 </li>
+<li>无法高效的对大量小文件进行存储<ul>
+<li>大量小文件会占用NameNode大量内存保存元数据信息（目录和块信息）</li>
+<li>小文件存储的寻址时间超过读取时间，不符合HDFS设计目标</li>
+</ul>
+</li>
+<li>不支持并发写入，文件随机修改<ul>
+<li>同一个文件只能单线程写，不支持多线程并发写</li>
+<li>仅支持数据append，不支持文件随机修改</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h2 id="1-3-组成架构"><a href="#1-3-组成架构" class="headerlink" title="1.3 组成架构"></a>1.3 组成架构</h2><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16338314790454.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<h3 id="1-3-1-NameNode（NN）"><a href="#1-3-1-NameNode（NN）" class="headerlink" title="1.3.1 NameNode（NN）"></a>1.3.1 NameNode（NN）</h3><ol>
+<li>Master，它是一个主管、管理者。负责：</li>
+<li>管理HDFS的名称空间</li>
+<li>配置副本策略</li>
+<li>管理数据块（Block）映射信息</li>
+<li>处理客户端读写请求</li>
+</ol>
+<h3 id="1-3-2-DataNode（DN）"><a href="#1-3-2-DataNode（DN）" class="headerlink" title="1.3.2 DataNode（DN）"></a>1.3.2 DataNode（DN）</h3><ol>
+<li>Slave。NameNode下达命令，DataNode执行实际的操作</li>
+<li>存储实际的数据块</li>
+<li>执行数据块的读/写操作</li>
+</ol>
+<h3 id="1-3-3-Client客户端"><a href="#1-3-3-Client客户端" class="headerlink" title="1.3.3 Client客户端"></a>1.3.3 Client客户端</h3><ol>
+<li>文件切分。文件上传HDFS的时候，Client将文件切分成一个一个的Block，然后进行上传</li>
+<li>与NameNode交互，获取文件的位置信息</li>
+<li>与DataNode交互，读取或者写入数据；</li>
+<li>Client提供一些命令来管理HDFS，比如NameNode格式化</li>
+<li>Client可以通过一些命令来访问HDFS，比如对HDFS增删查改操作</li>
+</ol>
+<h3 id="1-3-4-Secondary-NameNode-2NN"><a href="#1-3-4-Secondary-NameNode-2NN" class="headerlink" title="1.3.4 Secondary NameNode(2NN)"></a>1.3.4 Secondary NameNode(2NN)</h3><ol>
+<li>并非NameNode的热备。当NameNode挂掉的时候，它并不能马上替换NameNode并提供服务。</li>
+<li>辅助NameNode，分担其工作量，比如定期合并Fsimage和Edits，并推送给NameNode</li>
+<li>在紧急情况下，可辅助恢复NameNode。</li>
+</ol>
+<hr>
+<h2 id="1-4-HDFS文件块大小"><a href="#1-4-HDFS文件块大小" class="headerlink" title="1.4 HDFS文件块大小"></a>1.4 HDFS文件块大小</h2><p>HDFS中的文件在物理上是分块存储（Block），块的大小可以通过配置参数(dfs.blocksize）来规定，默认大小在Hadoop2.x/3.x版本中是128M，1.x版本中是64M。<br><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16338322175049.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"><br><em>思考：为什么块的大小不能设置太小，也不能设置太大？</em></p>
+<blockquote>
+<ol>
+<li>HDFS的块设置太小，会增加寻址时间，程序一直在找块的开始位置；</li>
+<li>如果块设置的太大，从磁盘传输数据的时间会明显大于定位这个块开始位置所需的时间。导致程序在处理这块数据时，会非常慢。</li>
+</ol>
+<p>总结：HDFS块的大小设置主要取决于磁盘传输速率。</p>
+</blockquote>
+<hr>
+<h1 id="二、Shell操作HDFS"><a href="#二、Shell操作HDFS" class="headerlink" title="二、Shell操作HDFS"></a>二、Shell操作HDFS</h1><h2 id="2-1-基本语法"><a href="#2-1-基本语法" class="headerlink" title="2.1 基本语法"></a>2.1 基本语法</h2><p><code>hadoop fs [genericOptions] [commandOptions]</code></p>
+<hr>
+<h2 id="2-2-命令参考"><a href="#2-2-命令参考" class="headerlink" title="2.2 命令参考"></a>2.2 命令参考</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 ~]$ hadoop fs</span><br><span class="line">Usage: hadoop fs [generic options]</span><br><span class="line">	[-appendToFile &lt;localsrc&gt; ... &lt;dst&gt;]</span><br><span class="line">	[-cat [-ignoreCrc] &lt;src&gt; ...]</span><br><span class="line">	[-checksum &lt;src&gt; ...]</span><br><span class="line">	[-chgrp [-R] GROUP PATH...]</span><br><span class="line">	[-chmod [-R] &lt;MODE[,MODE]... | OCTALMODE&gt; PATH...]</span><br><span class="line">	[-chown [-R] [OWNER][:[GROUP]] PATH...]</span><br><span class="line">	[-copyFromLocal [-f] [-p] [-l] [-d] [-t &lt;thread count&gt;] &lt;localsrc&gt; ... &lt;dst&gt;]</span><br><span class="line">	[-copyToLocal [-f] [-p] [-ignoreCrc] [-crc] &lt;src&gt; ... &lt;localdst&gt;]</span><br><span class="line">	[-count [-q] [-h] [-v] [-t [&lt;storage <span class="built_in">type</span>&gt;]] [-u] [-x] [-e] &lt;path&gt; ...]</span><br><span class="line">	[-cp [-f] [-p | -p[topax]] [-d] &lt;src&gt; ... &lt;dst&gt;]</span><br><span class="line">	[-createSnapshot &lt;snapshotDir&gt; [&lt;snapshotName&gt;]]</span><br><span class="line">	[-deleteSnapshot &lt;snapshotDir&gt; &lt;snapshotName&gt;]</span><br><span class="line">	[-df [-h] [&lt;path&gt; ...]]</span><br><span class="line">	[-du [-s] [-h] [-v] [-x] &lt;path&gt; ...]</span><br><span class="line">	[-expunge]</span><br><span class="line">	[-find &lt;path&gt; ... &lt;expression&gt; ...]</span><br><span class="line">	[-get [-f] [-p] [-ignoreCrc] [-crc] &lt;src&gt; ... &lt;localdst&gt;]</span><br><span class="line">	[-getfacl [-R] &lt;path&gt;]</span><br><span class="line">	[-getfattr [-R] &#123;-n name | -d&#125; [-e en] &lt;path&gt;]</span><br><span class="line">	[-getmerge [-nl] [-skip-empty-file] &lt;src&gt; &lt;localdst&gt;]</span><br><span class="line">	[-head &lt;file&gt;]</span><br><span class="line">	[-<span class="built_in">help</span> [cmd ...]]</span><br><span class="line">	[-ls [-C] [-d] [-h] [-q] [-R] [-t] [-S] [-r] [-u] [-e] [&lt;path&gt; ...]]</span><br><span class="line">	[-mkdir [-p] &lt;path&gt; ...]</span><br><span class="line">	[-moveFromLocal &lt;localsrc&gt; ... &lt;dst&gt;]</span><br><span class="line">	[-moveToLocal &lt;src&gt; &lt;localdst&gt;]</span><br><span class="line">	[-mv &lt;src&gt; ... &lt;dst&gt;]</span><br><span class="line">	[-put [-f] [-p] [-l] [-d] &lt;localsrc&gt; ... &lt;dst&gt;]</span><br><span class="line">	[-renameSnapshot &lt;snapshotDir&gt; &lt;oldName&gt; &lt;newName&gt;]</span><br><span class="line">	[-rm [-f] [-r|-R] [-skipTrash] [-safely] &lt;src&gt; ...]</span><br><span class="line">	[-rmdir [--ignore-fail-on-non-empty] &lt;dir&gt; ...]</span><br><span class="line">	[-setfacl [-R] [&#123;-b|-k&#125; &#123;-m|-x &lt;acl_spec&gt;&#125; &lt;path&gt;]|[--<span class="built_in">set</span> &lt;acl_spec&gt; &lt;path&gt;]]</span><br><span class="line">	[-setfattr &#123;-n name [-v value] | -x name&#125; &lt;path&gt;]</span><br><span class="line">	[-setrep [-R] [-w] &lt;rep&gt; &lt;path&gt; ...]</span><br><span class="line">	[-<span class="built_in">stat</span> [format] &lt;path&gt; ...]</span><br><span class="line">	[-tail [-f] [-s &lt;sleep interval&gt;] &lt;file&gt;]</span><br><span class="line">	[-<span class="built_in">test</span> -[defsz] &lt;path&gt;]</span><br><span class="line">	[-text [-ignoreCrc] &lt;src&gt; ...]</span><br><span class="line">	[-touch [-a] [-m] [-t TIMESTAMP ] [-c] &lt;path&gt; ...]</span><br><span class="line">	[-touchz &lt;path&gt; ...]</span><br><span class="line">	[-truncate [-w] &lt;length&gt; &lt;path&gt; ...]</span><br><span class="line">	[-usage [cmd ...]]</span><br><span class="line">    </span><br><span class="line">Generic options supported are:</span><br><span class="line">-conf &lt;configuration file&gt;        specify an application configuration file</span><br><span class="line">-D &lt;property=value&gt;               define a value <span class="keyword">for</span> a given property</span><br><span class="line">-fs &lt;file:///|hdfs://namenode:port&gt; specify default filesystem URL to use, overrides <span class="string">&#x27;fs.defaultFS&#x27;</span> property from configurations.</span><br><span class="line">-jt &lt;<span class="built_in">local</span>|resourcemanager:port&gt;  specify a ResourceManager</span><br><span class="line">-files &lt;file1,...&gt;                specify a comma-separated list of files to be copied to the map reduce cluster</span><br><span class="line">-libjars &lt;jar1,...&gt;               specify a comma-separated list of jar files to be included <span class="keyword">in</span> the classpath</span><br><span class="line">-archives &lt;archive1,...&gt;          specify a comma-separated list of archives to be unarchived on the compute machines</span><br><span class="line">    </span><br><span class="line">The general <span class="built_in">command</span> line syntax is:</span><br><span class="line"><span class="built_in">command</span> [genericOptions] [commandOptions]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-3-常用命令"><a href="#2-3-常用命令" class="headerlink" title="2.3 常用命令"></a>2.3 常用命令</h2><h3 id="2-3-1-上传"><a href="#2-3-1-上传" class="headerlink" title="2.3.1 上传"></a>2.3.1 上传</h3><ul>
+<li>-moveFromLocal：从本地剪切粘贴到 HDFS  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 sanguo]$ ls</span><br><span class="line">guanyu.txt  liubei.txt  sanguo.txt  zhangfei.txt  zhaoyun.txt</span><br><span class="line">[atguigu@hadoop001 sanguo]$ hadoop fs -moveFromLocal zhangfei.txt /sanguo</span><br><span class="line">2021-10-10 11:01:49,884 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = <span class="literal">false</span>, remoteHostTrusted = <span class="literal">false</span></span><br><span class="line">[atguigu@hadoop001 sanguo]$ ls</span><br><span class="line">guanyu.txt  liubei.txt  sanguo.txt  zhaoyun.txt</span><br><span class="line">[atguigu@hadoop001 sanguo]$</span><br></pre></td></tr></table></figure></li>
+<li>-copyFromLocal：从本地文件系统中拷贝文件到 HDFS 路径去  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 ~]$ hadoop fs -copyFromLocal zhaoyun.txt /sanguo</span><br><span class="line">2021-10-10 10:21:55,357 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = <span class="literal">false</span>, remoteHostTrusted = <span class="literal">false</span></span><br><span class="line">[atguigu@hadoop001 ~]$</span><br></pre></td></tr></table></figure></li>
+<li>-put：等同于 copyFromLocal，生产环境更习惯用 put  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 sanguo]$ hadoop fs -put caocao.txt /sanguo</span><br><span class="line">2021-10-10 12:05:07,051 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = <span class="literal">false</span>, remoteHostTrusted = <span class="literal">false</span></span><br><span class="line">[atguigu@hadoop001 sanguo]$ hadoop fs -ls /sanguo</span><br><span class="line">Found 8 items</span><br><span class="line">-rw-r--r--   3 atguigu supergroup         34 2021-10-10 12:05 /sanguo/caocao.txt</span><br><span class="line">-rw-r--r--   3 atguigu supergroup         48 2021-10-10 10:26 /sanguo/guanyu.txt</span><br><span class="line">-rw-r--r--   3 atguigu supergroup  195013152 2021-10-10 10:21 /sanguo/jdk-8u212-linux-x64.tar.gz</span><br><span class="line">-rw-r--r--   3 atguigu supergroup         22 2021-10-10 10:25 /sanguo/liubei.txt</span><br><span class="line">drwxr-xr-x   - atguigu supergroup          0 2021-10-10 10:33 /sanguo/shu</span><br><span class="line">drwxr-xr-x   - atguigu supergroup          0 2021-10-10 10:33 /sanguo/wu</span><br><span class="line">-rw-r--r--   3 atguigu supergroup         22 2021-10-10 11:01 /sanguo/zhangfei.txt</span><br><span class="line">-rw-r--r--   6 atguigu supergroup         28 2021-10-10 10:21 /sanguo/zhaoyun.txt</span><br><span class="line">[atguigu@hadoop001 sanguo]$</span><br></pre></td></tr></table></figure></li>
+<li>-appendToFile：追加一个文件到已经存在的文件末尾</li>
+</ul>
+<h3 id="2-3-2-查看"><a href="#2-3-2-查看" class="headerlink" title="2.3.2 查看"></a>2.3.2 查看</h3><h3 id="2-3-3-下载"><a href="#2-3-3-下载" class="headerlink" title="2.3.3 下载"></a>2.3.3 下载</h3><h3 id="2-3-4-删除"><a href="#2-3-4-删除" class="headerlink" title="2.3.4 删除"></a>2.3.4 删除</h3><h3 id="2-3-5-HDFS-直接操作"><a href="#2-3-5-HDFS-直接操作" class="headerlink" title="2.3.5 HDFS 直接操作"></a>2.3.5 HDFS 直接操作</h3><hr>
+<h1 id="四、HDFS的数据流"><a href="#四、HDFS的数据流" class="headerlink" title="四、HDFS的数据流"></a>四、HDFS的数据流</h1><h2 id="4-1-HDFS写数据流程"><a href="#4-1-HDFS写数据流程" class="headerlink" title="4.1 HDFS写数据流程"></a>4.1 HDFS写数据流程</h2><h3 id="4-1-1-剖析文件写入"><a href="#4-1-1-剖析文件写入" class="headerlink" title="4.1.1 剖析文件写入"></a>4.1.1 剖析文件写入</h3><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16338477292310.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ol>
+<li>请求上传文件<ol>
+<li>创建Hadoop客户端DistributionFileSystem</li>
+</ol>
+</li>
+<li>请求NN上传文件<ol>
+<li>NN校验：权限，路径，文件名</li>
+<li>NN响应允许上传</li>
+</ol>
+</li>
+<li>请求NN上传Block</li>
+<li>NN根据副本数量按照<font color ='red' >机架感知</font>规则返回副本存储节点DN</li>
+<li>客户端创建输出流FSDataOutputStream，根据<font color ='red' >网络拓扑计算节点距离</font>，请求<font color ='red' ><font color ='red' ></font>最近节点</font>建立Block传输通道<ol>
+<li>客户端请求DN1建立通道</li>
+<li>DN1请求DN2建立通道</li>
+<li>DN2请求DN3建立通道</li>
+</ol>
+</li>
+<li>通道建立应答成功<ol>
+<li>DN3应答DN2成功</li>
+<li>DN2应答DN1成功</li>
+<li>DN1应答客户端成功</li>
+</ol>
+</li>
+<li>传输数据Packet<ol>
+<li>block 分解成多个 packet （每个64K）,packet分解成多个chunk(每个512B)，每个chunk都有个校验和chacksum</li>
+<li>DFSOutputStream负责把数据写入dataQueue，写入单位为packet</li>
+<li>DataStreamer从dataQueue中提取packet,发送到管道中的第一个datanode,同时将该packet写入 ackQueue中（block是有副本的，在写block之前就已经确定了，这些副本要写到哪些datanode上，这些datanode形成一个数据管道，DataStreamer只会把数据写入管道的第一个datanode,然后第一个dataNode向第二个datanode写数据，第二个再向第三个写，它们之间使用socket传输数据）</li>
+<li>ResponseProcessor会从datanodes接收ack（此ack是Datanode接收packet成功后的确定），ResponseProcessor接收到所有Datanote的ack后，就从ackQueue中移除相应的packet。</li>
+<li>如果遇到异常，所有的packets都从ackQueue移除，并排除异常的Datanode，再重新申请一个管道 。</li>
+<li>然后 DataStreamer又重新从dataQueue中，获得packets并发送。</li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/419a2068987c">参考</a></li>
+</ol>
+</li>
+<li>当一个Block传输完成之后，客户端再次请求NameNode上传第二个Block的服务器。（重复执行3-7步）。</li>
+</ol>
+<h3 id="4-1-2-网络拓扑-节点距离计算"><a href="#4-1-2-网络拓扑-节点距离计算" class="headerlink" title="4.1.2 网络拓扑-节点距离计算"></a>4.1.2 网络拓扑-节点距离计算</h3><ul>
+<li>在HDFS写数据的过程中，NameNode会选择距离待上传数据最近距离的DataNode接收数据。</li>
+<li>节点距离：两个节点到达最近的共同祖先的距离总和。<br><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16339649640120.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></li>
+</ul>
+<h3 id="4-1-3-机架感知（副本存储节点选择）"><a href="#4-1-3-机架感知（副本存储节点选择）" class="headerlink" title="4.1.3 机架感知（副本存储节点选择）"></a>4.1.3 机架感知（副本存储节点选择）</h3><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16339657833860.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ul>
+<li>第一个副本在Client所处的节点上。如果客户端在集群外，随机选一个。</li>
+<li>第二个副本在另一个机架的随机一个节点</li>
+<li>第三个副本在第二个副本所在机架的随机节点</li>
+</ul>
+<blockquote>
+<p>思考</p>
+<ol>
+<li>HDFS根据请求返回DataNode的节点的策略？– 机架感知</li>
+</ol>
+<ul>
+<li>如果当前Client所在机器有DataNode节点，那就返回当前机器DN1,否则从集群中随机一台。</li>
+<li>根据第一台机器的位置，然后再其他机架上随机一台，在第二台机器所在机架上再随机一台。</li>
+<li>以上策略的缘由：为了提高数据的可靠性，同时一定程度也保证数据传输的效率！</li>
+</ul>
+<ol start="2">
+<li>客户端建立传输通道的时候如何确定和哪一台DataNode先建立连接？– 网络拓扑</li>
+</ol>
+<ul>
+<li>找离client最近的一台机器先建立通道。</li>
+</ul>
+<ol start="3">
+<li>Client为什么是以串行的方式建立通道？</li>
+</ol>
+<ul>
+<li>本质上就是为了降低client的IO开销</li>
+</ul>
+<ol start="4">
+<li>数据传输的时候如何保证数据成功？（了解）</li>
+</ol>
+<ul>
+<li>采用了ack回执的策略保证了数据完整成功上传。</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="4-2-HDFS读数据流程"><a href="#4-2-HDFS读数据流程" class="headerlink" title="4.2 HDFS读数据流程"></a>4.2 HDFS读数据流程</h2><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16339658069723.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ol>
+<li>客户端通过DistributedFileSystem向NameNode请求下载文件，NameNode通过查询元数据，找到文件块所在的DataNode地址。</li>
+<li>挑选一台DataNode（就近原则，然后随机）服务器，请求读取数据。</li>
+<li>DataNode开始传输数据给客户端（从磁盘里面读取数据输入流，以Packet为单位来做校验）。</li>
+<li>客户端以Packet为单位接收，先在本地缓存，然后写入目标文件。</li>
+</ol>
+<hr>
+<h1 id="五、NameNode和SecondaryNameNode"><a href="#五、NameNode和SecondaryNameNode" class="headerlink" title="五、NameNode和SecondaryNameNode"></a>五、NameNode和SecondaryNameNode</h1><h2 id="5-1-NN和2NN工作机制"><a href="#5-1-NN和2NN工作机制" class="headerlink" title="5.1 NN和2NN工作机制"></a>5.1 NN和2NN工作机制</h2><h3 id="5-1-1-元数据信息要保存在哪？"><a href="#5-1-1-元数据信息要保存在哪？" class="headerlink" title="5.1.1 元数据信息要保存在哪？"></a>5.1.1 元数据信息要保存在哪？</h3><ol>
+<li><p>保存到磁盘</p>
+<ul>
+<li>优点：数据安全</li>
+<li>不足：读写速度慢 效率低！</li>
+</ul>
+</li>
+<li><p>保存内存</p>
+<ul>
+<li>优点： 读写效率高！</li>
+<li>不足：数据不安全</li>
+</ul>
+</li>
+<li><p>最终的解决方案： 磁盘 + 内存<br><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16339951016390.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ul>
+<li>第一阶段：NameNode启动<ol>
+<li>第一次启动NameNode格式化后，创建Fsimage和Edits文件。如果不是第一次启动，直接加载编辑日志和镜像文件到内存。</li>
+<li>客户端对元数据进行增删改的请求。</li>
+<li>NameNode记录操作日志，更新滚动日志。</li>
+<li>NameNode在内存中对元数据进行增删改。 </li>
+</ol>
+</li>
+<li>第二阶段：Secondary NameNode工作<ol>
+<li>Secondary NameNode询问NameNode是否需要CheckPoint。直接带回NameNode是否检查结果。</li>
+<li>Secondary NameNode请求执行CheckPoint。</li>
+<li>NameNode滚动正在写的Edits日志。</li>
+<li>将滚动前的编辑日志和镜像文件拷贝到Secondary NameNode。</li>
+<li>Secondary NameNode加载编辑日志和镜像文件到内存，并合并。</li>
+<li>生成新的镜像文件fsimage.chkpoint。</li>
+<li>拷贝fsimage.chkpoint到NameNode。</li>
+<li>NameNode将fsimage.chkpoint重新命名成fsimage。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="5-2-Fsimage和Edits解析"><a href="#5-2-Fsimage和Edits解析" class="headerlink" title="5.2 Fsimage和Edits解析"></a>5.2 Fsimage和Edits解析</h2><p>NameNode被格式化之后，将在/opt/module/hadoop-2.7.2/data/tmp/dfs/name/current目录中产生如下文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 subdir0]$ <span class="built_in">cd</span> /opt/module/hadoop-3.1.3/data/dfs/name/current/</span><br><span class="line">[atguigu@hadoop001 current]$ ll</span><br><span class="line">总用量 6320</span><br><span class="line">-rw-rw-r--. 1 atguigu atguigu 1048576 10月 12 07:26 edits_0000000000000000666-0000000000000000666</span><br><span class="line">-rw-rw-r--. 1 atguigu atguigu      42 10月 12 09:45 edits_0000000000000000667-0000000000000000668</span><br><span class="line">-rw-rw-r--. 1 atguigu atguigu 1048576 10月 12 09:45 edits_inprogress_0000000000000000669</span><br><span class="line">-rw-rw-r--. 1 atguigu atguigu    4452 10月 12 09:05 fsimage_0000000000000000666</span><br><span class="line">-rw-rw-r--. 1 atguigu atguigu      62 10月 12 09:05 fsimage_0000000000000000666.md5</span><br><span class="line">-rw-rw-r--. 1 atguigu atguigu    4452 10月 12 09:45 fsimage_0000000000000000668</span><br><span class="line">-rw-rw-r--. 1 atguigu atguigu      62 10月 12 09:45 fsimage_0000000000000000668.md5</span><br><span class="line">-rw-rw-r--. 1 atguigu atguigu       4 10月 12 09:45 seen_txid</span><br><span class="line">-rw-rw-r--. 1 atguigu atguigu     215 10月 12 09:05 VERSION</span><br><span class="line">[atguigu@hadoop001 current]$</span><br></pre></td></tr></table></figure>
+<ol>
+<li>Fsimage文件：HDFS文件系统元数据的一个永久性的检查点，其中包含HDFS文件系统的所有目录和文件inode的序列化信息。 </li>
+<li>Edits文件：存放HDFS文件系统的所有更新操作的路径，文件系统客户端执行的所有写操作首先会被记录到Edits文件中。 </li>
+<li>seen_txid文件保存的是一个数字，就是最后一个edits_的数字 </li>
+<li>每次NameNode启动的时候都会将Fsimage文件读入内存，加载Edits里面的更新操作，保证内存中的元数据信息是最新的、同步的，可以看成NameNode启动的时候就将Fsimage和Edits文件进行了合并</li>
+<li>解析Fsimage文件<ol>
+<li>oiv查看Fsimage文件<ol>
+<li>查看oiv和oev命令 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 current]$ hdfs --<span class="built_in">help</span> | grep -E <span class="string">&#x27;oev|oiv&#x27;</span></span><br><span class="line">oev                  apply the offline edits viewer to an edits file</span><br><span class="line">oiv                  apply the offline fsimage viewer to an fsimage</span><br><span class="line">[atguigu@hadoop001 current]$</span><br></pre></td></tr></table></figure></li>
+<li>基本语法<br> <code>hdfs oiv -p 文件类型 -i镜像文件 -o 转换后文件输出路径</code></li>
+<li>操作 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 current]$ hdfs oiv -p xml -i fsimage_0000000000000000666 -o ~/fsimage/fsimage.xml</span><br><span class="line">2021-10-12 10:02:40,652 INFO offlineImageViewer.FSImageHandler: Loading 3 strings</span><br><span class="line">[atguigu@hadoop001 current]$</span><br></pre></td></tr></table></figure></li>
+<li>部分内容 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">INodeSection</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">lastInodeId</span>&gt;</span>16507<span class="tag">&lt;/<span class="name">lastInodeId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">numInodes</span>&gt;</span>54<span class="tag">&lt;/<span class="name">numInodes</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">inode</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>16385<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">type</span>&gt;</span>DIRECTORY<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span><span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mtime</span>&gt;</span>1633959143943<span class="tag">&lt;/<span class="name">mtime</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">permission</span>&gt;</span>atguigu:supergroup:0755<span class="tag">&lt;/<span class="name">permission</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">nsquota</span>&gt;</span>9223372036854775807<span class="tag">&lt;/<span class="name">nsquota</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dsquota</span>&gt;</span>-1<span class="tag">&lt;/<span class="name">dsquota</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">inode</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">inode</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>16470<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">type</span>&gt;</span>DIRECTORY<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>sanguo<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mtime</span>&gt;</span>1633838707139<span class="tag">&lt;/<span class="name">mtime</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">permission</span>&gt;</span>atguigu:supergroup:0755<span class="tag">&lt;/<span class="name">permission</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">nsquota</span>&gt;</span>-1<span class="tag">&lt;/<span class="name">nsquota</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dsquota</span>&gt;</span>-1<span class="tag">&lt;/<span class="name">dsquota</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">inode</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">inode</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>16471<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">type</span>&gt;</span>FILE<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>jdk-8u212-linux-x64.tar.gz<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">replication</span>&gt;</span>3<span class="tag">&lt;/<span class="name">replication</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mtime</span>&gt;</span>1633832463721<span class="tag">&lt;/<span class="name">mtime</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">atime</span>&gt;</span>1633832462757<span class="tag">&lt;/<span class="name">atime</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">preferredBlockSize</span>&gt;</span>134217728<span class="tag">&lt;/<span class="name">preferredBlockSize</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">permission</span>&gt;</span>atguigu:supergroup:0644<span class="tag">&lt;/<span class="name">permission</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">blocks</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">block</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">id</span>&gt;</span>1073741861<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">genstamp</span>&gt;</span>1037<span class="tag">&lt;/<span class="name">genstamp</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">numBytes</span>&gt;</span>134217728<span class="tag">&lt;/<span class="name">numBytes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">block</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">block</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">id</span>&gt;</span>1073741862<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">genstamp</span>&gt;</span>1038<span class="tag">&lt;/<span class="name">genstamp</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">numBytes</span>&gt;</span>60795424<span class="tag">&lt;/<span class="name">numBytes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">block</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">blocks</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">storagePolicyId</span>&gt;</span>0<span class="tag">&lt;/<span class="name">storagePolicyId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">inode</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">INodeSection</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">INodeDirectorySection</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">directory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">parent</span>&gt;</span>16385<span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span>&gt;</span>16470<span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span>&gt;</span>16475<span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span>&gt;</span>16386<span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span>&gt;</span>16507<span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span>&gt;</span>16392<span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span>&gt;</span>16403<span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span>&gt;</span>16430<span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span>&gt;</span>16453<span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">directory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">parent</span>&gt;</span>16470<span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span>&gt;</span>16484<span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span>&gt;</span>16473<span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span>&gt;</span>16471<span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span>&gt;</span>16474<span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span>&gt;</span>16477<span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span>&gt;</span>16478<span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span>&gt;</span>16480<span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">child</span>&gt;</span>16472<span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">INodeDirectorySection</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<blockquote>
+<p>思考：可以看出，Fsimage中没有记录块所对应DataNode，为什么？<br>  在集群启动后，要求DataNode上报数据块信息，并间隔一段时间后再次上报。</p>
+</blockquote>
+</li>
+<li>oev查看Edits文件<ol>
+<li>基本语法<br> <code>hdfs oev -p 文件类型 -i编辑日志 -o 转换后文件输出路径</code></li>
+<li>操作 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 current]$ hdfs oev -p xml -i edits_0000000000000000666-0000000000000000666 -o ~/fsimage/edits.xml</span><br><span class="line">[atguigu@hadoop001 current]$ ll ~/fsimage/edits.xml</span><br><span class="line">-rw-rw-r--. 1 atguigu atguigu 221 10月 12 12:05 /home/atguigu/fsimage/edits.xml</span><br><span class="line">[atguigu@hadoop001 current]$</span><br></pre></td></tr></table></figure></li>
+<li>内容 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">EDITS</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">EDITS_VERSION</span>&gt;</span>-64<span class="tag">&lt;/<span class="name">EDITS_VERSION</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">RECORD</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">OPCODE</span>&gt;</span>OP_START_LOG_SEGMENT<span class="tag">&lt;/<span class="name">OPCODE</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">DATA</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">TXID</span>&gt;</span>328<span class="tag">&lt;/<span class="name">TXID</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">DATA</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">RECORD</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">RECORD</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">OPCODE</span>&gt;</span>OP_MKDIR<span class="tag">&lt;/<span class="name">OPCODE</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">DATA</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">TXID</span>&gt;</span>329<span class="tag">&lt;/<span class="name">TXID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">LENGTH</span>&gt;</span>0<span class="tag">&lt;/<span class="name">LENGTH</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">INODEID</span>&gt;</span>16470<span class="tag">&lt;/<span class="name">INODEID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">PATH</span>&gt;</span>/sanguo<span class="tag">&lt;/<span class="name">PATH</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">TIMESTAMP</span>&gt;</span>1633832427513<span class="tag">&lt;/<span class="name">TIMESTAMP</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">PERMISSION_STATUS</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">USERNAME</span>&gt;</span>atguigu<span class="tag">&lt;/<span class="name">USERNAME</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">GROUPNAME</span>&gt;</span>supergroup<span class="tag">&lt;/<span class="name">GROUPNAME</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">MODE</span>&gt;</span>493<span class="tag">&lt;/<span class="name">MODE</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">PERMISSION_STATUS</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">DATA</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">RECORD</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">RECORD</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">OPCODE</span>&gt;</span>OP_ADD<span class="tag">&lt;/<span class="name">OPCODE</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">DATA</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">TXID</span>&gt;</span>330<span class="tag">&lt;/<span class="name">TXID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">LENGTH</span>&gt;</span>0<span class="tag">&lt;/<span class="name">LENGTH</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">INODEID</span>&gt;</span>16471<span class="tag">&lt;/<span class="name">INODEID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">PATH</span>&gt;</span>/sanguo/jdk-8u212-linux-x64.tar.gz._COPYING_<span class="tag">&lt;/<span class="name">PATH</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">REPLICATION</span>&gt;</span>3<span class="tag">&lt;/<span class="name">REPLICATION</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">MTIME</span>&gt;</span>1633832462757<span class="tag">&lt;/<span class="name">MTIME</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ATIME</span>&gt;</span>1633832462757<span class="tag">&lt;/<span class="name">ATIME</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">BLOCKSIZE</span>&gt;</span>134217728<span class="tag">&lt;/<span class="name">BLOCKSIZE</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">CLIENT_NAME</span>&gt;</span>DFSClient_NONMAPREDUCE_-1241738550_1<span class="tag">&lt;/<span class="name">CLIENT_NAME</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">CLIENT_MACHINE</span>&gt;</span>192.168.2.6<span class="tag">&lt;/<span class="name">CLIENT_MACHINE</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">OVERWRITE</span>&gt;</span>true<span class="tag">&lt;/<span class="name">OVERWRITE</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">PERMISSION_STATUS</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">USERNAME</span>&gt;</span>atguigu<span class="tag">&lt;/<span class="name">USERNAME</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">GROUPNAME</span>&gt;</span>supergroup<span class="tag">&lt;/<span class="name">GROUPNAME</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">MODE</span>&gt;</span>420<span class="tag">&lt;/<span class="name">MODE</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">PERMISSION_STATUS</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ERASURE_CODING_POLICY_ID</span>&gt;</span>0<span class="tag">&lt;/<span class="name">ERASURE_CODING_POLICY_ID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">RPC_CLIENTID</span>&gt;</span>a0a774c6-277a-43ec-9f31-a8c2cbcaa322<span class="tag">&lt;/<span class="name">RPC_CLIENTID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">RPC_CALLID</span>&gt;</span>3<span class="tag">&lt;/<span class="name">RPC_CALLID</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">DATA</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">RECORD</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">RECORD</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">OPCODE</span>&gt;</span>OP_ALLOCATE_BLOCK_ID<span class="tag">&lt;/<span class="name">OPCODE</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">DATA</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">TXID</span>&gt;</span>331<span class="tag">&lt;/<span class="name">TXID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">BLOCK_ID</span>&gt;</span>1073741861<span class="tag">&lt;/<span class="name">BLOCK_ID</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">DATA</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">RECORD</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">RECORD</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">OPCODE</span>&gt;</span>OP_SET_GENSTAMP_V2<span class="tag">&lt;/<span class="name">OPCODE</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">DATA</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">TXID</span>&gt;</span>332<span class="tag">&lt;/<span class="name">TXID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">GENSTAMPV2</span>&gt;</span>1037<span class="tag">&lt;/<span class="name">GENSTAMPV2</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">DATA</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">RECORD</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">RECORD</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">OPCODE</span>&gt;</span>OP_ADD_BLOCK<span class="tag">&lt;/<span class="name">OPCODE</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">DATA</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">TXID</span>&gt;</span>333<span class="tag">&lt;/<span class="name">TXID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">PATH</span>&gt;</span>/sanguo/jdk-8u212-linux-x64.tar.gz._COPYING_<span class="tag">&lt;/<span class="name">PATH</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">BLOCK</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">BLOCK_ID</span>&gt;</span>1073741861<span class="tag">&lt;/<span class="name">BLOCK_ID</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">NUM_BYTES</span>&gt;</span>0<span class="tag">&lt;/<span class="name">NUM_BYTES</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">GENSTAMP</span>&gt;</span>1037<span class="tag">&lt;/<span class="name">GENSTAMP</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">BLOCK</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">RPC_CLIENTID</span>/&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">RPC_CALLID</span>&gt;</span>-2<span class="tag">&lt;/<span class="name">RPC_CALLID</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">DATA</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">RECORD</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">RECORD</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">OPCODE</span>&gt;</span>OP_ALLOCATE_BLOCK_ID<span class="tag">&lt;/<span class="name">OPCODE</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">DATA</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">TXID</span>&gt;</span>334<span class="tag">&lt;/<span class="name">TXID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">BLOCK_ID</span>&gt;</span>1073741862<span class="tag">&lt;/<span class="name">BLOCK_ID</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">DATA</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">RECORD</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">RECORD</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">OPCODE</span>&gt;</span>OP_SET_GENSTAMP_V2<span class="tag">&lt;/<span class="name">OPCODE</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">DATA</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">TXID</span>&gt;</span>335<span class="tag">&lt;/<span class="name">TXID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">GENSTAMPV2</span>&gt;</span>1038<span class="tag">&lt;/<span class="name">GENSTAMPV2</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">DATA</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">RECORD</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">RECORD</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">OPCODE</span>&gt;</span>OP_ADD_BLOCK<span class="tag">&lt;/<span class="name">OPCODE</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">DATA</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">TXID</span>&gt;</span>336<span class="tag">&lt;/<span class="name">TXID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">PATH</span>&gt;</span>/sanguo/jdk-8u212-linux-x64.tar.gz._COPYING_<span class="tag">&lt;/<span class="name">PATH</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">BLOCK</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">BLOCK_ID</span>&gt;</span>1073741861<span class="tag">&lt;/<span class="name">BLOCK_ID</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">NUM_BYTES</span>&gt;</span>134217728<span class="tag">&lt;/<span class="name">NUM_BYTES</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">GENSTAMP</span>&gt;</span>1037<span class="tag">&lt;/<span class="name">GENSTAMP</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">BLOCK</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">BLOCK</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">BLOCK_ID</span>&gt;</span>1073741862<span class="tag">&lt;/<span class="name">BLOCK_ID</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">NUM_BYTES</span>&gt;</span>0<span class="tag">&lt;/<span class="name">NUM_BYTES</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">GENSTAMP</span>&gt;</span>1038<span class="tag">&lt;/<span class="name">GENSTAMP</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">BLOCK</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">RPC_CLIENTID</span>/&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">RPC_CALLID</span>&gt;</span>-2<span class="tag">&lt;/<span class="name">RPC_CALLID</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">DATA</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">RECORD</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">RECORD</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">OPCODE</span>&gt;</span>OP_CLOSE<span class="tag">&lt;/<span class="name">OPCODE</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">DATA</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">TXID</span>&gt;</span>337<span class="tag">&lt;/<span class="name">TXID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">LENGTH</span>&gt;</span>0<span class="tag">&lt;/<span class="name">LENGTH</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">INODEID</span>&gt;</span>0<span class="tag">&lt;/<span class="name">INODEID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">PATH</span>&gt;</span>/sanguo/jdk-8u212-linux-x64.tar.gz._COPYING_<span class="tag">&lt;/<span class="name">PATH</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">REPLICATION</span>&gt;</span>3<span class="tag">&lt;/<span class="name">REPLICATION</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">MTIME</span>&gt;</span>1633832463721<span class="tag">&lt;/<span class="name">MTIME</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ATIME</span>&gt;</span>1633832462757<span class="tag">&lt;/<span class="name">ATIME</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">BLOCKSIZE</span>&gt;</span>134217728<span class="tag">&lt;/<span class="name">BLOCKSIZE</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">CLIENT_NAME</span>/&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">CLIENT_MACHINE</span>/&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">OVERWRITE</span>&gt;</span>false<span class="tag">&lt;/<span class="name">OVERWRITE</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">BLOCK</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">BLOCK_ID</span>&gt;</span>1073741861<span class="tag">&lt;/<span class="name">BLOCK_ID</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">NUM_BYTES</span>&gt;</span>134217728<span class="tag">&lt;/<span class="name">NUM_BYTES</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">GENSTAMP</span>&gt;</span>1037<span class="tag">&lt;/<span class="name">GENSTAMP</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">BLOCK</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">BLOCK</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">BLOCK_ID</span>&gt;</span>1073741862<span class="tag">&lt;/<span class="name">BLOCK_ID</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">NUM_BYTES</span>&gt;</span>60795424<span class="tag">&lt;/<span class="name">NUM_BYTES</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">GENSTAMP</span>&gt;</span>1038<span class="tag">&lt;/<span class="name">GENSTAMP</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">BLOCK</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">PERMISSION_STATUS</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">USERNAME</span>&gt;</span>atguigu<span class="tag">&lt;/<span class="name">USERNAME</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">GROUPNAME</span>&gt;</span>supergroup<span class="tag">&lt;/<span class="name">GROUPNAME</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">MODE</span>&gt;</span>420<span class="tag">&lt;/<span class="name">MODE</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">PERMISSION_STATUS</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">DATA</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">RECORD</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">RECORD</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">OPCODE</span>&gt;</span>OP_RENAME_OLD<span class="tag">&lt;/<span class="name">OPCODE</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">DATA</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">TXID</span>&gt;</span>338<span class="tag">&lt;/<span class="name">TXID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">LENGTH</span>&gt;</span>0<span class="tag">&lt;/<span class="name">LENGTH</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">SRC</span>&gt;</span>/sanguo/jdk-8u212-linux-x64.tar.gz._COPYING_<span class="tag">&lt;/<span class="name">SRC</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">DST</span>&gt;</span>/sanguo/jdk-8u212-linux-x64.tar.gz<span class="tag">&lt;/<span class="name">DST</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">TIMESTAMP</span>&gt;</span>1633832463726<span class="tag">&lt;/<span class="name">TIMESTAMP</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">RPC_CLIENTID</span>&gt;</span>a0a774c6-277a-43ec-9f31-a8c2cbcaa322<span class="tag">&lt;/<span class="name">RPC_CLIENTID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">RPC_CALLID</span>&gt;</span>9<span class="tag">&lt;/<span class="name">RPC_CALLID</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">DATA</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">RECORD</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">RECORD</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">OPCODE</span>&gt;</span>OP_END_LOG_SEGMENT<span class="tag">&lt;/<span class="name">OPCODE</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">DATA</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">TXID</span>&gt;</span>339<span class="tag">&lt;/<span class="name">TXID</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">DATA</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">RECORD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">EDITS</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>思考：NameNode如何确定下次开机启动的时候合并哪些Edits？<br>通过最新合并的fsimage_的序号（例如fsimage_0000000000000000584）和seen_txid存放的序号（如585）取它们中间的edits序号合并即可<br><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16340122811449.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+</blockquote>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="5-3-CheckPoint时间设置"><a href="#5-3-CheckPoint时间设置" class="headerlink" title="5.3 CheckPoint时间设置"></a>5.3 CheckPoint时间设置</h2><p>配置文件：hdfs-default.xml</p>
+<ol>
+<li>默认配置SecondaryNameNode一小时同步一次 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.checkpoint.period<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">value</span>&gt;</span>3600s<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>一分钟检查一次操作次数，达到100W次触发一次同步 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.checkpoint.txns<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">value</span>&gt;</span>1000000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">description</span>&gt;</span>操作动作次数<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.checkpoint.check.period<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">value</span>&gt;</span>60s<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">description</span>&gt;</span> 1分钟检查一次操作次数<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">&lt;/property &gt;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<h2 id="5-4-NameNode故障处理"><a href="#5-4-NameNode故障处理" class="headerlink" title="5.4 NameNode故障处理"></a>5.4 NameNode故障处理</h2><h3 id="5-4-1-使用SecondaryNameNode中的数据恢复"><a href="#5-4-1-使用SecondaryNameNode中的数据恢复" class="headerlink" title="5.4.1 使用SecondaryNameNode中的数据恢复"></a>5.4.1 使用SecondaryNameNode中的数据恢复</h3><p>将SecondaryNameNode中的数据拷贝到NameNode存储元数据的位置</p>
+<ol>
+<li>杀掉NameNode进程 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 name]$ jps</span><br><span class="line">1921 NodeManager</span><br><span class="line">4834 NameNode</span><br><span class="line">1638 DataNode</span><br><span class="line">4909 Jps</span><br><span class="line">2095 JobHistoryServer</span><br><span class="line">[atguigu@hadoop001 name]$ <span class="built_in">kill</span> -9 1921</span><br><span class="line">[atguigu@hadoop001 name]$ jps</span><br><span class="line">4834 NameNode</span><br><span class="line">1638 DataNode</span><br><span class="line">4922 Jps</span><br><span class="line">2095 JobHistoryServer</span><br><span class="line">[atguigu@hadoop001 name]$</span><br></pre></td></tr></table></figure></li>
+<li>删除NameNode数据 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 name]$ <span class="built_in">pwd</span></span><br><span class="line">/opt/module/hadoop-3.1.3/data/dfs/name</span><br><span class="line">[atguigu@hadoop001 name]$ ls</span><br><span class="line">current  in_use.lock</span><br><span class="line">[atguigu@hadoop001 name]$ rm -rf *</span><br><span class="line">[atguigu@hadoop001 name]$ ll</span><br><span class="line">总用量 0</span><br><span class="line">[atguigu@hadoop001 name]$</span><br></pre></td></tr></table></figure></li>
+<li>拷贝SecondaryNameNode数据到NameNode<br> SecondaryNameNode: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop003 namesecondary]$ <span class="built_in">pwd</span></span><br><span class="line">/opt/module/hadoop-3.1.3/data/dfs/namesecondary</span><br><span class="line">[atguigu@hadoop003 namesecondary]$ ls</span><br><span class="line">current  in_use.lock</span><br><span class="line">[atguigu@hadoop003 namesecondary]$</span><br></pre></td></tr></table></figure>
+ NameNode: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 name]$ <span class="built_in">pwd</span></span><br><span class="line">/opt/module/hadoop-3.1.3/data/dfs/name</span><br><span class="line">[atguigu@hadoop001 name]$ scp -r hadoop003:/opt/module/hadoop-3.1.3/data/dfs/namesecondary/* ./</span><br><span class="line">edits_0000000000000000415-0000000000000000416          100%   42    71.3KB/s   00:00</span><br><span class="line">edits_0000000000000000618-0000000000000000623          100%  311   726.8KB/s   00:00</span><br><span class="line">edits_0000000000000000671-0000000000000000672          100%   42    96.1KB/s   00:00</span><br><span class="line">edits_0000000000000000002-0000000000000000217          100%   27KB  28.4MB/s   00:00</span><br><span class="line">edits_0000000000000000664-0000000000000000665          100%   42    96.8KB/s   00:00</span><br><span class="line">edits_0000000000000000667-0000000000000000668          100%   42   101.8KB/s   00:00</span><br><span class="line">VERSION                                                100%  215   519.5KB/s   00:00</span><br><span class="line">edits_0000000000000000218-0000000000000000219          100%   42   105.8KB/s   00:00</span><br><span class="line">edits_0000000000000000410-0000000000000000411          100%   42   102.3KB/s   00:00</span><br><span class="line">edits_0000000000000000645-0000000000000000649          100%  291   761.2KB/s   00:00</span><br><span class="line">edits_0000000000000000662-0000000000000000663          100%   42   113.7KB/s   00:00</span><br><span class="line">edits_0000000000000000220-0000000000000000221          100%   42   111.9KB/s   00:00</span><br><span class="line">edits_0000000000000000412-0000000000000000413          100%   42   102.2KB/s   00:00</span><br><span class="line">edits_0000000000000000654-0000000000000000655          100%   42   105.8KB/s   00:00</span><br><span class="line">edits_0000000000000000222-0000000000000000223          100%   42   102.6KB/s   00:00</span><br><span class="line">edits_0000000000000000408-0000000000000000409          100%   42   106.7KB/s   00:00</span><br><span class="line">edits_0000000000000000656-0000000000000000657          100%   42   109.0KB/s   00:00</span><br><span class="line">edits_0000000000000000225-0000000000000000325          100% 1024KB  88.8MB/s   00:00</span><br><span class="line">edits_0000000000000000326-0000000000000000327          100%   42   130.9KB/s   00:00</span><br><span class="line">edits_0000000000000000639-0000000000000000644          100%  310     1.0MB/s   00:00</span><br><span class="line">edits_0000000000000000650-0000000000000000651          100%   42   164.8KB/s   00:00</span><br><span class="line">edits_0000000000000000669-0000000000000000670          100%   42   170.4KB/s   00:00</span><br><span class="line">edits_0000000000000000328-0000000000000000339          100%  902     3.5MB/s   00:00</span><br><span class="line">fsimage_0000000000000000670                            100% 4452    13.4MB/s   00:00</span><br><span class="line">fsimage_0000000000000000672.md5                        100%   62   255.0KB/s   00:00</span><br><span class="line">edits_0000000000000000340-0000000000000000382          100% 3512    11.5MB/s   00:00</span><br><span class="line">edits_0000000000000000417-0000000000000000525          100% 6663    19.3MB/s   00:00</span><br><span class="line">edits_0000000000000000658-0000000000000000659          100%   42   166.4KB/s   00:00</span><br><span class="line">fsimage_0000000000000000670.md5                        100%   62   251.4KB/s   00:00</span><br><span class="line">edits_0000000000000000383-0000000000000000405          100% 1708     5.9MB/s   00:00</span><br><span class="line">edits_0000000000000000526-0000000000000000617          100% 5206    14.9MB/s   00:00</span><br><span class="line">edits_0000000000000000660-0000000000000000661          100%   42   168.7KB/s   00:00</span><br><span class="line">fsimage_0000000000000000672                            100% 4452    13.6MB/s   00:00</span><br><span class="line">edits_0000000000000000406-0000000000000000407          100%   42   167.7KB/s   00:00</span><br><span class="line">edits_0000000000000000624-0000000000000000638          100%  934     3.6MB/s   00:00</span><br><span class="line">edits_0000000000000000652-0000000000000000653          100%   42   162.7KB/s   00:00</span><br><span class="line">in_use.lock                                            100%   14    53.2KB/s   00:00</span><br><span class="line">[atguigu@hadoop001 name]$ ls</span><br><span class="line">current  in_use.lock</span><br><span class="line">[atguigu@hadoop001 name]$</span><br></pre></td></tr></table></figure></li>
+<li>重新启动NameNode <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 name]$ jps</span><br><span class="line">4977 Jps</span><br><span class="line">1638 DataNode</span><br><span class="line">2095 JobHistoryServer</span><br><span class="line">[atguigu@hadoop001 name]$ hdfs --daemon start namenode</span><br><span class="line">[atguigu@hadoop001 name]$ jps</span><br><span class="line">1638 DataNode</span><br><span class="line">5030 NameNode</span><br><span class="line">5101 Jps</span><br><span class="line">2095 JobHistoryServer</span><br><span class="line">[atguigu@hadoop001 name]$</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="5-4-2-使用importCheckpoint恢复"><a href="#5-4-2-使用importCheckpoint恢复" class="headerlink" title="5.4.2 使用importCheckpoint恢复"></a>5.4.2 使用importCheckpoint恢复</h3><p>使用-importCheckpoint选项启动NameNode守护进程，从而将SecondaryNameNode中数据拷贝到NameNode目录中。</p>
+<ol>
+<li>修改hdfs-site.xml <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.checkpoint.period<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>120<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.name.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>/opt/module/hadoop-3.1.3/data/dfs/name<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>杀掉NameNode进程</li>
+<li>删除NameNode存储的数据（/opt/module/hadoop-3.1.3/data/dfs/name） <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop102 hadoop-3.1.3]$ rm -rf /opt/module/hadoop-3.1.3/data/dfs/name/*</span><br></pre></td></tr></table></figure></li>
+<li>如果SecondaryNameNode不和NameNode在一个主机节点上，需要将SecondaryNameNode存储数据的目录拷贝到NameNode存储数据的平级目录，并删除in_use.lock文件 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop102 dfs]$ scp -r atguigu@hadoop104:/opt/module/hadoop-3.1.3/data/dfs/namesecondary ./</span><br><span class="line"></span><br><span class="line">[atguigu@hadoop102 namesecondary]$ rm -rf in_use.lock</span><br><span class="line"></span><br><span class="line">[atguigu@hadoop102 dfs]$ <span class="built_in">pwd</span></span><br><span class="line">/opt/module/hadoop-3.1.3/data/dfs</span><br><span class="line"></span><br><span class="line">[atguigu@hadoop102 dfs]$ ls</span><br><span class="line">data  name  namesecondary</span><br></pre></td></tr></table></figure></li>
+<li>导入检查点数据（等待一会ctrl+c结束掉） <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop102 hadoop-3.1.3]$ bin/hdfs namenode -importCheckpoint</span><br></pre></td></tr></table></figure></li>
+<li>启动NameNode <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop102 hadoop-3.1.3]$ hdfs --daemon start namenode</span><br></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<h2 id="5-5-集群安全模式"><a href="#5-5-集群安全模式" class="headerlink" title="5.5 集群安全模式"></a>5.5 集群安全模式</h2><ol>
+<li>NameNode启动：NameNode启动时，首先降镜像文件FsImage载入内存，并执行编辑日志Edits中的各项操作。在内存中成功建立完整的文件系统元数据之后，创建一个空的编辑日志，生成新的Fsimage文件。此时，NameNode开始监听DateNode请求，这个过程期间，NameNode一直运行安全模式，即对于客户端来说是只读的</li>
+<li>DateNode启动：系统中的数据块位置不由NameNode维护，而是以块列表的形式存储在DateNode中。在系统的正常操作期间，NameNode会在内存中保留所有块位置的信息。在安全模式下，各个DateNode会向NameNode发送最新的块列表信息，NomeNode获取到足够多的块信息之后，即可高效运行文件系统</li>
+<li>安全模式退出判断：如果满足<font color ='red' >最小副本条件</font>（在整个文件系统中99.9%的块满足最小副本级别（默认值：dfs.replication.min=1））。在启动一个刚刚格式化的HDFS集群时，因为系统中还没有任何块，所以NameNode不会进入安全模式。</li>
+<li>手动进入安全模式 <ol>
+<li>基本语法<br> 集群处于安全模式，不能执行重要操作（写操作）。集群启动完成后，自动退出安全模式。 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看安全模式状态</span></span><br><span class="line">[atguigu@hadoop001 name]$ hdfs dfsadmin -safemode get</span><br><span class="line">Safe mode is OFF</span><br><span class="line"><span class="comment"># 进入安全模式</span></span><br><span class="line">[atguigu@hadoop001 name]$ hdfs dfsadmin -safemode enter</span><br><span class="line">Safe mode is ON</span><br><span class="line"><span class="comment"># 查看安全模式状态</span></span><br><span class="line">[atguigu@hadoop001 name]$ hdfs dfsadmin -safemode get</span><br><span class="line">Safe mode is ON</span><br><span class="line"><span class="comment"># 离开安全模式</span></span><br><span class="line">[atguigu@hadoop001 name]$ hdfs dfsadmin -safemode leave</span><br><span class="line">Safe mode is OFF</span><br><span class="line"><span class="comment"># 查看安全模式状态</span></span><br><span class="line">[atguigu@hadoop001 name]$ hdfs dfsadmin -safemode get</span><br><span class="line">Safe mode is OFF</span><br><span class="line"><span class="comment"># 进入安全模式</span></span><br><span class="line">[atguigu@hadoop001 name]$ hdfs dfsadmin -safemode enter</span><br><span class="line">Safe mode is ON</span><br><span class="line"><span class="comment"># 等待安全模式退出，阻塞当前进程</span></span><br><span class="line">[atguigu@hadoop001 name]$ hdfs dfsadmin -safemode <span class="built_in">wait</span></span><br><span class="line"></span><br><span class="line">^C</span><br><span class="line">[atguigu@hadoop001 name]$ hdfs dfsadmin -safemode leave</span><br><span class="line">Safe mode is OFF</span><br><span class="line">[atguigu@hadoop001 name]$ hdfs dfsadmin -safemode get</span><br><span class="line">Safe mode is OFF</span><br><span class="line"><span class="comment"># 安全模式退出，wait进程继续</span></span><br><span class="line">[atguigu@hadoop001 name]$ hdfs dfsadmin -safemode <span class="built_in">wait</span></span><br><span class="line">Safe mode is OFF</span><br><span class="line">[atguigu@hadoop001 name]$</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>示例<br> <img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16340146742555.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="5-6-NameNode多目录配置"><a href="#5-6-NameNode多目录配置" class="headerlink" title="5.6 NameNode多目录配置"></a>5.6 NameNode多目录配置</h2><ol>
+<li>NameNode的本地目录可以配置成多个，且每个目录存放内容相同，增加了可靠性（不同目录最好分布在不同的磁盘）</li>
+<li>具体配置如下<ol>
+<li>在hdfs-site.xml文件中添加如下内容 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.name.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>file://$&#123;hadoop.tmp.dir&#125;/dfs/name1,file://$&#123;hadoop.tmp.dir&#125;/dfs/name2<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>停止集群，删除三台节点的data和logs中所有数据。 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop102 hadoop-3.1.3]$ rm -rf data/ logs/</span><br><span class="line">[atguigu@hadoop103 hadoop-3.1.3]$ rm -rf data/ logs/</span><br><span class="line">[atguigu@hadoop104 hadoop-3.1.3]$ rm -rf data/ logs/</span><br></pre></td></tr></table></figure></li>
+<li>格式化集群并启动。 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop102 hadoop-3.1.3]$ bin/hdfs namenode -format</span><br><span class="line">[atguigu@hadoop102 hadoop-3.1.3]$ sbin/start-dfs.sh</span><br></pre></td></tr></table></figure></li>
+<li>查看结果 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop102 dfs]$ ll</span><br><span class="line">总用量 12</span><br><span class="line">drwx------. 3 atguigu atguigu 4096 12月 11 08:03 data</span><br><span class="line">drwxrwxr-x. 3 atguigu atguigu 4096 12月 11 08:03 name1</span><br><span class="line">drwxrwxr-x. 3 atguigu atguigu 4096 12月 11 08:03 name2</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+<hr>
+<h1 id="六、DataNode"><a href="#六、DataNode" class="headerlink" title="六、DataNode"></a>六、DataNode</h1><h2 id="6-1-DateNode工作机制"><a href="#6-1-DateNode工作机制" class="headerlink" title="6.1 DateNode工作机制"></a>6.1 DateNode工作机制</h2><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16340068224418.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ol>
+<li>一个数据块在DataNode上以文件形式存储在磁盘上，包括两个文件，一个是数据本身，一个是元数据包括数据块的长度，块数据的校验和，以及时间戳。</li>
+<li>DataNode启动后向NameNode注册，通过后，周期性（6小时）的向NameNode上报所有的块信息。 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">hdfs-default.xml</span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.blockreport.intervalMsec<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">value</span>&gt;</span>21600000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">description</span>&gt;</span>Determines block reporting interval in milliseconds.<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>心跳是每3秒一次，心跳返回结果带有NameNode给该DataNode的命令如复制块数据到另一台机器，或删除某个数据块。 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">hdfs-default.xml</span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.heartbeat.interval<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">value</span>&gt;</span>3s<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">description</span>&gt;</span></span><br><span class="line">    Determines datanode heartbeat interval in seconds.</span><br><span class="line">    Can use the following suffix (case insensitive):</span><br><span class="line">    ms(millis), s(sec), m(min), h(hour), d(day)</span><br><span class="line">    to specify the time (such as 2s, 2m, 1h, etc.).</span><br><span class="line">    Or provide complete number in seconds (such as 30 for 30 seconds).</span><br><span class="line">    If no time unit is specified then seconds is assumed.</span><br><span class="line">  <span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>如果超过10分钟30秒没有收到某个DataNode的心跳，则认为该节点不可用。</li>
+<li>集群运行中可以安全加入和退出一些机器。</li>
+</ol>
+<hr>
+<h2 id="6-2-数据完整性"><a href="#6-2-数据完整性" class="headerlink" title="6.2 数据完整性"></a>6.2 数据完整性</h2><p>思考：如果电脑磁盘里面存储的数据是控制高铁信号灯的红灯信号（1）和绿灯信号（0），但是存储该数据的磁盘坏了，一直显示是绿灯，是否很危险？同理DataNode节点上的数据损坏了，却没有发现，是否也很危险，那么如何解决呢？如下是DataNode节点保证数据完整性的方法。</p>
+<ol>
+<li>当DataNode读取Block的时候，它会计算CheckSum。</li>
+<li>如果计算后的CheckSum，与Block创建时值不一样，说明Block已经损坏。</li>
+<li>Client读取其他DataNode上的Block。</li>
+<li>常见的校验算法 crc（32），md5（128），sha1（160）</li>
+<li>DataNode在其文件创建后周期验证CheckSum。</li>
+</ol>
+<hr>
+<h2 id="6-3-掉线时限参数设置"><a href="#6-3-掉线时限参数设置" class="headerlink" title="6.3 掉线时限参数设置"></a>6.3 掉线时限参数设置</h2><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16340157434025.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ol>
+<li>需要注意的是hdfs-site.xml 配置文件中的heartbeat.recheck.interval的单位为毫秒，dfs.heartbeat.interval的单位为秒。 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.heartbeat.recheck-interval<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>300000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.heartbeat.interval<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>3<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>效果如图<br> <img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16340162105064.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></li>
+</ol>
+<hr>
+<h2 id="6-4-服役新节点"><a href="#6-4-服役新节点" class="headerlink" title="6.4 服役新节点"></a>6.4 服役新节点</h2><ol>
+<li>需求：<br> 随着公司业务的增长，数据量越来越大，原有的数据节点的容量已经不能满足存储数据的需求，需要在原有集群基础上动态添加新的数据节点</li>
+<li>环境准备<ol>
+<li>在hadoop104主机上再克隆一台hadoop105主机</li>
+<li>修改IP地址和主机名称</li>
+<li>删除原来HDFS文件系统留存的文件（/opt/module/hadoop-3.1.3/data和logs）</li>
+<li>source一下配置文件 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop105 hadoop-3.1.3]$ <span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li>具体步骤<ol>
+<li>直接启动DataNode，即可关联到集群 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop105 hadoop-3.1.3]$ hdfs --daemon start datanode</span><br><span class="line">[atguigu@hadoop105 hadoop-3.1.3]$ yarn --daemon start nodemanager</span><br></pre></td></tr></table></figure></li>
+<li>在hadoop105上上传文件 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop105 hadoop-3.1.3]$ hadoop fs -put /opt/module/hadoop-3.1.3/LICENSE.txt /</span><br></pre></td></tr></table></figure></li>
+<li>如果数据不均衡，可以用命令实现集群的再平衡 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop102 sbin]$ ./start-balancer.sh</span><br><span class="line">starting balancer, logging to /opt/module/hadoop-3.1.3/logs/hadoop-atguigu-balancer-hadoop102.out</span><br><span class="line">Time Stamp               Iteration<span class="comment">#  Bytes Already Moved  Bytes Left To Move  Bytes Being Moved</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="6-5-退役旧数据节点"><a href="#6-5-退役旧数据节点" class="headerlink" title="6.5 退役旧数据节点"></a>6.5 退役旧数据节点</h2><h3 id="6-5-1-添加白名单和黑名单"><a href="#6-5-1-添加白名单和黑名单" class="headerlink" title="6.5.1 添加白名单和黑名单"></a>6.5.1 添加白名单和黑名单</h3><ul>
+<li>白名单和黑名单是hadoop管理集群主机的一种机制。</li>
+<li>添加到白名单的主机节点，都允许访问NameNode，不在白名单的主机节点，都会被退出。</li>
+<li>添加到黑名单的主机节点，不允许访问NameNode，会在数据迁移后退出。</li>
+<li>实际情况下，白名单用于确定允许访问NameNode的DataNode节点，内容配置一般与workers文件内容一致。 黑名单用于在集群运行过程中退役DataNode节点。<br>配置白名单和黑名单的具体步骤如下：<ol>
+<li>在NameNode节点的/opt/module/hadoop-3.1.3/etc/hadoop目录下分别创建whitelist 和blacklist文件，白名单whitelist添加节点内容，blacklist黑名单暂时为空。 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 hadoop]$ <span class="built_in">pwd</span></span><br><span class="line">/opt/module/hadoop-3.1.3/etc/hadoop</span><br><span class="line">[atguigu@hadoop001 hadoop]$ touch blacklist</span><br><span class="line">[atguigu@hadoop001 hadoop]$ touch whitelist</span><br><span class="line">[atguigu@hadoop001 hadoop]$ ll *list</span><br><span class="line">-rw-rw-r--. 1 atguigu atguigu 0 10月 12 18:50 blacklist</span><br><span class="line">-rw-rw-r--. 1 atguigu atguigu 0 10月 12 18:50 whitelist</span><br><span class="line">[atguigu@hadoop001 hadoop]$ vim whitelist</span><br><span class="line">[atguigu@hadoop001 hadoop]$ cat whitelist</span><br><span class="line">hadoop001</span><br><span class="line">hadoop002</span><br><span class="line">hadoop003</span><br><span class="line">hadoop004</span><br><span class="line">[atguigu@hadoop001 hadoop]$</span><br></pre></td></tr></table></figure></li>
+<li>在hdfs-site.xml配置文件中增加dfs.hosts和 dfs.hosts.exclude配置参数 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 白名单 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.hosts<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>/opt/module/hadoop-3.1.3/etc/hadoop/whitelist<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 黑名单 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.hosts.exclude<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>/opt/module/hadoop-3.1.3/etc/hadoop/blacklist<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>分发配置文件whitelist，blacklist，hdfs-site.xml (注意：004节点也要发一份) <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 hadoop]$ xsync /opt/module/hadoop-3.1.3/etc/hadoop/</span><br><span class="line">[atguigu@hadoop001 hadoop]$ scp -r * hadoop004:/opt/module/hadoop-3.1.3/etc/hadoop/</span><br></pre></td></tr></table></figure></li>
+<li>重新启动集群(注意：105节点没有添加到workers，因此要单独起停) <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop102 hadoop-3.1.3]$ stop-dfs.sh</span><br><span class="line">[atguigu@hadoop102 hadoop-3.1.3]$ start-dfs.sh</span><br><span class="line">[atguigu@hadoop105 hadoop-3.1.3]$ hdfs –daemon start datanode</span><br></pre></td></tr></table></figure></li>
+<li>在web浏览器上查看目前正常工作的DN节点<br> <img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16340373303979.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"><h3 id="6-5-2-黑名单退役"><a href="#6-5-2-黑名单退役" class="headerlink" title="6.5.2 黑名单退役"></a>6.5.2 黑名单退役</h3></li>
+</ol>
+</li>
+</ul>
+<ol>
+<li>编辑/opt/module/hadoop-3.1.3/etc/hadoop目录下的blacklist文件 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 hadoop]$ vim blacklist</span><br><span class="line">[atguigu@hadoop001 hadoop]$ cat blacklist</span><br><span class="line">hadoop004</span><br><span class="line">[atguigu@hadoop001 hadoop]$</span><br></pre></td></tr></table></figure></li>
+<li>分发blacklist到所有节点 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 hadoop]$ xsync /opt/module/hadoop-3.1.3/etc/hadoop/</span><br><span class="line">[atguigu@hadoop001 hadoop]$ scp -r * hadoop004:/opt/module/hadoop-3.1.3/etc/hadoop/</span><br></pre></td></tr></table></figure></li>
+<li>刷新NameNode、刷新ResourceManager <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 hadoop]$ hdfs dfsadmin -refreshNodes</span><br><span class="line">Refresh nodes successful</span><br><span class="line">[atguigu@hadoop001 hadoop]$ yarn rmadmin -refreshNodes</span><br><span class="line">2021-10-12 19:20:20,896 INFO client.RMProxy: Connecting to ResourceManager at hadoop002/192.168.2.7:8033</span><br><span class="line">[atguigu@hadoop001 hadoop]$</span><br></pre></td></tr></table></figure></li>
+<li>检查Web浏览器，退役节点的状态为decommission in progress（退役中），说明数据节点正在复制块到其他节点<img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16340378419483.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></li>
+<li>等待退役节点状态为decommissioned（所有块已经复制完成），停止该节点及节点资源管理器。注意：如果副本数是3，服役的节点小于等于3，是不能退役成功的，需要修改副本数后才能退役<img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16340378878057.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></li>
+<li>如果数据不均衡，可以用命令实现集群的再平衡 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 hadoop-3.1.3]$ sbin/start-balancer.sh</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：不允许白名单和黑名单中同时出现同一个主机名称，既然使用了黑名单blacklist成功退役了hadoop105节点，因此要将白名单whitelist里面的hadoop105去掉。</p>
+</blockquote>
+</li>
+</ol>
+<hr>
+<h2 id="6-6-DataNode多目录配置"><a href="#6-6-DataNode多目录配置" class="headerlink" title="6.6 DataNode多目录配置"></a>6.6 DataNode多目录配置</h2><ol>
+<li>DataNode可以配置成多个目录，每个目录存储的数据不一样。即：数据不是副本</li>
+<li>具体配置如下<ol>
+<li>在hdfs-site.xml文件中添加如下内容 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.datanode.data.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>file://$&#123;hadoop.tmp.dir&#125;/dfs/data1,file://$&#123;hadoop.tmp.dir&#125;/dfs/data2<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>停止集群，删除三台节点的data和logs中所有数据。 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop102 hadoop-3.1.3]$ rm -rf data/ logs/</span><br><span class="line">[atguigu@hadoop103 hadoop-3.1.3]$ rm -rf data/ logs/</span><br><span class="line">[atguigu@hadoop104 hadoop-3.1.3]$ rm -rf data/ logs/</span><br></pre></td></tr></table></figure></li>
+<li>格式化集群并启动。 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop102 hadoop-3.1.3]$ bin/hdfs namenode –format</span><br><span class="line">[atguigu@hadoop102 hadoop-3.1.3]$ sbin/start-dfs.sh</span><br></pre></td></tr></table></figure></li>
+<li>查看结果 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop102 dfs]$ ll</span><br><span class="line">总用量 12</span><br><span class="line">drwx------. 3 atguigu atguigu 4096 4月   4 14:22 data1</span><br><span class="line">drwx------. 3 atguigu atguigu 4096 4月   4 14:22 data2</span><br><span class="line">drwxrwxr-x. 3 atguigu atguigu 4096 12月 11 08:03 name1</span><br><span class="line">drwxrwxr-x. 3 atguigu atguigu 4096 12月 11 08:03 name2</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="问答"><a href="#问答" class="headerlink" title="问答"></a>问答</h2><h3 id="一、描述一下HDFS的数据写入流程"><a href="#一、描述一下HDFS的数据写入流程" class="headerlink" title="一、描述一下HDFS的数据写入流程"></a>一、描述一下HDFS的数据写入流程</h3><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16340443194587.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ol>
+<li>客户端调用DistributedFileSystem#create方法通过DfsClient请求NameNode上传文件</li>
+<li>NameNode校验：权限，路径，文件名通过后在对应路径创建空文件，写入Edits操作记录，返回文件信息</li>
+<li>DistributedFileSystem#create 返回值为FSDataOutputStream输出流，FSDataOutputStream#create方法会初始化DFSOutputStream和DataStreamer；</li>
+<li>调用DFSOutputStream#addBlock请求NN申请新的Block</li>
+<li>NN根据机架感知-网络拓扑计算节点距离返回合适的DN列表</li>
+<li>客户端调用FSDataOutputStream.PositionCache#write -&gt; DFSOutputStream#writeChunk写入数据</li>
+<li>读取满一个packet(128个chunk)放入DFSOutputStream#enqueueCurrentPacketFull</li>
+<li>DataStreamer#setPipeline初始化pipeline 首先和最近的DN1建立连接，然后DN1传输给DN2,DN2传输给DN3</li>
+<li>DataStreamer把packet从dataqueue移动到ackqueue</li>
+<li>DN3校验后返回ack给DN2,DN2校验后返回ack给DN1,DN1校验后返回ack给客户端</li>
+<li>ResponseProcessor.ResponseProcessor接收响应并把packet从ackqueue移除</li>
+<li>出现异常后ackqueue会重新移动到dataqueue再次创建连接重新发送</li>
+<li>全部packet发送完成后当前block上传结束</li>
+<li>读取下一个block重复4-13步骤</li>
+<li>全部读取完成通知NN上传结束</li>
+</ol>
+<ul>
+<li>block(文件块): 类似Linux中常见文件系统的最小操作单位, HDFS也是如此, block就是HDFS操作文件的最小单元, 默认128MB/个 (逻辑上设置的大小)</li>
+<li>chunk(校验块): 文件块(block)实际存储/校验的最小单位, 严谨说chunk分为数据域和校验域两个部分组成, 但一般情况大家指的是数据域<ul>
+<li>数据域: 默认512字节, 比如你写513个字节数据, 它占据一个block (而此block内部是两个chunk组成) , 又称为chunk data</li>
+<li>校验域: 固定4字节, 存放校验码, 它与数据域一一对应, 又称chunk checksum</li>
+</ul>
+</li>
+<li>packet(数据包): HDFS各组件间数据传输的基本单位, 默认64KB, 类似网络传输中数据包的概念, 主要是 header + body/data 两个部分组成<ul>
+<li>packet header : 存储传输数据过程中的一些基本信息(数据包长度/版本/标志位等), 变长</li>
+<li>packet body: 存储实际传输的数据(chunk), 同样packet里实际分布的最小单位也是chunk</li>
+</ul>
+</li>
+</ul>
+<h3 id="二、描述一下HDFS的数据读取流程"><a href="#二、描述一下HDFS的数据读取流程" class="headerlink" title="二、描述一下HDFS的数据读取流程"></a>二、描述一下HDFS的数据读取流程</h3><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16340854804776.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ol>
+<li>客户端向namenode发RPC请求, 读取文件对应blocks的DN信息</li>
+<li>namenode检查文件是否存在，如果存在则获取文件的元信息（按顺序返回BlockId以及对应所在的datanode列表）</li>
+<li>客户端收到block对应的DN信息后选取一个网络访问最近的DN, 依次读取每个数据块(客户端这里有校验逻辑, 如果发现异常会汇报坏块)</li>
+<li>客户端与DN建立socket连接，通过流以packet为单位传输对应的数据块, 客户端收到数据写入本地磁盘</li>
+<li>依次传输剩下的数据块，直到整个文件读取完成, 最后关闭输入流</li>
+</ol>
+<h3 id="三、简述HDFS的架构，其中每个服务的作用"><a href="#三、简述HDFS的架构，其中每个服务的作用" class="headerlink" title="三、简述HDFS的架构，其中每个服务的作用"></a>三、简述HDFS的架构，其中每个服务的作用</h3><ol>
+<li>NameNode: HDFS集群的管理者<ol>
+<li>管理HDFS的命名空间</li>
+<li>配置副本策略</li>
+<li>维护元数据信息：文件基本属性，目录层级，文件-块的映射</li>
+<li>处理客户端的读写请求</li>
+</ol>
+</li>
+<li>DataNode：HDFS集群的数据存储节点<ol>
+<li>存储Block数据</li>
+<li>保证数据完整性</li>
+<li>接受NameNode指令，执行实际操作</li>
+<li>接受客户端请求读写Block</li>
+</ol>
+</li>
+<li>SecondaryNameNode: NameNode的备份<ol>
+<li>并非NameNode的热备。当NameNode挂掉的时候，它并不能马上替换NameNode并提供服务。</li>
+<li>辅助NameNode，分担其工作量，比如定期合并Fsimage和Edits，并推送给NameNode</li>
+<li>在紧急情况下，可辅助恢复NameNode。</li>
+</ol>
+</li>
+<li>Client<ol>
+<li>文件切分。文件上传HDFS的时候，Client将文件切分成一个一个的Block，然后进行上传</li>
+<li>与NameNode交互，获取文件的位置信息</li>
+<li>与DataNode交互，读取或者写入数据；</li>
+<li>Client提供一些命令来管理HDFS，比如NameNode格式化</li>
+<li>Client可以通过一些命令来访问HDFS，比如对HDFS增删查改操作</li>
+</ol>
+</li>
+</ol>
+<h3 id="四、HDFS中如何实现元数据的维护？"><a href="#四、HDFS中如何实现元数据的维护？" class="headerlink" title="四、HDFS中如何实现元数据的维护？"></a>四、HDFS中如何实现元数据的维护？</h3><ol>
+<li>存储<ul>
+<li>内存：保存全量元数据信息</li>
+<li>磁盘：FsImage + Edits = 完整的元数据信息<ol>
+<li>FsImage：NameNode内存中的元数据镜像</li>
+<li>Edits：NameNode已经执行的的操作记录</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>NameNode启动操作<ol>
+<li>加载FsImage到内存</li>
+<li>在内存中根据seen_txid执行Edits记录生成完整元数据</li>
+<li>内存中完整的元数据信息写入新的FsImage</li>
+<li>生成新的Edits</li>
+</ol>
+</li>
+<li>SecondaryNameNode定期合并<ol>
+<li>触发合并时机<ol>
+<li>默认配置一小时合并一次</li>
+<li>每分钟检查操作次数，到达100W条，立即触发一次</li>
+</ol>
+</li>
+<li>合并流程 <ol>
+<li>SecondaryNameNode请求NameNode进行合并</li>
+<li>NameNode停止使用当前的Edits文件，生成新的Edits文件继续执行操作</li>
+<li>SecondaryNameNode拉取FsImage和Edits，加载到内存总合并，生成新的FsImage.checkpoint</li>
+<li>SecondaryNameNode推送FsImage.checkpoint到NameNode</li>
+<li>NameNode重命名FsImage.checkpoint为FsImage，合并流程结束</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>正常运行<ol>
+<li>client对数据进行操作时，将这些操作记录到Edits</li>
+</ol>
+</li>
+</ol>
+<h3 id="五、2NN如何对NN的元数据进行合并？"><a href="#五、2NN如何对NN的元数据进行合并？" class="headerlink" title="五、2NN如何对NN的元数据进行合并？"></a>五、2NN如何对NN的元数据进行合并？</h3><ol>
+<li>触发合并时机<ol>
+<li>默认配置一小时合并一次</li>
+<li>每分钟检查操作次数，到达100W条，立即触发一次</li>
+</ol>
+</li>
+<li>合并流程 <ol>
+<li>SecondaryNameNode请求NameNode进行合并</li>
+<li>NameNode停止使用当前的Edits文件，生成新的Edits文件继续执行操作</li>
+<li>SecondaryNameNode拉取FsImage和Edits，加载到内存总合并，生成新的FsImage.checkpoint</li>
+<li>SecondaryNameNode推送FsImage.checkpoint到NameNode</li>
+<li>NameNode重命名FsImage.checkpoint为FsImage，合并流程结束</li>
+</ol>
+</li>
+</ol>
+<h3 id="六、假如NN的数据发生的丢失，依靠2NN恢复完全靠谱？"><a href="#六、假如NN的数据发生的丢失，依靠2NN恢复完全靠谱？" class="headerlink" title="六、假如NN的数据发生的丢失，依靠2NN恢复完全靠谱？"></a>六、假如NN的数据发生的丢失，依靠2NN恢复完全靠谱？</h3><ol>
+<li>可能会造成部分数据丢失原因如下：<ol>
+<li>NN数据发生丢之前，完整元数据保存在内存中，在磁盘中Fsimage+edits=完整元数据</li>
+<li>如果edits包含操作记录，且未合并到Fsimage，2NN中的Fsimage和NN的Fsimage相同</li>
+<li>如果丢失edits，使用2NN的Fsimage恢复NN的Fsimage，会丢失NN的Edits部分的数据</li>
+</ol>
+</li>
+</ol>
+<h3 id="七、HDFS集群的安全模式有了解吗？"><a href="#七、HDFS集群的安全模式有了解吗？" class="headerlink" title="七、HDFS集群的安全模式有了解吗？"></a>七、HDFS集群的安全模式有了解吗？</h3><ol>
+<li>HDFS集群的安全模式是对数据完整性的一种保护措施</li>
+<li>NameNode启动进入安全模式，对客户端保持只读<ol>
+<li>加载磁盘Fsimage到内存</li>
+<li>执行edits操作记录，生成完整的元数据信息</li>
+<li>生成新的edits</li>
+<li>内存中的元数据信息，生成新的Fsimage</li>
+<li>开始监听DateNode请求</li>
+</ol>
+</li>
+<li>DataNode启动<ol>
+<li>向NameNode注册，加入集群</li>
+<li>注册成功向NameNode发送Block数据块信息</li>
+</ol>
+</li>
+<li>NameNode接收到足够多的Block数据块位置信息退出安全模式<ol>
+<li>满足“最小副本条件”， NameNode会在30秒钟之后就退出安全模式<ol>
+<li>最小副本条件指的是在整个文件系统中99.9%的块满足最小副本级别（默认值：dfs.replication.min=1）</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>clien正常读写</li>
+</ol>
+<h3 id="八、如何在合理利用HDFS安全模式的操作命令完成一些工作？"><a href="#八、如何在合理利用HDFS安全模式的操作命令完成一些工作？" class="headerlink" title="八、如何在合理利用HDFS安全模式的操作命令完成一些工作？"></a>八、如何在合理利用HDFS安全模式的操作命令完成一些工作？</h3><ol>
+<li>利用安全模式的wait命令实现等待集群恢复后自动执行某些操作</li>
+<li><code>hdfs dfsadmin -safemode wait</code></li>
+</ol>
+<h3 id="九、描述一下NN和DN的关系，以及DN的工作流程"><a href="#九、描述一下NN和DN的关系，以及DN的工作流程" class="headerlink" title="九、描述一下NN和DN的关系，以及DN的工作流程"></a>九、描述一下NN和DN的关系，以及DN的工作流程</h3><ol>
+<li>NN负责管理集群，维护元数据信息，接收客户端请求</li>
+<li>DN负责保存Block数据块信息，保证数据完整性，接收客户端读写block请求</li>
+<li>DataNode启动后会向NameNode注册，注册成功后，发送Block数据块的信息</li>
+<li>DataNode运行过程中会周期性（6小时，hdfs-default.xml&gt;dfs.blockreport.intervalMsecp配置）的向NameNode上报Block数据块的信息</li>
+<li>DataNode运行过程中每3秒（dfs.heartbeat.interval）会向NameNode发送心跳，并带回NameNode的命令</li>
+<li>NameNode超过配置时间（2<em>心跳重新检测间隔默认五分钟+10</em>心跳间隔默认三秒=10分钟30秒）未收到心跳会下线DataNode</li>
+<li>服役新节点通过配置白名单和works文件</li>
+<li>退役节点通过配置黑名单，NameNode执行刷新集群，退役节点变成退役中（移动数据块），移动完成，变成退役状态</li>
+</ol>
+ 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          打赏
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://anzhen-tech.github.io/2021/11/07/HDFS/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HDFS/" rel="tag">HDFS</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2021/11/07/Hadoop/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Hadoop
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/11/07/HBase/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">HBase</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "XCKHv09pYxF5EmF2ezNgFfLS-gzGzoHsz",
+    app_key: "gyCHBp787fNNfXDiHGIcj7Am",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2021
+        <i class="ri-heart-fill heart_icon"></i> Anzhen
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="anzhen.tech"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/HDFS">HDFS</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Yarn">Yarn</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/MR">MR</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Hive">Hive</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86">数据采集</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/HBase">HBase</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Kafka">Kafka</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Spark">Spark</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Flink">Flink</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/MySQL">MySQL</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Java">Java</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/interview">面试宝典</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/11/07/about-me">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="52"
+        src="//music.163.com/outchain/player?type=2&id=318916815&auto=1&height=32"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+    
+
+  </div>
+</body>
+
+</html>

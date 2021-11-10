@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>Hive进阶 |  anzhen.tech</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+      <meta name="baidu-site-verification" content="code-BgeZtJHZzY" />
+      <meta name="google-site-verification" content="wNOxVwDPcgD6IwrCt_pD_Xtq-E86p8USRXPN73jLu0A" />
+    <link rel="alternate" href="/atom.xml" title="anzhen.tech" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-Hive进阶"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Hive进阶
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/11/07/Hive%E8%BF%9B%E9%98%B6/" class="article-date">
+  <time datetime="2021-11-07T00:11:52.000Z" itemprop="datePublished">2021-11-07</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Hive/">Hive</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">4k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">18 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="Hive进阶"><a href="#Hive进阶" class="headerlink" title="Hive进阶"></a>Hive进阶</h1><h1 id="第1章-Explain-查看执行计划"><a href="#第1章-Explain-查看执行计划" class="headerlink" title="第1章 Explain 查看执行计划"></a>第1章 Explain 查看执行计划</h1><h2 id="1-1-创建测试用表"><a href="#1-1-创建测试用表" class="headerlink" title="1.1 创建测试用表"></a>1.1 创建测试用表</h2><ol>
+<li><p>建大表、小表和 JOIN 后表的语句</p>
+ <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建大表</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> bigtable (</span><br><span class="line">    id        <span class="type">bigint</span>,</span><br><span class="line">    t         <span class="type">bigint</span>,</span><br><span class="line">    uid       string,</span><br><span class="line">    keyword   string,</span><br><span class="line">    url_rank  <span class="type">int</span>,</span><br><span class="line">    click_num <span class="type">int</span>,</span><br><span class="line">    click_url string</span><br><span class="line">) <span class="type">row</span> format delimited</span><br><span class="line">    fields terminated <span class="keyword">by</span> <span class="string">&#x27;\t&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建小表</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> smalltable</span><br><span class="line">(</span><br><span class="line">    id        <span class="type">bigint</span>,</span><br><span class="line">    t         <span class="type">bigint</span>,</span><br><span class="line">    uid       string,</span><br><span class="line">    keyword   string,</span><br><span class="line">    url_rank  <span class="type">int</span>,</span><br><span class="line">    click_num <span class="type">int</span>,</span><br><span class="line">    click_url string</span><br><span class="line">) <span class="type">row</span> format delimited</span><br><span class="line">    fields terminated <span class="keyword">by</span> <span class="string">&#x27;\t&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建 JOIN 后表</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> jointable</span><br><span class="line">(</span><br><span class="line">    id        <span class="type">bigint</span>,</span><br><span class="line">    t         <span class="type">bigint</span>,</span><br><span class="line">    uid       string,</span><br><span class="line">    keyword   string,</span><br><span class="line">    url_rank  <span class="type">int</span>,</span><br><span class="line">    click_num <span class="type">int</span>,</span><br><span class="line">    click_url string</span><br><span class="line">) <span class="type">row</span> format delimited</span><br><span class="line">    fields terminated <span class="keyword">by</span> <span class="string">&#x27;\t&#x27;</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>分别向大表和小表中导入数据</p>
+ <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hive (<span class="keyword">default</span>)<span class="operator">&gt;</span> load data <span class="keyword">local</span> inpath <span class="string">&#x27;/opt/module/data/bigtable&#x27;</span> <span class="keyword">into</span> <span class="keyword">table</span> bigtable;</span><br><span class="line">hive (<span class="keyword">default</span>)<span class="operator">&gt;</span> load data <span class="keyword">local</span> inpath <span class="string">&#x27;/opt/module/data/smalltable&#x27;</span> <span class="keyword">into</span>  <span class="keyword">table</span> smalltable;</span><br></pre></td></tr></table></figure>
+<h2 id="1-2-基本语法"><a href="#1-2-基本语法" class="headerlink" title="1.2 基本语法"></a>1.2 基本语法</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXPLAIN [EXTENDED <span class="operator">|</span> DEPENDENCY <span class="operator">|</span> <span class="keyword">AUTHORIZATION</span>] query<span class="operator">-</span><span class="keyword">sql</span></span><br></pre></td></tr></table></figure>
+<h2 id="1-3-案例实操"><a href="#1-3-案例实操" class="headerlink" title="1.3 案例实操"></a>1.3 案例实操</h2></li>
+<li><p>查看下面这条语句的执行计划</p>
+ <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>: jdbc:hive2:<span class="operator">/</span><span class="operator">/</span>hadoop001:<span class="number">10000</span><span class="operator">&gt;</span> explain <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> bigtable;</span><br><span class="line"><span class="operator">+</span><span class="comment">----------------------------------------------------+</span></span><br><span class="line"><span class="operator">|</span>                      Explain                       <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----------------------------------------------------+</span></span><br><span class="line"><span class="operator">|</span> STAGE DEPENDENCIES:                                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>   Stage<span class="number">-0</span> <span class="keyword">is</span> a root stage                          <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                                                    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> STAGE PLANS:                                       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>   Stage: Stage<span class="number">-0</span>                                   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>     <span class="keyword">Fetch</span> Operator                                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>       limit: <span class="number">-1</span>                                    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>       Processor Tree:                              <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>         TableScan                                  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>           alias: bigtable                          <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>           Statistics: Num <span class="keyword">rows</span>: <span class="number">1</span> Data size: <span class="number">1291573248</span> Basic stats: COMPLETE <span class="keyword">Column</span> stats: <span class="keyword">NONE</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>           <span class="keyword">Select</span> Operator                          <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>             expressions: id (type: <span class="type">bigint</span>), t (type: <span class="type">bigint</span>), uid (type: string), keyword (type: string), url_rank (type: <span class="type">int</span>), click_num (type: <span class="type">int</span>), click_url (type: string) <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>             outputColumnNames: _col0, _col1, _col2, _col3, _col4, _col5, _col6 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>             Statistics: Num <span class="keyword">rows</span>: <span class="number">1</span> Data size: <span class="number">1291573248</span> Basic stats: COMPLETE <span class="keyword">Column</span> stats: <span class="keyword">NONE</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>             ListSink                               <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                                                    <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----------------------------------------------------+</span></span><br><span class="line"><span class="number">17</span> <span class="keyword">rows</span> selected (<span class="number">0.112</span> seconds)</span><br><span class="line"></span><br><span class="line"><span class="number">0</span>: jdbc:hive2:<span class="operator">/</span><span class="operator">/</span>hadoop001:<span class="number">10000</span><span class="operator">&gt;</span>  explain <span class="keyword">select</span> click_url, <span class="built_in">count</span>(<span class="operator">*</span>) ct <span class="keyword">from</span> bigtable <span class="keyword">group</span> <span class="keyword">by</span> click_url;</span><br><span class="line"><span class="operator">+</span><span class="comment">----------------------------------------------------+</span></span><br><span class="line"><span class="operator">|</span>                      Explain                       <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----------------------------------------------------+</span></span><br><span class="line"><span class="operator">|</span> STAGE DEPENDENCIES:                                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>   Stage<span class="number">-1</span> <span class="keyword">is</span> a root stage                          <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>   Stage<span class="number">-0</span> depends <span class="keyword">on</span> stages: Stage<span class="number">-1</span>               <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                                                    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> STAGE PLANS:                                       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>   Stage: Stage<span class="number">-1</span>                                   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>     Map Reduce                                     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>       Map Operator Tree:                           <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>           TableScan                                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>             alias: bigtable                        <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>             Statistics: Num <span class="keyword">rows</span>: <span class="number">1</span> Data size: <span class="number">1291573248</span> Basic stats: COMPLETE <span class="keyword">Column</span> stats: <span class="keyword">NONE</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>             <span class="keyword">Select</span> Operator                        <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>               expressions: click_url (type: string) <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>               outputColumnNames: click_url         <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>               Statistics: Num <span class="keyword">rows</span>: <span class="number">1</span> Data size: <span class="number">1291573248</span> Basic stats: COMPLETE <span class="keyword">Column</span> stats: <span class="keyword">NONE</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>               <span class="keyword">Group</span> <span class="keyword">By</span> Operator                    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                 aggregations: <span class="built_in">count</span>()              <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                 keys: click_url (type: string)     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                 mode: hash                         <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                 outputColumnNames: _col0, _col1    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                 Statistics: Num <span class="keyword">rows</span>: <span class="number">1</span> Data size: <span class="number">1291573248</span> Basic stats: COMPLETE <span class="keyword">Column</span> stats: <span class="keyword">NONE</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                 Reduce Output Operator             <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                   key expressions: _col0 (type: string) <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                   sort <span class="keyword">order</span>: <span class="operator">+</span>                    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                   Map<span class="operator">-</span>reduce <span class="keyword">partition</span> columns: _col0 (type: string) <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                   Statistics: Num <span class="keyword">rows</span>: <span class="number">1</span> Data size: <span class="number">1291573248</span> Basic stats: COMPLETE <span class="keyword">Column</span> stats: <span class="keyword">NONE</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                   <span class="keyword">value</span> expressions: _col1 (type: <span class="type">bigint</span>) <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>       Execution mode: vectorized                   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>       Reduce Operator Tree:                        <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>         <span class="keyword">Group</span> <span class="keyword">By</span> Operator                          <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>           aggregations: <span class="built_in">count</span>(VALUE._col0)         <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>           keys: KEY._col0 (type: string)           <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>           mode: mergepartial                       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>           outputColumnNames: _col0, _col1          <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>           Statistics: Num <span class="keyword">rows</span>: <span class="number">1</span> Data size: <span class="number">1291573248</span> Basic stats: COMPLETE <span class="keyword">Column</span> stats: <span class="keyword">NONE</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>           File Output Operator                     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>             compressed: <span class="literal">false</span>                      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>             Statistics: Num <span class="keyword">rows</span>: <span class="number">1</span> Data size: <span class="number">1291573248</span> Basic stats: COMPLETE <span class="keyword">Column</span> stats: <span class="keyword">NONE</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>             <span class="keyword">table</span>:                                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                 input format: org.apache.hadoop.mapred.SequenceFileInputFormat <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                 output format: org.apache.hadoop.hive.ql.io.HiveSequenceFileOutputFormat <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                 serde: org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                                                    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>   Stage: Stage<span class="number">-0</span>                                   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>     <span class="keyword">Fetch</span> Operator                                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>       limit: <span class="number">-1</span>                                    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>       Processor Tree:                              <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>         ListSink                                   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                                                    <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----------------------------------------------------+</span></span><br><span class="line"><span class="number">49</span> <span class="keyword">rows</span> selected (<span class="number">0.072</span> seconds)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>STAGE DEPENDENCIES: 各个stage之间的依赖性</li>
+<li>STAGE PLANS: 各个stage的执行计划</li>
+<li>Map Operator Tree: MAP端的执行计划树</li>
+<li>Reduce Operator Tree: Reduce端的执行计划树</li>
+<li>TableScan: 表扫描操作，常见的属性：<ul>
+<li>alias： 表名称</li>
+<li>Statistics： 表统计信息，包含表中数据条数，数据大小等</li>
+<li>Select Operator： 选取操作，常见的属性 ：</li>
+<li>expressions：需要的字段名称及字段类型</li>
+<li>outputColumnNames：输出的列名称</li>
+</ul>
+</li>
+<li>Group By Operator：分组聚合操作，常见的属性：<ul>
+<li>aggregations：显示聚合函数信息</li>
+<li>mode：聚合模式，值有 hash：随机聚合，就是hash partition；partial：局部聚合；final：最终聚合</li>
+<li>keys：分组的字段，如果没有分组，则没有此字段</li>
+<li>outputColumnNames：聚合之后输出列名</li>
+<li>Statistics： 表统计信息，包含分组聚合之后的数据条数，数据大小等</li>
+</ul>
+</li>
+<li>Reduce Output Operator：输出到reduce操作，常见属性：<ul>
+<li>sort order：值为空 不排序；值为 + 正序排序，值为 - 倒序排序；值为 +- 排序的列为两列，第一列为正序，第二列为倒序</li>
+</ul>
+</li>
+<li>Filter Operator：过滤操作，常见的属性：<ul>
+<li>predicate：过滤条件，如sql语句中的where id&gt;=1，则此处显示(id &gt;= 1)</li>
+</ul>
+</li>
+<li>Map Join Operator：join 操作，常见的属性：<ul>
+<li>condition map：join方式 ，如Inner Join 0 to 1 Left Outer Join0 to 2</li>
+<li>keys: join 的条件字段</li>
+<li>outputColumnNames： join 完成之后输出的字段</li>
+<li>Statistics： join 完成之后生成的数据条数，大小等</li>
+</ul>
+</li>
+<li>File Output Operator：文件输出操作，常见的属性<ul>
+<li>compressed：是否压缩</li>
+<li>table：表的信息，包含输入输出文件格式化方式，序列化方式等</li>
+</ul>
+</li>
+<li>Fetch Operator 客户端获取数据操作，常见的属性：<ul>
+<li>limit，值为 -1 表示不限制条数，其他值为限制的条数</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>查看详细执行计划</p>
+ <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hive (<span class="keyword">default</span>)<span class="operator">&gt;</span> explain extended <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> bigtable;</span><br><span class="line">hive (<span class="keyword">default</span>)<span class="operator">&gt;</span> explain extended <span class="keyword">select</span> click_url, <span class="built_in">count</span>(<span class="operator">*</span>) ct <span class="keyword">from</span> bigtable <span class="keyword">group</span> <span class="keyword">by</span> click_url;</span><br></pre></td></tr></table></figure>
+<h1 id="第2章-Hive-建表优化"><a href="#第2章-Hive-建表优化" class="headerlink" title="第2章 Hive 建表优化"></a>第2章 Hive 建表优化</h1><h2 id="2-1-分区表"><a href="#2-1-分区表" class="headerlink" title="2.1 分区表"></a>2.1 分区表</h2><h2 id="2-2-分桶表"><a href="#2-2-分桶表" class="headerlink" title="2.2 分桶表"></a>2.2 分桶表</h2><h2 id="2-3-合适的文件格式"><a href="#2-3-合适的文件格式" class="headerlink" title="2.3 合适的文件格式"></a>2.3 合适的文件格式</h2><h2 id="2-4-合适的压缩格式"><a href="#2-4-合适的压缩格式" class="headerlink" title="2.4 合适的压缩格式"></a>2.4 合适的压缩格式</h2></li>
+</ol>
+<h1 id="第3章-HQL-语法优化"><a href="#第3章-HQL-语法优化" class="headerlink" title="第3章 HQL 语法优化"></a>第3章 HQL 语法优化</h1><h2 id="3-1-列裁剪与分区裁剪"><a href="#3-1-列裁剪与分区裁剪" class="headerlink" title="3.1 列裁剪与分区裁剪"></a>3.1 列裁剪与分区裁剪</h2><ul>
+<li>列裁剪就是在查询时只读取需要的列，分区裁剪就是只读取需要的分区。当列很多或者<br>数据量很大时，如果 select * 或者不指定分区，全列扫描和全表扫描效率都很低。</li>
+<li>Hive 在读数据的时候，可以只读取查询中所需要用到的列，而忽略其他的列。这样做<br>可以节省读取开销：中间表存储开销和数据整合开销。</li>
+</ul>
+<h2 id="3-2-Group-By"><a href="#3-2-Group-By" class="headerlink" title="3.2 Group By"></a>3.2 Group By</h2><ol>
+<li>开启 Map 端聚合参数设置<ol>
+<li>是否在 Map 端进行聚合，默认为 True<br> <code>set hive.map.aggr = true; </code></li>
+<li>在 Map 端进行聚合操作的条目数目<br> <code>set hive.groupby.mapaggr.checkinterval = 100000;</code></li>
+<li>有数据倾斜的时候进行负载均衡（默认是 false）<br> <code>set hive.groupby.skewindata = true;</code><br> 当选项设定为 true，生成的查询计划会有两个 MR Job。<ul>
+<li>第一个 MR Job 中，Map 的输出结果会随机分布到 Reduce 中，每个 Reduce 做部分聚合操作，并输出结果，这样处理的结果是相同的 Group By Key 有可能被分发到不同的 Reduce中，从而达到负载均衡的目的；</li>
+<li>第二个 MR Job 再根据预处理的数据结果按照 Group By Key 分布到 Reduce 中（这个过程可以保证相同的 Group By Key 被分布到同一个 Reduce 中），最后完成最终的聚合操作（虽然能解决数据倾斜，但是不能让运行速度的更快）。<h2 id="3-3-Vectorization"><a href="#3-3-Vectorization" class="headerlink" title="3.3 Vectorization"></a>3.3 Vectorization</h2>vectorization : 矢量计算的技术，在计算类似scan, filter, aggregation的时候，vectorization技术以设置批处理的增量大小为 1024 行单次来达到比单条记录单次获得更高的效率。<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> hive.vectorized.execution.enabled <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">set</span> hive.vectorized.execution.reduce.enabled <span class="operator">=</span> <span class="literal">true</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="3-4-多重模式"><a href="#3-4-多重模式" class="headerlink" title="3.4 多重模式"></a>3.4 多重模式</h2><ul>
+<li>如果碰到一堆 SQL，并且这一堆 SQL 的模式还一样。都是从同一个表进行扫描，做不<br>同的逻辑。</li>
+<li>可优化的地方：如果有 n 条 SQL，每个 SQL 执行都会扫描一次这张表。  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> .... <span class="keyword">select</span> id,name,sex, age <span class="keyword">from</span> student <span class="keyword">where</span> age <span class="operator">&gt;</span> <span class="number">17</span>;</span><br><span class="line"><span class="keyword">insert</span> .... <span class="keyword">select</span> id,name,sex, age <span class="keyword">from</span> student <span class="keyword">where</span> age <span class="operator">&gt;</span> <span class="number">18</span>;</span><br><span class="line"><span class="keyword">insert</span> .... <span class="keyword">select</span> id,name,sex, age <span class="keyword">from</span> student <span class="keyword">where</span> age <span class="operator">&gt;</span> <span class="number">19</span>;</span><br></pre></td></tr></table></figure></li>
+<li>隐藏了一个问题：这种类型的 SQL 有多少个，那么最终。这张表就被全表扫描了多少次  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="type">int</span> t_ptn <span class="keyword">partition</span>(city<span class="operator">=</span>A). <span class="keyword">select</span> id,name,sex, age <span class="keyword">from</span> student <span class="keyword">where</span> city<span class="operator">=</span> A;</span><br><span class="line"><span class="keyword">insert</span> <span class="type">int</span> t_ptn <span class="keyword">partition</span>(city<span class="operator">=</span>B). <span class="keyword">select</span> id,name,sex, age <span class="keyword">from</span> student <span class="keyword">where</span> city<span class="operator">=</span> B;</span><br><span class="line"><span class="keyword">insert</span> <span class="type">int</span> t_ptn <span class="keyword">partition</span>(city<span class="operator">=</span>c). <span class="keyword">select</span> id,name,sex, age <span class="keyword">from</span> student <span class="keyword">where</span> city<span class="operator">=</span> c;</span><br><span class="line"><span class="comment">-- 修改为：</span></span><br><span class="line"><span class="keyword">from</span> student</span><br><span class="line"><span class="keyword">insert</span> <span class="type">int</span> t_ptn <span class="keyword">partition</span>(city<span class="operator">=</span>A) <span class="keyword">select</span> id,name,sex, age <span class="keyword">where</span> city<span class="operator">=</span> A</span><br><span class="line"><span class="keyword">insert</span> <span class="type">int</span> t_ptn <span class="keyword">partition</span>(city<span class="operator">=</span>B) <span class="keyword">select</span> id,name,sex, age <span class="keyword">where</span> city<span class="operator">=</span> B</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果一个 HQL 底层要执行 10 个 Job，那么能优化成 8 个一般来说，肯定能有所提高，多重插入就是一个非常实用的技能。一次读取，多次插入，有些场景是从一张表读取数据后，要多次利用。</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-5-in-exists-语句"><a href="#3-5-in-exists-语句" class="headerlink" title="3.5 in/exists 语句"></a>3.5 in/exists 语句</h2><ul>
+<li>使用 Hive 的一个高效替代方案：left semi join</li>
+<li>比如：– in / exists 实现  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.id, a.name <span class="keyword">from</span> a <span class="keyword">where</span> a.id <span class="keyword">in</span> (<span class="keyword">select</span> b.id <span class="keyword">from</span> b);</span><br><span class="line"><span class="keyword">select</span> a.id, a.name <span class="keyword">from</span> a <span class="keyword">where</span> <span class="keyword">exists</span> (<span class="keyword">select</span> id <span class="keyword">from</span> b <span class="keyword">where</span> a.id <span class="operator">=</span> b.id);</span><br></pre></td></tr></table></figure></li>
+<li>可以使用 join 来改写：  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.id, a.name <span class="keyword">from</span> a <span class="keyword">join</span> b <span class="keyword">on</span> a.id <span class="operator">=</span> b.id;</span><br></pre></td></tr></table></figure></li>
+<li>应该转换成left semi join 实现  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.id, a.name <span class="keyword">from</span> a <span class="keyword">left</span> semi <span class="keyword">join</span> b <span class="keyword">on</span> a.id <span class="operator">=</span> b.id;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="3-6-CBO-优化"><a href="#3-6-CBO-优化" class="headerlink" title="3.6 CBO 优化"></a>3.6 CBO 优化</h2><ul>
+<li>CBO 优化可以自动优化 HQL 中多个 Join 的顺序，并选择合适的 Join 算法。代价最小的执行计划就是最好的执行计划</li>
+<li>要使用基于成本的优化（也称为 CBO），请在查询开始设置以下参数：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> hive.cbo.enable<span class="operator">=</span><span class="literal">true</span>;</span><br><span class="line"><span class="keyword">set</span> hive.compute.query.using.stats<span class="operator">=</span><span class="literal">true</span>;</span><br><span class="line"><span class="keyword">set</span> hive.stats.fetch.column.stats<span class="operator">=</span><span class="literal">true</span>;</span><br><span class="line"><span class="keyword">set</span> hive.stats.fetch.partition.stats<span class="operator">=</span><span class="literal">true</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="3-7-谓词下推"><a href="#3-7-谓词下推" class="headerlink" title="3.7 谓词下推"></a>3.7 谓词下推</h2><ul>
+<li>将 SQL 语句中的 where 谓词逻辑都尽可能提前执行，减少下游处理的数据量。对应逻辑优化器是 PredicatePushDown，配置项为 hive.optimize.ppd，默认为 true。</li>
+<li>案例实操：</li>
+</ul>
+<ol>
+<li><p>打开谓词下推优化属性</p>
+ <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 谓词下推，默认是 true</span></span><br><span class="line"><span class="number">0</span>: jdbc:hive2:<span class="operator">/</span><span class="operator">/</span>hadoop001:<span class="number">10000</span><span class="operator">&gt;</span> <span class="keyword">set</span> hive.optimize.ppd;</span><br><span class="line"><span class="operator">+</span><span class="comment">-------------------------+</span></span><br><span class="line"><span class="operator">|</span>           <span class="keyword">set</span>           <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">-------------------------+</span></span><br><span class="line"><span class="operator">|</span> hive.optimize.ppd<span class="operator">=</span><span class="literal">true</span>  <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">-------------------------+</span></span><br><span class="line"><span class="number">1</span> <span class="type">row</span> selected (<span class="number">0.01</span> seconds) </span><br></pre></td></tr></table></figure></li>
+<li><p>查看先关联两张表，再用 where 条件过滤的执行计划</p>
+ <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive (<span class="keyword">default</span>)<span class="operator">&gt;</span> explain <span class="keyword">select</span> o.id <span class="keyword">from</span> bigtable b <span class="keyword">join</span> bigtable o <span class="keyword">on</span> o.id <span class="operator">=</span> b.id <span class="keyword">where</span> o.id <span class="operator">&lt;=</span> <span class="number">10</span>;</span><br></pre></td></tr></table></figure></li>
+<li><p>查看子查询后，再关联表的执行计划</p>
+ <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive (<span class="keyword">default</span>)<span class="operator">&gt;</span> explain <span class="keyword">select</span> b.id <span class="keyword">from</span> bigtable b <span class="keyword">join</span> (<span class="keyword">select</span> id <span class="keyword">from</span> bigtable <span class="keyword">where</span> id <span class="operator">&lt;=</span> <span class="number">10</span>) o <span class="keyword">on</span> b.id <span class="operator">=</span> o.id;</span><br></pre></td></tr></table></figure>
+<h2 id="3-8-MapJoin"><a href="#3-8-MapJoin" class="headerlink" title="3.8 MapJoin"></a>3.8 MapJoin</h2><p>MapJoin 是将 Join 双方比较小的表直接分发到各个 Map 进程的内存中，在 Map 进程中进行 Join 操 作，这样就不用进行 Reduce 步骤，从而提高了速度。如果不指定 MapJoin或者不符合 MapJoin 的条件，那么 Hive 解析器会将 Join 操作转换成 Common Join，即：在Reduce 阶段完成 Join。容易发生数据倾斜。可以用 MapJoin 把小表全部加载到内存在 Map端进行 Join，避免 Reducer 处理。</p>
+</li>
+<li><p>开启 MapJoin 参数设置</p>
+<ol>
+<li>设置自动选择 MapJoin <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 默认为 true</span></span><br><span class="line"><span class="keyword">set</span> hive.auto.convert.join<span class="operator">=</span><span class="literal">true</span>; </span><br></pre></td></tr></table></figure></li>
+<li>大表小表的阈值设置（默认 25M 以下认为是小表）： <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> hive.mapjoin.smalltable.filesize<span class="operator">=</span><span class="number">25000000</span>;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>MapJoin 工作机制</p>
+<ul>
+<li>MapJoin 是将 Join 双方比较小的表直接分发到各个 Map 进程的内存中，在 Map 进程中进行 Join 操作，这样就不用进行 Reduce 步骤，从而提高了速度。</li>
+</ul>
+</li>
+<li><p>案例实操：</p>
+<ol>
+<li>开启 MapJoin 功能 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 默认为 true</span></span><br><span class="line"><span class="keyword">set</span> hive.auto.convert.join <span class="operator">=</span> <span class="literal">true</span>; </span><br></pre></td></tr></table></figure></li>
+<li>执行小表 JOIN 大表语句<ul>
+<li>注意：此时小表(左连接)作为主表，所有数据都要写出去，因此此时会走 reduce，mapjoin失效<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Explain <span class="keyword">insert</span> overwrite <span class="keyword">table</span> jointable</span><br><span class="line"><span class="keyword">select</span> b.id, b.t, b.uid, b.keyword, b.url_rank, b.click_num, b.click_url</span><br><span class="line"><span class="keyword">from</span> smalltable s</span><br><span class="line"><span class="keyword">left</span> <span class="keyword">join</span> bigtable b</span><br><span class="line"><span class="keyword">on</span> s.id <span class="operator">=</span> b.id;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>执行大表 JOIN 小表语句 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Explain <span class="keyword">insert</span> overwrite <span class="keyword">table</span> jointable</span><br><span class="line"><span class="keyword">select</span> b.id, b.t, b.uid, b.keyword, b.url_rank, b.click_num, b.click_url</span><br><span class="line"><span class="keyword">from</span> bigtable b</span><br><span class="line"><span class="keyword">left</span> <span class="keyword">join</span> smalltable s</span><br><span class="line"><span class="keyword">on</span> s.id <span class="operator">=</span> b.id;</span><br></pre></td></tr></table></figure>
+<h2 id="3-9-大表、大表-SMB-Join"><a href="#3-9-大表、大表-SMB-Join" class="headerlink" title="3.9 大表、大表 SMB Join"></a>3.9 大表、大表 SMB Join</h2></li>
+</ol>
+</li>
+</ol>
+<ul>
+<li>SMB Join ：Sort Merge Bucket Join</li>
+</ul>
+<h2 id="3-10-笛卡尔积"><a href="#3-10-笛卡尔积" class="headerlink" title="3.10 笛卡尔积"></a>3.10 笛卡尔积</h2><p>Join 的时候不加 on 条件，或者无效的 on 条件，因为找不到 Join key，Hive 只能使用1 个 Reducer 来完成笛卡尔积。当 Hive 设定为严格模式（hive.mapred.mode=strictnonstrict） 时，不允许在 HQL 语句中出现笛卡尔积。</p>
+<h1 id="第4章-数据倾斜"><a href="#第4章-数据倾斜" class="headerlink" title="第4章 数据倾斜"></a>第4章 数据倾斜</h1><h2 id="4-1-单表数据倾斜优化"><a href="#4-1-单表数据倾斜优化" class="headerlink" title="4.1 单表数据倾斜优化"></a>4.1 单表数据倾斜优化</h2><h3 id="4-1-1-使用参数"><a href="#4-1-1-使用参数" class="headerlink" title="4.1.1 使用参数"></a>4.1.1 使用参数</h3><p>当任务中存在 GroupBy 操作同时聚合函数为 count 或者 sum 可以设置参数来处理数据<br>倾斜问题。</p>
+<ul>
+<li>是否在 Map 端进行聚合，默认为 True  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> hive.map.aggr <span class="operator">=</span> <span class="literal">true</span>;</span><br></pre></td></tr></table></figure></li>
+<li>在 Map 端进行聚合操作的条目数目  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> hive.groupby.mapaggr.checkinterval <span class="operator">=</span> <span class="number">100000</span>;</span><br></pre></td></tr></table></figure></li>
+<li>有数据倾斜的时候进行负载均衡（默认是 false）  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> hive.groupby.skewindata <span class="operator">=</span> <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>当选项设定为 true，生成的查询计划会有两个 MR Job。</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-1-2-增加-Reduce-数量"><a href="#4-1-2-增加-Reduce-数量" class="headerlink" title="4.1.2 增加 Reduce 数量"></a>4.1.2 增加 Reduce 数量</h3><ol>
+<li>调整 reduce 个数方法一<ol>
+<li>每个 Reduce 处理的数据量默认是 256MB <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> hive.exec.reducers.bytes.per.reducer <span class="operator">=</span> <span class="number">256000000</span></span><br></pre></td></tr></table></figure></li>
+<li>每个任务最大的 reduce 数，默认为 1009 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> hive.exec.reducers.max <span class="operator">=</span> <span class="number">1009</span></span><br></pre></td></tr></table></figure></li>
+<li>计算 reducer 数的公式 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">N<span class="operator">=</span><span class="built_in">min</span>(参数 <span class="number">2</span>，总输入数据量<span class="operator">/</span>参数 <span class="number">1</span>)(参数 <span class="number">2</span> 指的是上面的 <span class="number">1009</span>，参数 <span class="number">1</span> 值得是 <span class="number">256</span>M)</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li>调整 reduce 个数方法二<ol>
+<li>在 hadoop 的 mapred-default.xml 文件中修改设置每个 job 的 Reduce 个数 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> mapreduce.job.reduces <span class="operator">=</span> <span class="number">15</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="4-2-Join-数据倾斜优化"><a href="#4-2-Join-数据倾斜优化" class="headerlink" title="4.2 Join 数据倾斜优化"></a>4.2 Join 数据倾斜优化</h2><h3 id="4-2-1-使用参数"><a href="#4-2-1-使用参数" class="headerlink" title="4.2.1 使用参数"></a>4.2.1 使用参数</h3></li>
+</ol>
+</li>
+</ol>
+<ul>
+<li>在编写 Join 查询语句时，如果确定是由于 join 出现的数据倾斜，那么请做如下设置：  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">join</span> 的键对应的记录条数超过这个值则会进行分拆，值根据具体数据量设置</span><br><span class="line"><span class="keyword">set</span> hive.skewjoin.key<span class="operator">=</span><span class="number">100000</span>;</span><br><span class="line"># 如果是 <span class="keyword">join</span> 过程出现倾斜应该设置为 <span class="literal">true</span></span><br><span class="line"><span class="keyword">set</span> hive.optimize.skewjoin<span class="operator">=</span><span class="literal">false</span>;</span><br></pre></td></tr></table></figure></li>
+<li>如果开启了，在 Join 过程中 Hive 会将计数超过阈值 hive.skewjoin.key（默认 100000）的倾斜 key 对应的行临时写进文件中，然后再启动另一个 job 做 map join 生成结果。通过hive.skewjoin.mapjoin.map.tasks 参数还可以控制第二个 job 的 mapper 数量，默认 10000。  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> hive.skewjoin.mapjoin.map.tasks<span class="operator">=</span><span class="number">10000</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="4-2-2-MapJoin"><a href="#4-2-2-MapJoin" class="headerlink" title="4.2.2 MapJoin"></a>4.2.2 MapJoin</h2><h1 id="第5章-Hive-Job-优化"><a href="#第5章-Hive-Job-优化" class="headerlink" title="第5章 Hive Job 优化"></a>第5章 Hive Job 优化</h1><h2 id="5-1-Hive-Map-优化"><a href="#5-1-Hive-Map-优化" class="headerlink" title="5.1 Hive Map 优化"></a>5.1 Hive Map 优化</h2><h3 id="5-1-1-复杂文件增加-Map-数"><a href="#5-1-1-复杂文件增加-Map-数" class="headerlink" title="5.1.1 复杂文件增加 Map 数"></a>5.1.1 复杂文件增加 Map 数</h3><ul>
+<li><p>当 input 的文件都很大，任务逻辑复杂，map 执行非常慢的时候，可以考虑增加 Map 数，来使得每个 map 处理的数据量减少，从而提高任务的执行效率。增加 map 的方法为：根据<code>computeSliteSize(Math.max(minSize,Math.min(maxSize,blocksize)))=blocksize=128M </code>公式，调整 maxSize 最大值。让 maxSize 最大值低于 blocksize 就可以增加 map 的个数。</p>
+</li>
+<li><p>案例实操：</p>
+<ol>
+<li>执行查询 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hive (<span class="keyword">default</span>)<span class="operator">&gt;</span> <span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> emp;</span><br><span class="line">Hadoop job information <span class="keyword">for</span> Stage<span class="number">-1</span>: number <span class="keyword">of</span> mappers: <span class="number">1</span>; number <span class="keyword">of</span> reducers: <span class="number">1</span></span><br></pre></td></tr></table></figure></li>
+<li>设置最大切片值为 100 个字节 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hive (<span class="keyword">default</span>)<span class="operator">&gt;</span> <span class="keyword">set</span> mapreduce.input.fileinputformat.split.maxsize<span class="operator">=</span><span class="number">100</span>;</span><br><span class="line">hive (<span class="keyword">default</span>)<span class="operator">&gt;</span> <span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> emp;</span><br><span class="line">Hadoop job information <span class="keyword">for</span> Stage<span class="number">-1</span>: number <span class="keyword">of</span> mappers: <span class="number">6</span>; number <span class="keyword">of</span> reducers: <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h2 id="5-1-2-小文件进行合并"><a href="#5-1-2-小文件进行合并" class="headerlink" title="5.1.2 小文件进行合并"></a>5.1.2 小文件进行合并</h2></li>
+</ol>
+</li>
+</ul>
+<ol>
+<li>在 map 执行前合并小文件，减少 map 数：CombineHiveInputFormat 具有对小文件进行合并的功能（系统默认的格式）。HiveInputFormat 没有对小文件合并功能。 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> hive.input.format<span class="operator">=</span>org.apache.hadoop.hive.ql.io.CombineHiveInputFormat;</span><br></pre></td></tr></table></figure></li>
+<li>在 Map-Reduce 的任务结束时合并小文件的设置： <ul>
+<li>在 map-only 任务结束时合并小文件，默认 true  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> hive.merge.mapfiles <span class="operator">=</span> <span class="literal">true</span>;</span><br></pre></td></tr></table></figure></li>
+<li>在 map-reduce 任务结束时合并小文件，默认 false  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> hive.merge.mapredfiles <span class="operator">=</span> <span class="literal">true</span>;</span><br></pre></td></tr></table></figure></li>
+<li>合并文件的大小，默认 256M  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> hive.merge.size.per.task <span class="operator">=</span> <span class="number">268435456</span>;</span><br></pre></td></tr></table></figure></li>
+<li>当输出文件的平均大小小于该值时，启动一个独立的 map-reduce 任务进行文件 merge  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> hive.merge.smallfiles.avgsize <span class="operator">=</span> <span class="number">16777216</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h3 id="5-1-3-Map-端聚合"><a href="#5-1-3-Map-端聚合" class="headerlink" title="5.1.3 Map 端聚合"></a>5.1.3 Map 端聚合</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 相当于 map 端执行 combiner</span></span><br><span class="line"><span class="keyword">set</span> hive.map.aggr<span class="operator">=</span><span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="5-1-4-推测执行"><a href="#5-1-4-推测执行" class="headerlink" title="5.1.4 推测执行"></a>5.1.4 推测执行</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#默认是 <span class="literal">true</span></span><br><span class="line"><span class="keyword">set</span> mapred.map.tasks.speculative.execution <span class="operator">=</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="5-2-Hive-Reduce-优化"><a href="#5-2-Hive-Reduce-优化" class="headerlink" title="5.2 Hive Reduce 优化"></a>5.2 Hive Reduce 优化</h2><h3 id="5-2-1-合理设置-Reduce-数"><a href="#5-2-1-合理设置-Reduce-数" class="headerlink" title="5.2.1 合理设置 Reduce 数"></a>5.2.1 合理设置 Reduce 数</h3><ol>
+<li>调整 reduce 个数方法一<ol>
+<li>每个 Reduce 处理的数据量默认是 256MB <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> hive.exec.reducers.bytes.per.reducer <span class="operator">=</span> <span class="number">256000000</span></span><br></pre></td></tr></table></figure></li>
+<li>每个任务最大的 reduce 数，默认为 1009 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> hive.exec.reducers.max <span class="operator">=</span> <span class="number">1009</span></span><br></pre></td></tr></table></figure></li>
+<li>计算 reducer 数的公式 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">N=min(参数 2，总输入数据量/参数 1)(参数 2 指的是上面的 1009，参数 1 值得是 256M)</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li>调整 reduce 个数方法二<ul>
+<li>在 hadoop 的 mapred-default.xml 文件中修改,设置每个 job 的 Reduce 个数  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> mapreduce.job.reduces <span class="operator">=</span> <span class="number">15</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>reduce 个数并不是越多越好<ol>
+<li>过多的启动和初始化 reduce 也会消耗时间和资源；</li>
+<li>另外，有多少个 reduce，就会有多少个输出文件，如果生成了很多个小文件，那么如果这些小文件作为下一个任务的输入，则也会出现小文件过多的问题；</li>
+<li>在设置 reduce 个数的时候也需要考虑这两个原则：<ol>
+<li>处理大数据量利用合适的 reduce 数；</li>
+<li>使单个 reduce 任务处理数据量大小要合适；</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="5-3-2-推测执行"><a href="#5-3-2-推测执行" class="headerlink" title="5.3.2 推测执行"></a>5.3.2 推测执行</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># hadoop 里面的</span><br><span class="line">mapred.reduce.tasks.speculative.execution</span><br><span class="line"># hive 里面相同的参数，效果和hadoop 里面的一样两个随便哪个都行</span><br><span class="line">hive.mapred.reduce.tasks.speculative.execution</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-3-Hive-任务整体优化"><a href="#5-3-Hive-任务整体优化" class="headerlink" title="5.3 Hive 任务整体优化"></a>5.3 Hive 任务整体优化</h2><h3 id="5-3-1-Fetch-抓取"><a href="#5-3-1-Fetch-抓取" class="headerlink" title="5.3.1 Fetch 抓取"></a>5.3.1 Fetch 抓取</h3><ul>
+<li>Fetch 抓取是指，Hive 中对某些情况的查询可以不必使用 MapReduce 计算。例如：<code>SELECT * FROM emp</code></li>
+<li>在这种情况下，Hive 可以简单地读取 emp 对应的存储目录下的文件，然后输出<br>查询结果到控制台。</li>
+<li>在 hive-default.xml.template 文件中 hive.fetch.task.conversion 默认是 more，老版本 hive默认是 minimal，该属性修改为 more 以后，在全局查找、字段查找、limit 查找等都不走mapreduce。  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>hive.fetch.task.conversion<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>more<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span></span><br><span class="line">        Expects one of [none, minimal, more].</span><br><span class="line">        Some select queries can be converted to single FETCH task minimizing latency.</span><br><span class="line">        Currently the query should be single sourced not having any subquery and should not have any aggregations or distincts (which incurs RS), lateral views and joins.</span><br><span class="line">        0. none : disable hive.fetch.task.conversion</span><br><span class="line">        1. minimal : SELECT STAR, FILTER on partition columns, LIMIT only</span><br><span class="line">        2. more : SELECT, FILTER, LIMIT only (support TABLESAMPLE and </span><br><span class="line">        virtual columns)</span><br><span class="line">    <span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+ 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          打赏
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://anzhen-tech.github.io/2021/11/07/Hive%E8%BF%9B%E9%98%B6/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hive/" rel="tag">Hive</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2021/11/07/Dubbo%E9%9D%A2%E8%AF%95%E9%A2%98/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Dubbo面试题
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/11/07/Hadoop%E5%8E%8B%E7%BC%A9%E3%80%81%E4%BC%98%E5%8C%96%E3%80%81%E9%AB%98%E5%8F%AF%E7%94%A8/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Hadoop压缩、优化、高可用</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "XCKHv09pYxF5EmF2ezNgFfLS-gzGzoHsz",
+    app_key: "gyCHBp787fNNfXDiHGIcj7Am",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2021
+        <i class="ri-heart-fill heart_icon"></i> Anzhen
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="anzhen.tech"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/HDFS">HDFS</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Yarn">Yarn</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/MR">MR</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Hive">Hive</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86">数据采集</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/HBase">HBase</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Kafka">Kafka</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Spark">Spark</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Flink">Flink</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/MySQL">MySQL</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Java">Java</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/interview">面试宝典</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/11/07/about-me">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="52"
+        src="//music.163.com/outchain/player?type=2&id=318916815&auto=1&height=32"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+    
+
+  </div>
+</body>
+
+</html>

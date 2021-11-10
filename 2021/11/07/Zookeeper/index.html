@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>Zookeeper |  anzhen.tech</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+      <meta name="baidu-site-verification" content="code-BgeZtJHZzY" />
+      <meta name="google-site-verification" content="wNOxVwDPcgD6IwrCt_pD_Xtq-E86p8USRXPN73jLu0A" />
+    <link rel="alternate" href="/atom.xml" title="anzhen.tech" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-Zookeeper"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Zookeeper
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/11/07/Zookeeper/" class="article-date">
+  <time datetime="2021-11-07T00:08:46.000Z" itemprop="datePublished">2021-11-07</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Zookeeper/">Zookeeper</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">5.2k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">22 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="Zookeeper"><a href="#Zookeeper" class="headerlink" title="Zookeeper"></a>Zookeeper</h1><h1 id="一、Zookeeper入门"><a href="#一、Zookeeper入门" class="headerlink" title="一、Zookeeper入门"></a>一、Zookeeper入门</h1><h2 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h2><ul>
+<li>Zookeeper是一个开源的分布式的，为分布式应用提供协调服务的Apache项目。</li>
+<li>Zookeeper从设计模式角度来理解，是一个基于<font color ='red' >观察者模式</font>设计的分布式服务管理框架，它负责存储和管理大家都关心的数据，然后接受观察者的注册，一旦这些数据的状态发生了变化，Zookeeper就负责通知已经在Zookeeper上注册的那些观察者做出相应的反应.</li>
+<li>Zookeeper = 文件系统 + 通知机制</li>
+</ul>
+<hr>
+<h2 id="1-2-特点"><a href="#1-2-特点" class="headerlink" title="1.2 特点"></a>1.2 特点</h2><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16345175804501.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ul>
+<li>Zookeeper：一个领导者（Leader），多个跟随者（Follower）组成的集群。</li>
+<li>集群中只要有半数以上节点存活，Zookeeper集群就能正常服务</li>
+<li>全局数据一致：每个Server保存一份相同的数据副本，Client无论连接到哪个Server，数据都是一致的</li>
+<li>更新请求顺序进行，来自同一个Client的更新请求按其发送顺序依次执行</li>
+<li>数据更新原子性，一次数据更新要么全部成功（超集群半数节点），要么所有节点全部失败</li>
+<li>实时性，在一定时间范围内，Client能读到最新数据</li>
+</ul>
+<hr>
+<h2 id="1-3-数据结构"><a href="#1-3-数据结构" class="headerlink" title="1.3 数据结构"></a>1.3 数据结构</h2><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16345177645379.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ul>
+<li>ZooKeeper数据模型的结构与Unix文件系统很类似，整体上可以看作是一棵树，每个节点称做一个ZNode。每一个ZNode默认能够存储1MB的数据，每个ZNode都可以通过其路径唯一标识。</li>
+</ul>
+<hr>
+<h2 id="1-4-应用场景"><a href="#1-4-应用场景" class="headerlink" title="1.4 应用场景"></a>1.4 应用场景</h2><ul>
+<li><p>提供的服务包括：统一命名服务、统一配置管理、统一集群管理、服务器节点动态上下线、软负载均衡等。</p>
+</li>
+<li><p>统一命名服务：在分布式环境下，经常需要对应用/服务进行统一命名，便于识别。<br>  <img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16345532077391.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+</li>
+<li><p>统一配置管理<br>  <img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16345533954441.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ol>
+<li>分布式环境下，配置文件同步非常常见，配置管理可交由ZooKeeper实现</li>
+<li>一般要求一个集群中，所有节点的配置信息是一致的，比如 Kafka 集群</li>
+<li>对配置文件修改后，希望能够快速同步到各个节点上</li>
+<li>将配置信息写入ZooKeeper上的一个Znode</li>
+<li>各个客户端服务器监听这个Znode</li>
+<li>Znode中的数据被修改，ZooKeeper将通知各个客户端服务器</li>
+</ol>
+</li>
+<li><p>统一集群管理<br>  <img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16345535437380.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ol>
+<li>分布式环境中，实时掌握每个节点的状态是必要的。 <ol>
+<li>可根据节点实时状态做出一些调整。 </li>
+</ol>
+</li>
+<li>ZooKeeper可以实现实时监控节点状态变化<ol>
+<li>可将节点信息写入ZooKeeper上的一个ZNode</li>
+<li>监听这个ZNode可获取它的实时状态变化。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>服务器动态上下线<br>  <img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16345535923783.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+</li>
+<li><p>软负载均衡：在Zookeeper中记录每台服务器的访问数，让访问数最少的服务器去处理最新的客户端请求<br>  <img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16345536248922.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+</li>
+</ul>
+<hr>
+<h1 id="二、Zookeeper-安装"><a href="#二、Zookeeper-安装" class="headerlink" title="二、Zookeeper 安装"></a>二、Zookeeper 安装</h1><h2 id="2-1-安装ZK"><a href="#2-1-安装ZK" class="headerlink" title="2.1 安装ZK:"></a>2.1 安装ZK:</h2><ol>
+<li>把软件包上传的Linux的 /opt/software 下</li>
+<li>加压ZK到 /opt/module 下</li>
+<li>将加压后的目录名称修改一下（选做）</li>
+<li>将zk的安装目录下 conf/zoo_sample.cfg 文件改名为 zoo.cfg</li>
+<li>在ZK的安装目录下创建一个新的目录，作为zk的数据持久化目录</li>
+<li>修改zoo.cfg配置文件<code>dataDir=/opt/module/zookeeper-3.5.7/zkData</code></li>
+<li>配置ZK的环境变量 （选做）</li>
+</ol>
+<h2 id="2-2-单点模式的简单操作"><a href="#2-2-单点模式的简单操作" class="headerlink" title="2.2 单点模式的简单操作"></a>2.2 单点模式的简单操作</h2><ol>
+<li>启停zk服务端 和 zk客户端<ul>
+<li>启停 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">    [atguigu@hadoop001 zookeeper-3.5.7]$ bin/zkServer.sh start</span><br><span class="line">    ZooKeeper JMX enabled by default</span><br><span class="line">    Using config: /opt/module/zookeeper-3.5.7/bin/../conf/zoo.cfg</span><br><span class="line">    Starting zookeeper ... STARTED</span><br><span class="line">    [atguigu@hadoop001 zookeeper-3.5.7]$ jps</span><br><span class="line">    1456 NameNode</span><br><span class="line">    8225 QuorumPeerMain</span><br><span class="line">    1619 DataNode</span><br><span class="line">    2076 JobHistoryServer</span><br><span class="line">    1901 NodeManager</span><br><span class="line">    8269 Jps</span><br><span class="line">    [atguigu@hadoop001 zookeeper-3.5.7]$ bin/zkServer.sh stop</span><br><span class="line">    ZooKeeper JMX enabled by default</span><br><span class="line">    Using config: /opt/module/zookeeper-3.5.7/bin/../conf/zoo.cfg</span><br><span class="line">    Stopping zookeeper ... STOPPED</span><br><span class="line">    [atguigu@hadoop001 zookeeper-3.5.7]$ jps</span><br><span class="line">    1456 NameNode</span><br><span class="line">    1619 DataNode</span><br><span class="line">    2076 JobHistoryServer</span><br><span class="line">    1901 NodeManager</span><br><span class="line">    8302 Jps</span><br><span class="line">    [atguigu@hadoop001 zookeeper-3.5.7]$</span><br><span class="line">    ```   </span><br><span class="line">- 客户端连接</span><br><span class="line">    ```bash</span><br><span class="line">    [atguigu@hadoop001 zookeeper-3.5.7]$ bin/zkCli.sh -server hadoop001:2181</span><br><span class="line">    Connecting to hadoop001:2181</span><br><span class="line">    ········</span><br><span class="line"></span><br><span class="line">    2021-10-18 16:36:10,536 [myid:hadoop001:2181] - INFO  [main-SendThread(hadoop001:2181):ClientCnxn<span class="variable">$SendThread</span>@1394] - Session establishment complete on server hadoop001/192.168.2.6:2181, sessionid = 0x10000a6d44b0000, negotiated timeout = 30000</span><br><span class="line">    </span><br><span class="line">    WATCHER::</span><br><span class="line">    </span><br><span class="line">    WatchedEvent state:SyncConnected <span class="built_in">type</span>:None path:null</span><br><span class="line">    [zk: hadoop001:2181(CONNECTED) 0]</span><br></pre></td></tr></table></figure>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 ~]$ jps</span><br><span class="line">1456 NameNode</span><br><span class="line">1619 DataNode</span><br><span class="line">8483 ZooKeeperMain</span><br><span class="line">8532 Jps</span><br><span class="line">8378 QuorumPeerMain</span><br><span class="line">2076 JobHistoryServer</span><br><span class="line">1901 NodeManager</span><br><span class="line">[atguigu@hadoop001 ~]$</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>查看一下zk的服务端和客户端对应的进程 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 ~]$ jps</span><br><span class="line">1456 NameNode</span><br><span class="line">1619 DataNode</span><br><span class="line">8483 ZooKeeperMain      <span class="comment">#客户端</span></span><br><span class="line">8532 Jps</span><br><span class="line">8378 QuorumPeerMain     <span class="comment">#服务端</span></span><br><span class="line">2076 JobHistoryServer</span><br><span class="line">1901 NodeManager</span><br><span class="line">[atguigu@hadoop001 ~]$</span><br></pre></td></tr></table></figure></li>
+<li>退出客户端 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[zk: hadoop001:2181(CONNECTED) 0] quit</span><br><span class="line"></span><br><span class="line">WATCHER::</span><br><span class="line"></span><br><span class="line">WatchedEvent state:Closed <span class="built_in">type</span>:None path:null</span><br><span class="line">2021-10-18 16:41:05,769 [myid:] - INFO  [main:ZooKeeper@1422] - Session: 0x10000a6d44b0001 closed</span><br><span class="line">2021-10-18 16:41:05,769 [myid:] - INFO  [main-EventThread:ClientCnxn<span class="variable">$EventThread</span>@524] - EventThread shut down <span class="keyword">for</span> session: 0x10000a6d44b0001</span><br><span class="line">[atguigu@hadoop001 zookeeper-3.5.7]$ jps</span><br><span class="line">1456 NameNode</span><br><span class="line">1619 DataNode</span><br><span class="line">8552 Jps</span><br><span class="line">8378 QuorumPeerMain</span><br><span class="line">2076 JobHistoryServer</span><br><span class="line">1901 NodeManager</span><br><span class="line">[atguigu@hadoop001 zookeeper-3.5.7]$</span><br></pre></td></tr></table></figure></li>
+<li>当客户端启动连接后不能单独关闭，当服务端关闭后，客户端也就消失了。</li>
+</ol>
+<h2 id="2-2-配置参数解读"><a href="#2-2-配置参数解读" class="headerlink" title="2.2 配置参数解读"></a>2.2 配置参数解读</h2><p>Zookeeper中的配置文件zoo.cfg中参数含义解读如下：</p>
+<ol>
+<li>tickTime =2000：通信心跳数，Zookeeper服务器与客户端心跳时间，单位毫秒<ul>
+<li>Zookeeper使用的基本时间，服务器之间或客户端与服务器之间维持心跳的时间间隔，也就是每个tickTime时间就会发送一个心跳，时间单位为毫秒。</li>
+<li>它用于心跳检测机制，并且设置最小的session超时时间为两倍心跳时间。(session的最小超时时间是2*tickTime)</li>
+</ul>
+</li>
+<li>initLimit =10：LF初始通信时限<ul>
+<li>集群中的Follower跟随者服务器与Leader领导者服务器之间初始连接时能容忍的最多心跳数（tickTime的数量），用它来限定集群中的Zookeeper服务器连接到Leader的时限。</li>
+</ul>
+</li>
+<li>syncLimit =5：LF同步通信时限<ul>
+<li>集群中Leader与Follower之间的最大响应时间单位，假如响应超过syncLimit * tickTime，Leader认为Follwer死掉，从服务器列表中删除Follwer。</li>
+</ul>
+</li>
+<li>dataDir：数据文件目录+数据持久化路径<ul>
+<li>用于保存Zookeeper中的数据。</li>
+</ul>
+</li>
+<li>clientPort=2181：客户端连接端口<ul>
+<li>监听客户端连接的端口。</li>
+</ul>
+</li>
+</ol>
+<h1 id="三、Zookeeper-实战"><a href="#三、Zookeeper-实战" class="headerlink" title="三、Zookeeper 实战"></a>三、Zookeeper 实战</h1><h2 id="3-1-搭建ZK的集群"><a href="#3-1-搭建ZK的集群" class="headerlink" title="3.1 搭建ZK的集群"></a>3.1 搭建ZK的集群</h2><ol>
+<li>集群规划：在hadoop102、hadoop103和hadoop104三个节点上部署Zookeeper </li>
+<li>每个节点执行单节点部署的步骤</li>
+<li>修改zoo.cfg 配置文件 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 数据存储路径</span><br><span class="line">dataDir=/opt/module/zookeeper-3.5.7/zkData</span><br><span class="line"></span><br><span class="line">#集群节点配置</span><br><span class="line">server.2=hadoop102:2888:3888</span><br><span class="line">server.3=hadoop103:2888:3888</span><br><span class="line">server.4=hadoop104:2888:3888</span><br></pre></td></tr></table></figure></li>
+<li>zkData目录下创建myid的文件对应上述配置编号</li>
+<li>配置参数解读<ul>
+<li>server.A=B:C:D</li>
+<li>A是一个数字，表示这个是第几号服务器，对应zkData/myid中的编号；Zookeeper启动时读取此文件，拿到里面的数据与zoo.cfg里面的配置信息比较从而判断到底是哪个server</li>
+<li>B是Zookeeper节点的地址（域名/IP）</li>
+<li>C是这个服务器Follower与集群中的Leader服务器交换信息的端口</li>
+<li>D是集群中的Leader服务器挂掉之后，需要一个端口来重新进行选举，选出一个新的Leader，而这个端口就是用来执行选举时服务器相互通信的端口</li>
+</ul>
+</li>
+<li>编写启动/停止Zookeeper集群脚本 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#检验参数</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> -lt 1 ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&#x27;参数不能为空！！！&#x27;</span></span><br><span class="line">    <span class="built_in">exit</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#循环遍历每一台机器，分别启动或者停止ZK服务</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> host <span class="keyword">in</span> hadoop001 hadoop002 hadoop003 hadoop004 hadoop005; <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">case</span> <span class="variable">$1</span> <span class="keyword">in</span></span><br><span class="line">    <span class="string">&quot;start&quot;</span>)</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;*****************<span class="variable">$1</span> <span class="variable">$host</span> zookeeper****************&quot;</span></span><br><span class="line">        ssh <span class="variable">$host</span> /opt/module/zookeeper-3.5.7/bin/zkServer.sh <span class="variable">$1</span></span><br><span class="line">        ;;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;stop&quot;</span>)</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;*****************<span class="variable">$1</span> <span class="variable">$host</span> zookeeper****************&quot;</span></span><br><span class="line">        ssh <span class="variable">$host</span> /opt/module/zookeeper-3.5.7/bin/zkServer.sh <span class="variable">$1</span></span><br><span class="line">        ;;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;status&quot;</span>)</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;*****************<span class="variable">$1</span> <span class="variable">$host</span> zookeeper****************&quot;</span></span><br><span class="line">        ssh <span class="variable">$host</span> /opt/module/zookeeper-3.5.7/bin/zkServer.sh <span class="variable">$1</span></span><br><span class="line">        ;;</span><br><span class="line"></span><br><span class="line">    *)</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&#x27;参数有误！！！&#x27;</span></span><br><span class="line">        <span class="built_in">exit</span></span><br><span class="line">        ;;</span><br><span class="line">    <span class="keyword">esac</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></li>
+<li>执行脚本 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 bin]$ zookeeper_cluster.sh start</span><br><span class="line">*****************start hadoop001 zookeeper****************</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /opt/module/zookeeper-3.5.7/bin/../conf/zoo.cfg</span><br><span class="line">Starting zookeeper ... STARTED</span><br><span class="line">*****************start hadoop002 zookeeper****************</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /opt/module/zookeeper-3.5.7/bin/../conf/zoo.cfg</span><br><span class="line">Starting zookeeper ... STARTED</span><br><span class="line">*****************start hadoop003 zookeeper****************</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /opt/module/zookeeper-3.5.7/bin/../conf/zoo.cfg</span><br><span class="line">Starting zookeeper ... STARTED</span><br><span class="line">[atguigu@hadoop001 bin]$ zookeeper_cluster.sh status</span><br><span class="line">*****************status hadoop001 zookeeper****************</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /opt/module/zookeeper-3.5.7/bin/../conf/zoo.cfg</span><br><span class="line">Client port found: 2181. Client address: localhost.</span><br><span class="line">Mode: follower</span><br><span class="line">*****************status hadoop002 zookeeper****************</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /opt/module/zookeeper-3.5.7/bin/../conf/zoo.cfg</span><br><span class="line">Client port found: 2181. Client address: localhost.</span><br><span class="line">Mode: follower</span><br><span class="line">*****************status hadoop003 zookeeper****************</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /opt/module/zookeeper-3.5.7/bin/../conf/zoo.cfg</span><br><span class="line">Client port found: 2181. Client address: localhost.</span><br><span class="line">Mode: leader</span><br><span class="line">[atguigu@hadoop001 bin]$ zookeeper_cluster.sh stop</span><br><span class="line">*****************stop hadoop001 zookeeper****************</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /opt/module/zookeeper-3.5.7/bin/../conf/zoo.cfg</span><br><span class="line">Stopping zookeeper ... STOPPED</span><br><span class="line">*****************stop hadoop002 zookeeper****************</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /opt/module/zookeeper-3.5.7/bin/../conf/zoo.cfg</span><br><span class="line">Stopping zookeeper ... STOPPED</span><br><span class="line">*****************stop hadoop003 zookeeper****************</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /opt/module/zookeeper-3.5.7/bin/../conf/zoo.cfg</span><br><span class="line">Stopping zookeeper ... STOPPED</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="3-2-客户端命令行操作"><a href="#3-2-客户端命令行操作" class="headerlink" title="3.2 客户端命令行操作"></a>3.2 客户端命令行操作</h2><h2 id="3-2-1-基本命令"><a href="#3-2-1-基本命令" class="headerlink" title="3.2.1 基本命令"></a>3.2.1 基本命令</h2><table>
+<thead>
+<tr>
+<th>命令基本语法</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>help</td>
+<td>显示所有操作命令</td>
+</tr>
+<tr>
+<td>ls path</td>
+<td>使用 ls 命令来查看当前znode的子节点 <br> -w  监听子节点变化 <br>-s   附加次级信息</td>
+</tr>
+<tr>
+<td>create</td>
+<td>普通创建 <br>-s  含有序列 <br>-e  临时（重启或者超时消失）</td>
+</tr>
+<tr>
+<td>get path</td>
+<td>获得节点的值<br>-w  监听节点内容变化<br>-s   附加次级信息</td>
+</tr>
+<tr>
+<td>set</td>
+<td>设置节点的具体值</td>
+</tr>
+<tr>
+<td>stat</td>
+<td>查看节点状态</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>删除节点</td>
+</tr>
+<tr>
+<td>deleteall</td>
+<td>递归删除节点</td>
+</tr>
+</tbody></table>
+<h2 id="3-2-2-具体操作"><a href="#3-2-2-具体操作" class="headerlink" title="3.2.2 具体操作"></a>3.2.2 具体操作</h2><ol>
+<li><p>启动客户端</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[atguigu@hadoop001 zookeeper-3.5.7]$ bin/zkCli.sh -server hadoop001:2181</span><br><span class="line">Connecting to hadoop001:2181</span><br><span class="line">·······</span><br><span class="line">WATCHER::</span><br><span class="line"></span><br><span class="line">WatchedEvent state:SyncConnected <span class="built_in">type</span>:None path:null</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 0]</span><br></pre></td></tr></table></figure></li>
+<li><p>显示所有操作命令</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[zk: hadoop001:2181(CONNECTED) 0] <span class="built_in">help</span></span><br><span class="line">ZooKeeper -server host:port cmd args</span><br><span class="line">	addauth scheme auth</span><br><span class="line">	close</span><br><span class="line">	config [-c] [-w] [-s]</span><br><span class="line">	connect host:port</span><br><span class="line">	create [-s] [-e] [-c] [-t ttl] path [data] [acl]</span><br><span class="line">	delete [-v version] path</span><br><span class="line">	deleteall path</span><br><span class="line">	delquota [-n|-b] path</span><br><span class="line">	get [-s] [-w] path</span><br><span class="line">	getAcl [-s] path</span><br><span class="line">	<span class="built_in">history</span></span><br><span class="line">	listquota path</span><br><span class="line">	ls [-s] [-w] [-R] path</span><br><span class="line">	ls2 path [watch]</span><br><span class="line">	printwatches on|off</span><br><span class="line">	quit</span><br><span class="line">	reconfig [-s] [-v version] [[-file path] | [-members serverID=host:port1:port2;port3[,...]*]] | [-add serverId=host:port1:port2;port3[,...]]* [-remove serverId[,...]*]</span><br><span class="line">	redo cmdno</span><br><span class="line">	removewatches path [-c|-d|-a] [-l]</span><br><span class="line">	rmr path</span><br><span class="line">	<span class="built_in">set</span> [-s] [-v version] path data</span><br><span class="line">	setAcl [-s] [-v version] [-R] path acl</span><br><span class="line">	setquota -n|-b val path</span><br><span class="line">	<span class="built_in">stat</span> [-w] path</span><br><span class="line">	sync path</span><br></pre></td></tr></table></figure></li>
+<li><p>查看当前znode中所包含的内容</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[zk: hadoop001:2181(CONNECTED) 2] ls /</span><br><span class="line">[zookeeper]</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 3]</span><br></pre></td></tr></table></figure></li>
+<li><p>查看当前节点详细数据</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[zk: hadoop001:2181(CONNECTED) 3] ls -s /</span><br><span class="line">[zookeeper]cZxid = 0x0</span><br><span class="line">ctime = Thu Jan 01 08:00:00 CST 1970</span><br><span class="line">mZxid = 0x0</span><br><span class="line">mtime = Thu Jan 01 08:00:00 CST 1970</span><br><span class="line">pZxid = 0x100000011</span><br><span class="line">cversion = 1</span><br><span class="line">dataVersion = 0</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line">dataLength = 0</span><br><span class="line">numChildren = 1</span><br><span class="line"></span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 4]</span><br></pre></td></tr></table></figure></li>
+<li><p>分别创建2个普通节点</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[zk: hadoop001:2181(CONNECTED) 4] create /sanguo <span class="string">&quot;diaochan&quot;</span></span><br><span class="line">Created /sanguo</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 6] create /sanguo/shuguo <span class="string">&quot;liubei&quot;</span></span><br><span class="line">Created /sanguo/shuguo</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 8] ls  /</span><br><span class="line">[sanguo, zookeeper]</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 9] ls  /sanguo</span><br><span class="line">[shuguo]</span><br></pre></td></tr></table></figure></li>
+<li><p>获得节点的值</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">[zk: hadoop001:2181(CONNECTED) 10] get /sanguo</span><br><span class="line">diaochan</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 11] get -s /sanguo</span><br><span class="line">diaochan</span><br><span class="line">cZxid = 0x300000004</span><br><span class="line">ctime = Mon Oct 18 17:31:28 CST 2021</span><br><span class="line">mZxid = 0x300000004</span><br><span class="line">mtime = Mon Oct 18 17:31:28 CST 2021</span><br><span class="line">pZxid = 0x300000006</span><br><span class="line">cversion = 1</span><br><span class="line">dataVersion = 0</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line">dataLength = 8</span><br><span class="line">numChildren = 1</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 12] get -s /sanguo/shuguo</span><br><span class="line">liubei</span><br><span class="line">cZxid = 0x300000006</span><br><span class="line">ctime = Mon Oct 18 17:32:12 CST 2021</span><br><span class="line">mZxid = 0x300000006</span><br><span class="line">mtime = Mon Oct 18 17:32:12 CST 2021</span><br><span class="line">pZxid = 0x300000006</span><br><span class="line">cversion = 0</span><br><span class="line">dataVersion = 0</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line">dataLength = 6</span><br><span class="line">numChildren = 0</span><br></pre></td></tr></table></figure></li>
+<li><p>创建临时节点</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建临时节点</span></span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 13] create -e /sanguo/wuguo <span class="string">&quot;zhouyu&quot;</span></span><br><span class="line">Created /sanguo/wuguo</span><br><span class="line"><span class="comment"># 查看节点存在</span></span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 15] ls /sanguo</span><br><span class="line">[shuguo, wuguo]</span><br><span class="line"><span class="comment"># 退出客户端</span></span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 16] quit</span><br><span class="line"></span><br><span class="line">WATCHER::</span><br><span class="line"></span><br><span class="line">WatchedEvent state:Closed <span class="built_in">type</span>:None path:null</span><br><span class="line">2021-10-18 17:35:37,751 [myid:] - INFO  [main:ZooKeeper@1422] - Session: 0x10000c30dbf0001 closed</span><br><span class="line">2021-10-18 17:35:37,752 [myid:] - INFO  [main-EventThread:ClientCnxn<span class="variable">$EventThread</span>@524] - EventThread shut down <span class="keyword">for</span> session: 0x10000c30dbf0001</span><br><span class="line"><span class="comment"># 重新连接客户端</span></span><br><span class="line">[atguigu@hadoop001 zookeeper-3.5.7]$ bin/zkCli.sh -server hadoop001:2181</span><br><span class="line">Connecting to hadoop001:2181</span><br><span class="line">···</span><br><span class="line">···</span><br><span class="line">WatchedEvent state:SyncConnected <span class="built_in">type</span>:None path:null</span><br><span class="line"><span class="comment"># 再次查看节点 发现临时节点被删除</span></span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 0] ls /sanguo</span><br><span class="line">[shuguo]</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 1]</span><br></pre></td></tr></table></figure></li>
+<li><p>创建带序号的节点</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[zk: hadoop001:2181(CONNECTED) 6] ls /sanguo/weiguo</span><br><span class="line">[]</span><br><span class="line"><span class="comment"># 创建普通节点xiaobing</span></span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 7] create /sanguo/weiguo/xiaobing</span><br><span class="line">Created /sanguo/weiguo/xiaobing</span><br><span class="line"><span class="comment"># 再次创建普通节点xiaobing--Node already exists</span></span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 8] create /sanguo/weiguo/xiaobing</span><br><span class="line">Node already exists: /sanguo/weiguo/xiaobing</span><br><span class="line"><span class="comment"># 创建普通节点xiaobing1</span></span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 9] create /sanguo/weiguo/xiaobing1</span><br><span class="line">Created /sanguo/weiguo/xiaobing1</span><br><span class="line"><span class="comment"># 创建带序号的节点xiaobing</span></span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 10] create -s /sanguo/weiguo/xiaobing</span><br><span class="line">Created /sanguo/weiguo/xiaobing0000000002</span><br><span class="line"><span class="comment"># 创建带序号的节点xiaobing</span></span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 11] create -s /sanguo/weiguo/xiaobing</span><br><span class="line">Created /sanguo/weiguo/xiaobing0000000003</span><br><span class="line"><span class="comment"># 创建带序号的节点xiaobing</span></span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 12] create -s /sanguo/weiguo/xiaobing</span><br><span class="line">Created /sanguo/weiguo/xiaobing0000000004</span><br><span class="line"><span class="comment"># 查看节点，如果节点下原来没有子节点，序号从0开始依次递增。如果原节点下已有2个节点，则再排序时从2开始，以此类推</span></span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 13] ls /sanguo/weiguo</span><br><span class="line">[xiaobing, xiaobing0000000002, xiaobing0000000003, xiaobing0000000004, xiaobing1]</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 14]</span><br></pre></td></tr></table></figure></li>
+<li><p>修改节点数据值</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[zk: hadoop001:2181(CONNECTED) 0] get /sanguo/weiguo</span><br><span class="line">caocao</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 1] <span class="built_in">set</span> /sanguo/weiguo <span class="string">&#x27;caopi&#x27;</span></span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 2] get /sanguo/weiguo</span><br><span class="line">caopi</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 3]</span><br></pre></td></tr></table></figure></li>
+<li><p>节点的值变化监听</p>
+<ol>
+<li>在hadoop002主机上注册监听/sanguo节点数据变化 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[zk: hadoop002:2181(CONNECTED) 0] get -w /sanguo</span><br><span class="line">null</span><br><span class="line">[zk: hadoop002:2181(CONNECTED) 1]</span><br></pre></td></tr></table></figure></li>
+<li>在hadoop001主机上修改/sanguo节点的数据 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[zk: hadoop001:2181(CONNECTED) 5] <span class="built_in">set</span> /sanguo <span class="string">&quot;xishi&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li>观察hadoop002主机收到数据变化的监听 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WATCHER::</span><br><span class="line"></span><br><span class="line">WatchedEvent state:SyncConnected <span class="built_in">type</span>:NodeDataChanged path:/sanguo</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>节点的子节点变化监听路径变化.</p>
+<ol>
+<li>在hadoop002主机上注册监听/sanguo节点的子节点变化 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[zk: hadoop002:2181(CONNECTED) 0] ls -w /sanguo</span><br><span class="line">[shuguo, weiguo, wuguo]</span><br></pre></td></tr></table></figure></li>
+<li>在hadoop001主机/sanguo节点上创建子节点 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[zk: hadoop001:2181(CONNECTED) 4] create /sanguo/jin</span><br><span class="line">Created /sanguo/jin</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 5]</span><br></pre></td></tr></table></figure></li>
+<li>观察hadoop002主机收到子节点变化的监听 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[zk: hadoop002:2181(CONNECTED) 1]</span><br><span class="line">WATCHER::</span><br><span class="line"></span><br><span class="line">WatchedEvent state:SyncConnected <span class="built_in">type</span>:NodeChildrenChanged path:/sanguo</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>删除节点</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[zk: hadoop001:2181(CONNECTED) 7] ls /sanguo</span><br><span class="line">[jin, shuguo, weiguo, wuguo]</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 8] delete /sanguo/jin</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 9] ls /sanguo</span><br><span class="line">[shuguo, weiguo, wuguo]</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 10]</span><br></pre></td></tr></table></figure></li>
+<li><p>递归删除节点</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[zk: hadoop001:2181(CONNECTED) 12] ls /sanguo/weiguo</span><br><span class="line">[xiaobing, xiaobing0000000002, xiaobing0000000003, xiaobing0000000004, xiaobing1]</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 13] deleteall /sanguo/weiguo</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 14] ls /sanguo/weiguo</span><br><span class="line">Node does not exist: /sanguo/weiguo</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 15]</span><br></pre></td></tr></table></figure></li>
+<li><p>查看节点状态</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[zk: hadoop001:2181(CONNECTED) 15] <span class="built_in">stat</span> /sanguo</span><br><span class="line">cZxid = 0x300000016</span><br><span class="line">ctime = Mon Oct 18 17:41:54 CST 2021</span><br><span class="line">mZxid = 0x300000028</span><br><span class="line">mtime = Mon Oct 18 17:58:53 CST 2021</span><br><span class="line">pZxid = 0x300000030</span><br><span class="line">cversion = 6</span><br><span class="line">dataVersion = 1</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line">dataLength = 5</span><br><span class="line">numChildren = 2</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 16]</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="四、Zookeeper-原理"><a href="#四、Zookeeper-原理" class="headerlink" title="四、Zookeeper 原理"></a>四、Zookeeper 原理</h1><h2 id="4-1-节点类型"><a href="#4-1-节点类型" class="headerlink" title="4.1 节点类型"></a>4.1 节点类型</h2><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16345542078737.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ul>
+<li>持久（Persistent）：客户端和服务器端断开连接后，创建的节点不删除</li>
+<li>短暂（Ephemeral）：客户端和服务器端断开连接后，创建的节点自己删除</li>
+<li>在分布式系统中，顺序号可以被用于为所有的事件进行全局排序，这样客户端可以通过顺序号推断事件的顺序</li>
+<li>创建znode时设置顺序标识，znode名称后会附加一个值，顺序号是一个单调递增的计数器，由父节点维护</li>
+</ul>
+<h2 id="4-2-Stat结构体"><a href="#4-2-Stat结构体" class="headerlink" title="4.2 Stat结构体"></a>4.2 Stat结构体</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[zk: hadoop001:2181(CONNECTED) 15] <span class="built_in">stat</span> /sanguo</span><br><span class="line"><span class="comment"># czxid-创建节点的事务zxid</span></span><br><span class="line"><span class="comment">#   每次修改ZooKeeper状态都会收到一个zxid形式的时间戳，也就是ZooKeeper事务ID。</span></span><br><span class="line"><span class="comment">#   事务ID是ZooKeeper中所有修改总的次序。每个修改都有唯一的zxid，如果zxid1小于zxid2，那么zxid1在zxid2之前发生。</span></span><br><span class="line">cZxid = 0x300000016</span><br><span class="line"><span class="comment"># ctime - znode被创建的毫秒数(从1970年开始)</span></span><br><span class="line">ctime = Mon Oct 18 17:41:54 CST 2021</span><br><span class="line"><span class="comment"># mzxid - znode最后更新的事务zxid</span></span><br><span class="line">mZxid = 0x300000028</span><br><span class="line"><span class="comment"># mtime - znode最后修改的毫秒数(从1970年开始)</span></span><br><span class="line">mtime = Mon Oct 18 17:58:53 CST 2021</span><br><span class="line"><span class="comment"># pZxid - znode最后更新的子节点zxid</span></span><br><span class="line">pZxid = 0x300000030</span><br><span class="line"><span class="comment"># cversion - znode子节点变化号，znode子节点修改次数</span></span><br><span class="line">cversion = 6</span><br><span class="line"><span class="comment"># dataversion - znode数据变化号</span></span><br><span class="line">dataVersion = 1</span><br><span class="line"><span class="comment"># aclVersion - znode访问控制列表的变化号</span></span><br><span class="line">aclVersion = 0</span><br><span class="line"><span class="comment"># ephemeralOwner- 如果是临时节点，这个是znode拥有者的session id。如果不是临时节点则是0。</span></span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line"><span class="comment"># dataLength - znode的数据长度</span></span><br><span class="line">dataLength = 5</span><br><span class="line"><span class="comment"># numChildren - znode子节点数量</span></span><br><span class="line">numChildren = 2</span><br><span class="line">[zk: hadoop001:2181(CONNECTED) 16]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="4-3-监听器原理"><a href="#4-3-监听器原理" class="headerlink" title="4.3 监听器原理"></a>4.3 监听器原理</h2><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16345549940089.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<h3 id="4-3-1-监听原理详解"><a href="#4-3-1-监听原理详解" class="headerlink" title="4.3.1 监听原理详解"></a>4.3.1 监听原理详解</h3><ol>
+<li>首先要有一个main()线程</li>
+<li>在main线程中创建Zookeeper客户端，这时就会创建两个线程，一个负责网络连接通信（connet），一个负责监听（listener）。 </li>
+<li>通过connect线程将注册的监听事件发送给Zookeeper。 </li>
+<li>在Zookeeper的注册监听器列表中将注册的监听事件添加到列表中。 </li>
+<li>Zookeeper监听到有数据或路径变化，就会将这个消息发送给listener线程。 </li>
+<li>listener线程内部调用了process()方法。 <h3 id="4-3-2-常见的监听"><a href="#4-3-2-常见的监听" class="headerlink" title="4.3.2 常见的监听"></a>4.3.2 常见的监听</h3></li>
+<li>监听节点数据的变化<ul>
+<li><code>get path [watch]</code></li>
+</ul>
+</li>
+<li>监听子节点增减的变化<ul>
+<li><code>ls path [watch]</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="4-4-选举机制"><a href="#4-4-选举机制" class="headerlink" title="4.4 选举机制"></a>4.4 选举机制</h2><ol>
+<li>半数机制：集群中半数以上机器存活，集群可用。所以<font color ='red' >Zookeeper适合安装奇数台服务器</font>。</li>
+<li>Zookeeper虽然在配置文件中并没有指定Master和Slave。但是，Zookeeper工作时，是有一个节点为Leader，其他则为Follower，Leader是通过内部的选举机制临时产生的。</li>
+<li>以一个简单的例子来说明整个选举的过程。<br> <img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16345388234410.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"><ul>
+<li>假设有五台服务器组成的Zookeeper集群，它们的id从1-5，同时它们都是最新启动的，也就是没有历史数据，在存放数据量这一点上，都是一样的。假设这些服务器依序启动，来看看会发生什么。</li>
+<li>Zookeeper的选举机制<ol>
+<li>服务器1启动，发起一次选举。服务器1投自己一票。此时服务器1票数一票，不够半数以上（3票），选举无法完成，服务器1状态保持为LOCKING；</li>
+<li>服务器2启动，再发起一次选举。服务器1和2分别投自己一票并交换选票信息：此时服务器1发现服务器2的ID比自己目前投票推举的（服务器1）大，更改选票为推举服务器2。此时服务器1票数0票，服务器2票数2票，没有半数以上结果，选举无法完成，服务器1，2状态保持LOCKING</li>
+<li>服务器3启动，发起一次选举。此时服务器1和2都会更改选票为服务器3。此次投票结果：服务器1为0票，服务器2为0票，服务器3为3票。此时服务器3的票数已经超过半数，服务器3当选Leader。服务器1，2更改状态为FOLLOWING，服务器3更改状态为LEADING；</li>
+<li>服务器4启动，发起一次选举。此时服务器1，2，3已经不是LOOKING状态，不会更改选票信息。交换选票信息结果：服务器3为3票，服务器4为1票。此时服务器4服从多数，更改选票信息为服务器3，并更改状态为FOLLOWING；</li>
+<li>服务器5启动，同4一样当小弟。</li>
+</ol>
+</li>
+<li>举例1<ul>
+<li>场景：以5台机器为例，集群的机器顺时启动，当前集群中没有任何数据。<ol>
+<li>server1 启动，首先server1给自己投一票，然后看当前票数是否超过半数，结果没有超过，这时候leader就没选出来，当前选举状态是Locking状态。</li>
+<li>server2 启动，首先server2先给自己投一票，因为当前集群已经有两台机器已启动，所以server1</li>
+<li>server2会交换选票，交换后发现各自有一票，接下来比较 myid 发现server2的myid值 &gt; server1的myid值此时server2胜出，最后server2有两票。最后再看当前票数是否半，发现未过半，集群的选举状态集训保持locking状态。</li>
+<li>server3启动， 首先自己投自己一票，server1和server2也会投自己一票，然后交换选票发现都一样，接着比较myid 最后server3胜出，此时server3就有3票，同时server3的票数超过半数。所以server3成为leader。</li>
+<li>server4启动，发现当前集群已经有leader 它自己自动成为follower</li>
+<li>server5启动，发现当前集群已经有leader 它自己自动成为follower</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>举例说明2<ul>
+<li>场景：以5台机器为例，当前集群正在使用（有数据/没数据），leader突然宕机的情况。</li>
+<li>当集群中的leader挂掉，集群会重新选出一个leader，此时首先会比较每一台机器的mzxid,mzxid最大的被选为leader。极端情况，mzxid都相等的情况，那么就会直接比较myid。</li>
+</ul>
+</li>
+<li>举例说明3<ul>
+<li>场景：集群中有数据，重启的时候Leader该如何选？</li>
+<li>和场景一选举机制是一样！</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>一般情况下ZK集群更推荐使用奇数台机器原因？<ul>
+<li>在ZK集群中 奇数台 和 偶数台（接近的台数） 机器的容错能力是一样的，所以在考虑资源节省的情况我们推荐使用奇数台方案</li>
+</ul>
+</li>
+</ol>
+<h2 id="4-5-写数据流程"><a href="#4-5-写数据流程" class="headerlink" title="4.5 写数据流程"></a>4.5 写数据流程</h2><p><img src="https://anzhen-tech-imges.oss-cn-beijing.aliyuncs.com/2021/11/07/16345398429599.jpg?x-oss-process=image/auto-orient,1/quality,q_90/watermark,text_YW56aGVuLnRlY2g,size_40,x_10,y_10"></p>
+<ol>
+<li>客户端会向ZK集群中的一台机器server1发送写数据的请求。</li>
+<li>server1接收到请求后，马上会通知leader 有写数据的请求来了</li>
+<li>leader拿到请求后，进行广播，让集群每一台机器都准备要写数据</li>
+<li>集群中的所有机机器接收到leader广播后都回应一下leader</li>
+<li>leader接收机器数过半的机器回应后，再次进行广播 开始写数据，<br>其他机器接收到广播后也开始写数据</li>
+<li>数据成功写入后，回应leader，最后由leader来做整个事务提交</li>
+<li>当数据成功写入后，由最初和客户端发生连接的 server1 回应客户端数据写入成功。</li>
+</ol>
+<h1 id="五、Zookeeper-面试真题"><a href="#五、Zookeeper-面试真题" class="headerlink" title="五、Zookeeper 面试真题"></a>五、Zookeeper 面试真题</h1><h2 id="5-1-请简述ZooKeeper的选举机制"><a href="#5-1-请简述ZooKeeper的选举机制" class="headerlink" title="5.1 请简述ZooKeeper的选举机制"></a>5.1 请简述ZooKeeper的选举机制</h2><h2 id="5-2-ZooKeeper的监听原理是什么？"><a href="#5-2-ZooKeeper的监听原理是什么？" class="headerlink" title="5.2 ZooKeeper的监听原理是什么？"></a>5.2 ZooKeeper的监听原理是什么？</h2><h2 id="5-3-ZooKeeper的部署方式有哪几种？集群中的角色有哪些？集群最少需要几台机器？"><a href="#5-3-ZooKeeper的部署方式有哪几种？集群中的角色有哪些？集群最少需要几台机器？" class="headerlink" title="5.3 ZooKeeper的部署方式有哪几种？集群中的角色有哪些？集群最少需要几台机器？"></a>5.3 ZooKeeper的部署方式有哪几种？集群中的角色有哪些？集群最少需要几台机器？</h2><ol>
+<li>部署方式单机模式、集群模式</li>
+<li>角色：Leader和Follower</li>
+<li>集群最少需要机器数：3</li>
+</ol>
+<h2 id="5-4-ZooKeeper的常用命令Keeper的常用命令"><a href="#5-4-ZooKeeper的常用命令Keeper的常用命令" class="headerlink" title="5.4 ZooKeeper的常用命令Keeper的常用命令"></a>5.4 ZooKeeper的常用命令Keeper的常用命令</h2> 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          打赏
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://anzhen-tech.github.io/2021/11/07/Zookeeper/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zookeeper/" rel="tag">Zookeeper</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2021/11/07/Hadoop%E5%8E%8B%E7%BC%A9%E3%80%81%E4%BC%98%E5%8C%96%E3%80%81%E9%AB%98%E5%8F%AF%E7%94%A8/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Hadoop压缩、优化、高可用
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/11/07/Yarn/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Yarn</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "XCKHv09pYxF5EmF2ezNgFfLS-gzGzoHsz",
+    app_key: "gyCHBp787fNNfXDiHGIcj7Am",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2019-2021
+        <i class="ri-heart-fill heart_icon"></i> Anzhen
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="anzhen.tech"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/HDFS">HDFS</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Yarn">Yarn</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/MR">MR</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Hive">Hive</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86">数据采集</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/HBase">HBase</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Kafka">Kafka</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Spark">Spark</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Flink">Flink</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/MySQL">MySQL</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/Java">Java</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/interview">面试宝典</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/11/07/about-me">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="52"
+        src="//music.163.com/outchain/player?type=2&id=318916815&auto=1&height=32"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+    
+
+  </div>
+</body>
+
+</html>
